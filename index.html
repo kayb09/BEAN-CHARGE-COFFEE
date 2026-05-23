@@ -2,361 +2,295 @@
 <html lang="en-ZA">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>BEAN CHARGE | 3D Coffee Journey</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>BEAN CHARGE | Mobile Coffee Bar</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Background image – blurred, fixed, full screen */
         body {
-            margin: 0;
-            overflow: hidden;
-            font-family: 'Roboto', sans-serif;
-            color: white;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: #2C2C2C; /* fallback */
+            position: relative;
         }
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Roboto:wght@400;700&display=swap');
-        
-        canvas {
-            display: block;
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 0;
-        }
-        
-        .ui {
-            position: absolute;
-            z-index: 10;
-            width: 100%;
-            pointer-events: none;
-        }
-        
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 2rem;
-            background: rgba(0,0,0,0.5);
-            backdrop-filter: blur(8px);
-            pointer-events: auto;
-        }
-        .branding h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.5rem;
-            margin: 0;
-        }
-        .branding h1 span { color: #C7A17A; }
-        .branding p { font-size: 0.7rem; margin: 0; color: #ddd; }
-        
-        .nav-links a {
-            color: white;
-            text-decoration: none;
-            margin-left: 1.5rem;
-            font-weight: 500;
-            transition: color 0.2s;
-        }
-        .nav-links a:hover { color: #C7A17A; }
-        
-        .stage-indicator {
-            position: absolute;
-            bottom: 20px;
-            left: 0;
-            right: 0;
-            text-align: center;
-            background: rgba(0,0,0,0.6);
-            padding: 10px;
-            font-size: 0.9rem;
-            pointer-events: none;
-            backdrop-filter: blur(4px);
-        }
-        .stage-name { color: #C7A17A; }
-        
-        .modal {
+
+        /* Blurred background layer */
+        .bg-blur {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.9);
-            backdrop-filter: blur(12px);
-            z-index: 20;
+            background-image: url('background.jpg'); /* 👈 change to your image file name */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            filter: blur(10px);
+            transform: scale(1.1); /* avoid white edges due to blur */
+            z-index: -2;
+        }
+
+        /* Dark overlay for better text contrast */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.55);
+            z-index: -1;
+        }
+
+        /* Content container – semi‑transparent card style */
+        .content {
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        /* Header */
+        .top-bar {
+            background: rgba(30, 25, 20, 0.85);
+            backdrop-filter: blur(8px);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            border-radius: 40px;
+            margin: 1rem;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+        .logo h1 {
+            color: #E6B422;
+            font-size: 1.8rem;
+        }
+        .logo span { color: white; }
+        .logo p { color: #ddd; font-size: 0.7rem; }
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            margin-left: 1.5rem;
+            font-weight: 500;
+        }
+        .nav-links a:hover { color: #E6B422; }
+
+        /* Hero */
+        .hero {
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(4px);
+            border-radius: 32px;
+            margin: 1rem;
+            padding: 4rem 2rem;
+            text-align: center;
+            color: white;
+        }
+        .hero h2 { font-size: 2.5rem; }
+        .btn {
+            background: #E6B422;
+            color: #2C2C2C;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 1rem;
+        }
+
+        /* Sections (cards) */
+        .section-card {
+            background: rgba(255, 248, 240, 0.92);
+            backdrop-filter: blur(2px);
+            border-radius: 32px;
+            padding: 2rem;
+            margin: 2rem 1rem;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+        .section-title {
+            font-size: 2rem;
+            color: #5E3A1C;
+            border-left: 6px solid #E6B422;
+            padding-left: 1rem;
+            margin-bottom: 2rem;
+        }
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.5rem;
+        }
+        .menu-card {
+            background: white;
+            border-radius: 24px;
+            padding: 1.2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        .menu-card h3 {
+            color: #B73E3E;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid #E6B422;
+            display: inline-block;
+        }
+        .menu-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px dashed #ccc;
+        }
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+        .gallery-item {
+            background: #DBC9B0;
+            aspect-ratio: 1/1;
+            border-radius: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
-            visibility: hidden;
-            opacity: 0;
-            transition: visibility 0.2s, opacity 0.2s;
-            pointer-events: auto;
+            color: #5E3A1C;
+            font-size: 0.9rem;
+            background-size: cover;
+            background-position: center;
         }
-        .modal.active { visibility: visible; opacity: 1; }
-        .modal-content {
-            background: #1e1e1e;
-            max-width: 500px;
-            width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
-            border-radius: 20px;
-            padding: 2rem;
-            border: 1px solid #C7A17A;
+        .contact-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
         }
-        .modal-content h2 { color: #C7A17A; font-family: 'Playfair Display', serif; }
-        .menu-category { margin-bottom: 1.5rem; }
-        .menu-category h3 { border-bottom: 1px solid #C7A17A; display: inline-block; }
-        .menu-item { display: flex; justify-content: space-between; margin: 0.5rem 0; font-size: 0.9rem; }
-        .close-modal {
-            background: #C7A17A;
-            border: none;
-            padding: 0.6rem 1.5rem;
-            border-radius: 30px;
-            font-weight: bold;
-            cursor: pointer;
+        input, textarea {
             width: 100%;
-            margin-top: 1rem;
-        }
-        .contact-info a { color: #C7A17A; text-decoration: none; }
-        button.menu-btn {
-            background: #C7A17A;
+            padding: 0.8rem;
+            margin: 0.5rem 0;
             border: none;
-            padding: 0.5rem 1rem;
             border-radius: 30px;
+            background: #f0e8de;
+        }
+        button {
+            background: #B73E3E;
+            color: white;
+            border: none;
+            padding: 0.8rem;
+            width: 100%;
+            border-radius: 40px;
             font-weight: bold;
             cursor: pointer;
-            pointer-events: auto;
+        }
+        .contact-info i {
+            color: #E6B422;
+            width: 30px;
+        }
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            color: white;
+            background: rgba(0,0,0,0.6);
+            border-radius: 24px;
+            margin: 1rem;
+        }
+        .whatsapp-float {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #25D366;
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            z-index: 99;
         }
         @media (max-width: 700px) {
-            .header { padding: 0.8rem 1rem; }
-            .branding h1 { font-size: 1.2rem; }
-            .nav-links a { margin-left: 1rem; font-size: 0.8rem; }
-            .stage-indicator { font-size: 0.7rem; bottom: 10px; }
+            .contact-wrapper { grid-template-columns: 1fr; }
+            .top-bar { flex-direction: column; gap: 0.5rem; }
+            .hero h2 { font-size: 1.8rem; }
         }
     </style>
 </head>
 <body>
-<div class="ui">
-    <div class="header">
-        <div class="branding"><h1>BEAN<span>CHARGE</span></h1><p>Mobile Coffee Artisans</p></div>
-        <div style="display: flex; gap: 1rem;">
-            <button class="menu-btn" id="menuBtn">☕ Menu</button>
-            <div class="nav-links"><a href="#" id="contactBtn">Contact</a></div>
+    <div class="bg-blur"></div>
+    <div class="overlay"></div>
+
+    <div class="content">
+        <div class="top-bar">
+            <div class="logo"><h1>BEAN<span>CHARGE</span></h1><p>Mobile Coffee Artisans</p></div>
+            <div class="nav-links">
+                <a href="#menu">Menu</a><a href="#gallery">Gallery</a><a href="#contact">Contact</a>
+            </div>
         </div>
+
+        <div class="hero">
+            <h2>Your daily boost, wherever you are</h2>
+            <p>Premium coffee service in Soweto & Gauteng</p>
+            <a href="#menu" class="btn">Explore Menu <i class="fas fa-arrow-down"></i></a>
+        </div>
+
+        <div id="menu" class="section-card">
+            <h2 class="section-title">☕ Our Menu</h2>
+            <div class="menu-grid">
+                <div class="menu-card"><h3>Espresso Classics</h3><div class="menu-item"><span>Americano</span><span>R17 / R20</span></div><div class="menu-item"><span>Espresso</span><span>R15</span></div><div class="menu-item"><span>Double Espresso</span><span>R20</span></div></div>
+                <div class="menu-card"><h3>Milk Specialties</h3><div class="menu-item"><span>Cappuccino</span><span>R17 / R27</span></div><div class="menu-item"><span>Latte</span><span>R17 / R27</span></div><div class="menu-item"><span>Flat White</span><span>R17 / R27</span></div></div>
+                <div class="menu-card"><h3>Flavoured</h3><div class="menu-item"><span>Mocha</span><span>R20 / R30</span></div><div class="menu-item"><span>Vanilla Coffee</span><span>R15 / R30</span></div><div class="menu-item"><span>Vanilla & Choco</span><span>R17 / R30</span></div></div>
+                <div class="menu-card"><h3>Tea & More</h3><div class="menu-item"><span>Hot Chocolate</span><span>R15 / R30</span></div><div class="menu-item"><span>Chai Tea</span><span>R30</span></div><div class="menu-item"><span>Tea (w/ milk)</span><span>R15 / R18</span></div></div>
+            </div>
+        </div>
+
+        <div id="gallery" class="section-card">
+            <h2 class="section-title">📸 Moments at Work</h2>
+            <div class="gallery-grid">
+                <div class="gallery-item">📷 Add photo</div><div class="gallery-item">📷 Add photo</div>
+                <div class="gallery-item">📷 Add photo</div><div class="gallery-item">📷 Add photo</div>
+                <div class="gallery-item">📷 Add photo</div><div class="gallery-item">📷 Add photo</div>
+            </div>
+            <p style="text-align:center; margin-top:1rem;">👉 Replace with your own coffee service images</p>
+        </div>
+
+        <div id="contact" class="section-card">
+            <h2 class="section-title">📬 Book Your Event</h2>
+            <div class="contact-wrapper">
+                <div class="contact-form">
+                    <form action="https://formspree.io/f/xeqygqjg" method="POST">
+                        <input type="text" name="name" placeholder="Full name" required>
+                        <input type="tel" name="phone" placeholder="Phone" required>
+                        <input type="email" name="email" placeholder="Email">
+                        <textarea name="message" rows="3" placeholder="Event date, location, guests..."></textarea>
+                        <button type="submit">Send Enquiry <i class="fas fa-paper-plane"></i></button>
+                    </form>
+                </div>
+                <div class="contact-info">
+                    <p><i class="fas fa-phone-alt"></i> <a href="tel:+27693412372">069 341 2372</a></p>
+                    <p><i class="fas fa-envelope"></i> <a href="mailto:karabotsontsi@gmail.com">karabotsontsi@gmail.com</a></p>
+                    <p><i class="fab fa-whatsapp"></i> <a href="https://wa.me/27693412372">WhatsApp chat</a></p>
+                    <p><i class="fas fa-map-marker-alt"></i> Soweto, Gauteng (mobile)</p>
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d114955.745275518!2d27.8315572!3d-26.2480879!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1e95a7c8f4b3f8b5%3A0x5c5a5a5a5a5a5a5a!2sSoweto%2C%20South%20Africa!5e0!3m2!1sen!2sza!4v1650000000000!5m2!1sen!2sza" width="100%" height="180" style="border:0; border-radius:20px;" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>© 2025 BEAN CHARGE COFFEE | Crafted in Soweto ☕</p>
+        </footer>
     </div>
-    <div class="stage-indicator" id="stageLabel">🌱 <span class="stage-name">Growing</span> → Next: Cherry Ripening</div>
-</div>
 
-<div id="menuModal" class="modal">
-    <div class="modal-content">
-        <h2>☕ BEAN CHARGE MENU</h2>
-        <div class="menu-category"><h3>Espresso Classics</h3><div class="menu-item"><span>Americano</span><span>R17 / R20</span></div><div class="menu-item"><span>Espresso</span><span>R15</span></div><div class="menu-item"><span>Double Espresso</span><span>R20</span></div></div>
-        <div class="menu-category"><h3>Milk Specialties</h3><div class="menu-item"><span>Cappuccino</span><span>R17 / R27</span></div><div class="menu-item"><span>Latte</span><span>R17 / R27</span></div><div class="menu-item"><span>Flat White</span><span>R17 / R27</span></div></div>
-        <div class="menu-category"><h3>Flavored Indulgences</h3><div class="menu-item"><span>Mocha</span><span>R20 / R30</span></div><div class="menu-item"><span>Vanilla Coffee</span><span>R15 / R30</span></div><div class="menu-item"><span>Vanilla & Choco</span><span>R17 / R30</span></div></div>
-        <div class="menu-category"><h3>Non-Coffee & Tea</h3><div class="menu-item"><span>Hot Chocolate</span><span>R15 / R30</span></div><div class="menu-item"><span>Chai Tea</span><span>R30</span></div><div class="menu-item"><span>Tea</span><span>R15</span></div><div class="menu-item"><span>Tea with Milk</span><span>R18</span></div></div>
-        <div class="contact-info"><p>📞 <a href="tel:+27693412372">069 341 2372</a> | 📧 <a href="mailto:karabotsontsi@gmail.com">karabotsontsi@gmail.com</a></p><p>📍 Soweto & Gauteng</p></div>
-        <button class="close-modal" id="closeModal">Close</button>
-    </div>
-</div>
+    <a href="https://wa.me/27693412372" class="whatsapp-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
 
-<script type="importmap">
-    { "imports": { "three": "https://unpkg.com/three@0.128.0/build/three.module.js" } }
-</script>
-<script type="module">
-    import * as THREE from 'three';
-    import { OrbitControls } from 'https://unpkg.com/three@0.128.0/examples/jsm/controls/OrbitControls.js';
-
-    const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x0a0a1a);
-    scene.fog = new THREE.FogExp2(0x0a0a1a, 0.008);
-    const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.set(0, 2, 6);
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.shadowMap.enabled = true;
-    document.body.appendChild(renderer.domElement);
-    
-    const controls = new OrbitControls(camera, renderer.domElement);
-    controls.enableDamping = true;
-    controls.enableZoom = true;
-    controls.enablePan = false;
-    controls.target.set(0, 1.2, 0);
-    
-    // Lighting
-    const ambient = new THREE.AmbientLight(0x404060);
-    scene.add(ambient);
-    const dirLight = new THREE.DirectionalLight(0xffeedd, 1);
-    dirLight.position.set(3,5,2);
-    dirLight.castShadow = true;
-    scene.add(dirLight);
-    const fill = new THREE.PointLight(0xcc9966, 0.5);
-    fill.position.set(0,-1,0);
-    scene.add(fill);
-    
-    // Helper: create bean
-    function createBean(color, pos, scale=0.2) {
-        const group = new THREE.Group();
-        const body = new THREE.Mesh(new THREE.SphereGeometry(scale,24,24), new THREE.MeshStandardMaterial({ color, roughness:0.3 }));
-        const ridge = new THREE.Mesh(new THREE.CylinderGeometry(scale*0.6, scale*0.6, scale*0.3,12), new THREE.MeshStandardMaterial({ color:0x8B5A2B }));
-        ridge.rotation.x = Math.PI/2;
-        ridge.position.y = scale*0.1;
-        group.add(body, ridge);
-        group.position.set(pos.x, pos.y, pos.z);
-        group.castShadow = true;
-        return group;
-    }
-    
-    let currentStage = 0;
-    let stageObjects = [];
-    let groundBeans = [];
-    
-    function clearStage() {
-        stageObjects.forEach(obj => { if(obj.parent) scene.remove(obj); });
-        stageObjects = [];
-        groundBeans.forEach(b => scene.remove(b));
-        groundBeans = [];
-    }
-    
-    function buildGrowing() {
-        clearStage();
-        const stem = new THREE.Mesh(new THREE.CylinderGeometry(0.08,0.12,1.2,6), new THREE.MeshStandardMaterial({ color:0x6B8E23 }));
-        stem.position.y = 0.2;
-        const plant = new THREE.Group();
-        plant.add(stem);
-        for(let i=0;i<3;i++) {
-            const leaf = new THREE.Mesh(new THREE.ConeGeometry(0.25,0.4,8), new THREE.MeshStandardMaterial({ color:0x7CB342 }));
-            leaf.position.y = 0.8 + i*0.1;
-            leaf.rotation.z = (i-1)*0.8;
-            plant.add(leaf);
-        }
-        plant.position.y = -0.3;
-        scene.add(plant);
-        stageObjects.push(plant);
-        for(let i=0;i<12;i++) {
-            let angle = (i/12)*Math.PI*2;
-            let bean = createBean(0x8FBC8F, { x:Math.cos(angle)*0.6, y:0.5+Math.sin(angle*2)*0.2, z:Math.sin(angle)*0.6 }, 0.12);
-            scene.add(bean);
-            stageObjects.push(bean);
-        }
-    }
-    
-    function buildCherry() {
-        clearStage();
-        const stem = new THREE.Mesh(new THREE.CylinderGeometry(0.08,0.12,1.2,6), new THREE.MeshStandardMaterial({ color:0x6B8E23 }));
-        stem.position.y = 0.2;
-        const cherryGroup = new THREE.Group();
-        cherryGroup.add(stem);
-        for(let i=0;i<18;i++) {
-            const cherry = new THREE.Mesh(new THREE.SphereGeometry(0.11,16,16), new THREE.MeshStandardMaterial({ color:0xCD5C5C, emissive:0x331100 }));
-            cherry.position.set(Math.sin(i)*0.55, 0.4+Math.cos(i*1.5)*0.4, Math.cos(i)*0.55);
-            cherryGroup.add(cherry);
-        }
-        cherryGroup.position.y = -0.3;
-        scene.add(cherryGroup);
-        stageObjects.push(cherryGroup);
-    }
-    
-    function buildHarvest() {
-        clearStage();
-        for(let i=0;i<30;i++) {
-            let bean = createBean(0xB8860B, { x:(Math.random()-0.5)*2.5, y:-0.4, z:(Math.random()-0.5)*2 }, 0.1);
-            scene.add(bean);
-            groundBeans.push(bean);
-        }
-        const basket = new THREE.Mesh(new THREE.CylinderGeometry(0.6,0.4,0.4,8), new THREE.MeshStandardMaterial({ color:0xBC9A6C }));
-        basket.position.set(1.2, -0.2, 0.8);
-        scene.add(basket);
-        stageObjects.push(basket);
-    }
-    
-    function buildRoast() {
-        clearStage();
-        const drum = new THREE.Mesh(new THREE.CylinderGeometry(0.9,0.9,0.8,24), new THREE.MeshStandardMaterial({ color:0x5D3A1A, metalness:0.7 }));
-        drum.castShadow = true;
-        scene.add(drum);
-        stageObjects.push(drum);
-        for(let i=0;i<25;i++) {
-            let b = createBean(0x3E2723, { x:(Math.random()-0.5)*0.7, y:(Math.random()-0.5)*0.5, z:(Math.random()-0.5)*0.7 }, 0.09);
-            b.position.y += 0.1;
-            drum.add(b);
-        }
-        const steamPoints = new THREE.Points(new THREE.BufferGeometry(), new THREE.PointsMaterial({ color:0xAAAA99, size:0.03 }));
-        const steamPos = [];
-        for(let i=0;i<200;i++) steamPos.push((Math.random()-0.5)*2, Math.random()*1.5, (Math.random()-0.5)*2);
-        steamPoints.geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(steamPos), 3));
-        steamPoints.position.y = 0.6;
-        scene.add(steamPoints);
-        stageObjects.push(steamPoints);
-        stageObjects.drum = drum;
-    }
-    
-    function buildGrind() {
-        clearStage();
-        const grinderBase = new THREE.Mesh(new THREE.CylinderGeometry(0.5,0.6,0.4,12), new THREE.MeshStandardMaterial({ color:0x888888, metalness:0.6 }));
-        grinderBase.position.set(-0.8, -0.1, 0.5);
-        scene.add(grinderBase);
-        const grinderTop = new THREE.Mesh(new THREE.CylinderGeometry(0.4,0.45,0.3,12), new THREE.MeshStandardMaterial({ color:0xCCCCCC }));
-        grinderTop.position.set(-0.8, 0.2, 0.5);
-        scene.add(grinderTop);
-        stageObjects.push(grinderBase, grinderTop);
-        const cup = new THREE.Mesh(new THREE.CylinderGeometry(0.45,0.3,0.5,24), new THREE.MeshStandardMaterial({ color:0xF5F5DC }));
-        cup.position.set(1.2, -0.1, -0.3);
-        scene.add(cup);
-        const liquid = new THREE.Mesh(new THREE.CylinderGeometry(0.38,0.38,0.1,16), new THREE.MeshStandardMaterial({ color:0x4E2E1E }));
-        liquid.position.y = 0.15;
-        cup.add(liquid);
-        stageObjects.push(cup);
-        for(let i=0;i<40;i++) {
-            let g = createBean(0x5D3A1A, { x:(Math.random()-0.5)*1.2, y:-0.2, z:(Math.random()-0.5)*1.5 }, 0.05);
-            scene.add(g);
-            groundBeans.push(g);
-        }
-    }
-    
-    function buildPour() {
-        clearStage();
-        const cup = new THREE.Mesh(new THREE.CylinderGeometry(0.45,0.3,0.5,24), new THREE.MeshStandardMaterial({ color:0xF5F5DC }));
-        cup.position.set(1.2, -0.1, -0.3);
-        scene.add(cup);
-        stageObjects.push(cup);
-        const streamPos = [];
-        for(let i=0;i<300;i++) streamPos.push((Math.random()-0.5)*0.5+1.2, Math.random()*0.8-0.2, (Math.random()-0.5)*0.5-0.3);
-        const streamGeo = new THREE.BufferGeometry();
-        streamGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(streamPos), 3));
-        const stream = new THREE.Points(streamGeo, new THREE.PointsMaterial({ color:0xC7A17A, size:0.02 }));
-        scene.add(stream);
-        stageObjects.push(stream);
-    }
-    
-    const stages = [buildGrowing, buildCherry, buildHarvest, buildRoast, buildGrind, buildPour];
-    const stageNames = ["🌱 Growing", "🍒 Cherry Ripening", "🌾 Harvesting", "🔥 Roasting", "⚙️ Grinding", "☕ Pouring & Cup"];
-    
-    function advanceStage() {
-        currentStage = (currentStage + 1) % stages.length;
-        stages[currentStage]();
-        document.getElementById('stageLabel').innerHTML = `✨ ${stageNames[currentStage]} ✨ → Next: ${stageNames[(currentStage+1)%stages.length]}`;
-    }
-    buildGrowing();
-    setInterval(advanceStage, 14000);
-    window.addEventListener('click', (e) => {
-        if(e.target.closest('.ui') || e.target.closest('.modal')) return;
-        advanceStage();
-    });
-    
-    let time = 0;
-    function animate() {
-        requestAnimationFrame(animate);
-        time += 0.016;
-        if(currentStage===3 && stageObjects.drum) stageObjects.drum.rotation.y += 0.02;
-        controls.update();
-        renderer.render(scene, camera);
-    }
-    animate();
-    
-    // Modal
-    const modal = document.getElementById('menuModal');
-    document.getElementById('menuBtn').onclick = () => modal.classList.add('active');
-    document.getElementById('contactBtn').onclick = () => modal.classList.add('active');
-    document.getElementById('closeModal').onclick = () => modal.classList.remove('active');
-    modal.onclick = (e) => { if(e.target===modal) modal.classList.remove('active'); };
-    window.onresize = () => {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-    };
-</script>
+    <!-- Optional: replace gallery placeholders with actual images later -->
+    <script>
+        // When you have real images, uncomment and change the URLs
+        // const images = ["photo1.jpg", "photo2.jpg", ...];
+        // document.querySelectorAll('.gallery-item').forEach((el,i) => {
+        //     if(images[i]) { el.style.backgroundImage = `url(${images[i]})`; el.innerHTML = ""; }
+        // });
+    </script>
 </body>
 </html>
