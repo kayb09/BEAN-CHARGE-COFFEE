@@ -1,296 +1,727 @@
 <!DOCTYPE html>
 <html lang="en-ZA">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>BEAN CHARGE | Mobile Coffee Bar</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>BEAN CHARGE · Mobile Coffee Artisans | Soweto</title>
+  <!-- Google Fonts + CSS Reset -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700;900&family=DM+Sans:wght@400;500;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-        /* Background image – blurred, fixed, full screen */
-        body {
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background: #2C2C2C; /* fallback */
-            position: relative;
-        }
+    :root {
+      --espresso: #1A0A00;
+      --amber: #C8860A;
+      --cream: #F5E6C8;
+      --roast: #2B1500;
+      --text-light: #FAF3E0;
+      --glass: rgba(26, 10, 0, 0.85);
+      --transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+    }
 
-        /* Blurred background layer */
-        .bg-blur {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url('background.jpg'); /* 👈 change to your image file name */
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            filter: blur(10px);
-            transform: scale(1.1); /* avoid white edges due to blur */
-            z-index: -2;
-        }
+    body {
+      background: var(--espresso);
+      color: var(--text-light);
+      font-family: 'DM Sans', sans-serif;
+      line-height: 1.5;
+      scroll-behavior: smooth;
+    }
 
-        /* Dark overlay for better text contrast */
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.55);
-            z-index: -1;
-        }
+    /* Typography */
+    h1, h2, h3, .logo, .section-title {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+    }
+    .price, .category-tab, .stat-number, .cta-btn {
+      font-family: 'Bebas Neue', cursive;
+      letter-spacing: 1px;
+    }
 
-        /* Content container – semi‑transparent card style */
-        .content {
-            position: relative;
-            z-index: 2;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 1rem;
-        }
+    /* Sticky Nav - glass morphism */
+    .sticky-nav {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: transparent;
+      backdrop-filter: blur(12px);
+      background-color: rgba(26, 10, 0, 0.7);
+      transition: background 0.2s, backdrop-filter 0.2s;
+      border-bottom: 1px solid rgba(200, 134, 10, 0.3);
+    }
+    .nav-container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0.9rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .logo a {
+      text-decoration: none;
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .logo-text {
+      font-size: 1.8rem;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      color: var(--cream);
+    }
+    .logo-text span {
+      color: var(--amber);
+    }
+    .tagline-nav {
+      font-size: 0.7rem;
+      opacity: 0.8;
+      font-family: 'DM Sans';
+      margin-left: 8px;
+    }
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+    }
+    .nav-links a {
+      color: var(--text-light);
+      text-decoration: none;
+      font-weight: 500;
+      transition: var(--transition);
+      font-size: 1rem;
+    }
+    .nav-links a:hover, .nav-links a.active {
+      color: var(--amber);
+    }
+    /* hamburger (mobile) */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+      gap: 5px;
+    }
+    .hamburger span {
+      width: 28px;
+      height: 2px;
+      background: var(--cream);
+      transition: 0.3s;
+    }
+    @media (max-width: 780px) {
+      .nav-links {
+        position: fixed;
+        top: 70px;
+        right: -100%;
+        width: 70%;
+        height: 100vh;
+        background: var(--roast);
+        backdrop-filter: blur(20px);
+        flex-direction: column;
+        padding: 2rem;
+        transition: 0.3s;
+        gap: 2rem;
+        box-shadow: -5px 0 20px rgba(0,0,0,0.6);
+      }
+      .nav-links.open {
+        right: 0;
+      }
+      .hamburger {
+        display: flex;
+      }
+      .nav-container {
+        padding: 0.8rem 1.5rem;
+      }
+    }
 
-        /* Header */
-        .top-bar {
-            background: rgba(30, 25, 20, 0.85);
-            backdrop-filter: blur(8px);
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            border-radius: 40px;
-            margin: 1rem;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-        }
-        .logo h1 {
-            color: #E6B422;
-            font-size: 1.8rem;
-        }
-        .logo span { color: white; }
-        .logo p { color: #ddd; font-size: 0.7rem; }
-        .nav-links a {
-            color: white;
-            text-decoration: none;
-            margin-left: 1.5rem;
-            font-weight: 500;
-        }
-        .nav-links a:hover { color: #E6B422; }
+    /* Hero */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+      background: radial-gradient(circle at 30% 10%, #2B1500 0%, #1A0A00 90%);
+      overflow: hidden;
+      padding: 2rem;
+    }
+    .hero-content {
+      max-width: 800px;
+      z-index: 2;
+    }
+    .floating-logo {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+    .coffee-svg {
+      width: 55px;
+      height: 55px;
+      filter: drop-shadow(0 0 5px var(--amber));
+    }
+    .hero h1 {
+      font-size: 4rem;
+      letter-spacing: -1px;
+      background: linear-gradient(135deg, var(--cream) 30%, var(--amber) 90%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .stagger-text {
+      font-size: 1.4rem;
+      letter-spacing: 2px;
+      margin: 1rem 0;
+      overflow: hidden;
+    }
+    .stagger-text span {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.4s forwards;
+    }
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .cta-group {
+      display: flex;
+      gap: 1.5rem;
+      justify-content: center;
+      margin: 2rem 0;
+      flex-wrap: wrap;
+    }
+    .cta-btn {
+      background: transparent;
+      border: 2px solid var(--amber);
+      padding: 0.8rem 2rem;
+      border-radius: 40px;
+      text-decoration: none;
+      color: var(--cream);
+      font-weight: bold;
+      transition: var(--transition);
+      font-size: 1.1rem;
+      display: inline-block;
+    }
+    .cta-btn-primary {
+      background: var(--amber);
+      color: var(--espresso);
+      border: none;
+    }
+    .cta-btn-primary:hover {
+      background: #b07108;
+      transform: scale(1.02);
+    }
+    .cta-btn:hover {
+      background: var(--amber);
+      color: var(--espresso);
+    }
+    /* Steam particles */
+    .steam {
+      position: absolute;
+      bottom: 10%;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      pointer-events: none;
+    }
+    .steam div {
+      width: 8px;
+      height: 40px;
+      background: radial-gradient(white, transparent);
+      opacity: 0.3;
+      border-radius: 50%;
+      animation: steamMove 3s infinite ease-in-out;
+    }
+    .steam div:nth-child(2) { animation-delay: 1s; height: 55px; width: 12px; }
+    .steam div:nth-child(3) { animation-delay: 2s; height: 35px; }
+    @keyframes steamMove {
+      0% { transform: translateY(0) scale(1); opacity: 0.2; }
+      100% { transform: translateY(-80px) scale(1.5); opacity: 0; }
+    }
+    .scroll-indicator {
+      position: absolute;
+      bottom: 25px;
+      left: 50%;
+      transform: translateX(-50%);
+      animation: bounce 2s infinite;
+      cursor: pointer;
+    }
+    @keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0);} 50%{transform:translateX(-50%) translateY(10px);} }
 
-        /* Hero */
-        .hero {
-            background: rgba(0,0,0,0.5);
-            backdrop-filter: blur(4px);
-            border-radius: 32px;
-            margin: 1rem;
-            padding: 4rem 2rem;
-            text-align: center;
-            color: white;
-        }
-        .hero h2 { font-size: 2.5rem; }
-        .btn {
-            background: #E6B422;
-            color: #2C2C2C;
-            padding: 0.8rem 2rem;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: bold;
-            display: inline-block;
-            margin-top: 1rem;
-        }
+    /* About strip */
+    .about-strip {
+      background: var(--roast);
+      padding: 3rem 1.5rem;
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+      border-top: 1px solid rgba(200,134,10,0.4);
+      border-bottom: 1px solid rgba(200,134,10,0.4);
+    }
+    .stat-card {
+      text-align: center;
+      min-width: 160px;
+    }
+    .stat-number {
+      font-size: 2.5rem;
+      color: var(--amber);
+      font-weight: bold;
+    }
+    .gold-divider {
+      width: 1px;
+      background: var(--amber);
+      opacity: 0.4;
+    }
+    @media (max-width: 700px) { .gold-divider { display: none; } }
 
-        /* Sections (cards) */
-        .section-card {
-            background: rgba(255, 248, 240, 0.92);
-            backdrop-filter: blur(2px);
-            border-radius: 32px;
-            padding: 2rem;
-            margin: 2rem 1rem;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-        }
-        .section-title {
-            font-size: 2rem;
-            color: #5E3A1C;
-            border-left: 6px solid #E6B422;
-            padding-left: 1rem;
-            margin-bottom: 2rem;
-        }
-        .menu-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 1.5rem;
-        }
-        .menu-card {
-            background: white;
-            border-radius: 24px;
-            padding: 1.2rem;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-        }
-        .menu-card h3 {
-            color: #B73E3E;
-            margin-bottom: 1rem;
-            border-bottom: 2px solid #E6B422;
-            display: inline-block;
-        }
-        .menu-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 0.5rem 0;
-            border-bottom: 1px dashed #ccc;
-        }
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 1rem;
-        }
-        .gallery-item {
-            background: #DBC9B0;
-            aspect-ratio: 1/1;
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #5E3A1C;
-            font-size: 0.9rem;
-            background-size: cover;
-            background-position: center;
-        }
-        .contact-wrapper {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-        }
-        input, textarea {
-            width: 100%;
-            padding: 0.8rem;
-            margin: 0.5rem 0;
-            border: none;
-            border-radius: 30px;
-            background: #f0e8de;
-        }
-        button {
-            background: #B73E3E;
-            color: white;
-            border: none;
-            padding: 0.8rem;
-            width: 100%;
-            border-radius: 40px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .contact-info i {
-            color: #E6B422;
-            width: 30px;
-        }
-        footer {
-            text-align: center;
-            padding: 1.5rem;
-            color: white;
-            background: rgba(0,0,0,0.6);
-            border-radius: 24px;
-            margin: 1rem;
-        }
-        .whatsapp-float {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: #25D366;
-            width: 55px;
-            height: 55px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            color: white;
-            z-index: 99;
-        }
-        @media (max-width: 700px) {
-            .contact-wrapper { grid-template-columns: 1fr; }
-            .top-bar { flex-direction: column; gap: 0.5rem; }
-            .hero h2 { font-size: 1.8rem; }
-        }
-    </style>
+    /* Sections general */
+    .section {
+      padding: 5rem 2rem;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+    .section-title {
+      font-size: 2.5rem;
+      margin-bottom: 2rem;
+      position: relative;
+      display: inline-block;
+    }
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 70px;
+      height: 3px;
+      background: var(--amber);
+    }
+    /* Menu Tabs */
+    .menu-tabs {
+      display: flex;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+      border-bottom: 1px solid #332211;
+      padding-bottom: 1rem;
+    }
+    .category-tab {
+      background: none;
+      border: none;
+      font-size: 1rem;
+      padding: 0.5rem 1.2rem;
+      color: var(--cream);
+      cursor: pointer;
+      transition: 0.2s;
+      border-radius: 40px;
+      font-weight: bold;
+    }
+    .category-tab.active, .category-tab:hover {
+      background: var(--amber);
+      color: var(--espresso);
+    }
+    .menu-pane {
+      display: none;
+      animation: fadeSlide 0.3s ease;
+    }
+    .menu-pane.active-pane {
+      display: block;
+    }
+    @keyframes fadeSlide {
+      from { opacity: 0; transform: translateY(10px);}
+      to { opacity: 1; transform: translateY(0);}
+    }
+    .menu-item-card {
+      background: var(--surface-card);
+      background: #2B1500cc;
+      backdrop-filter: blur(4px);
+      border-radius: 18px;
+      padding: 0.8rem 1.2rem;
+      margin-bottom: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-left: 4px solid transparent;
+      transition: 0.2s;
+    }
+    .menu-item-card:hover {
+      border-left-color: var(--amber);
+      transform: translateX(6px);
+    }
+    .item-name {
+      font-weight: 500;
+    }
+    .price {
+      font-size: 1.35rem;
+      color: var(--amber);
+    }
+    /* gallery */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    .gallery-placeholder {
+      background: #2B1500;
+      border-radius: 20px;
+      aspect-ratio: 1/1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: 0.2s;
+      border: 1px solid #5a3a1a;
+      cursor: pointer;
+    }
+    .gallery-placeholder:hover {
+      transform: scale(1.02);
+      border-color: var(--amber);
+    }
+    /* feature blocks */
+    .features-grid {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 2rem;
+    }
+    .feature {
+      background: rgba(43,21,0,0.7);
+      backdrop-filter: blur(5px);
+      padding: 2rem;
+      border-radius: 28px;
+      width: 280px;
+      text-align: center;
+    }
+    .feature i { font-size: 2.4rem; color: var(--amber); margin-bottom: 1rem; display: block; }
+    /* contact form & info */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+    .dark-form input, .dark-form select, .dark-form textarea {
+      width: 100%;
+      padding: 1rem;
+      margin: 0.8rem 0;
+      background: #1f1004;
+      border: 1px solid #5a3a1a;
+      color: var(--text-light);
+      border-radius: 20px;
+      font-family: 'DM Sans';
+    }
+    .dark-form button {
+      background: var(--amber);
+      border: none;
+      width: 100%;
+      padding: 0.9rem;
+      border-radius: 40px;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    .contact-cards p {
+      margin: 1rem 0;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .contact-cards a {
+      color: var(--amber);
+      text-decoration: none;
+    }
+    iframe {
+      border-radius: 20px;
+      margin-top: 1.2rem;
+    }
+    /* footer */
+    .footer {
+      background: #0e0600;
+      text-align: center;
+      padding: 2rem;
+      border-top: 1px solid #35200c;
+    }
+    .footer-icons a {
+      color: var(--amber);
+      margin: 0 0.6rem;
+      font-size: 1.4rem;
+      transition: 0.2s;
+    }
+    /* floating WhatsApp */
+    .whatsapp-float {
+      position: fixed;
+      bottom: 22px;
+      right: 22px;
+      background: #25D366;
+      width: 55px;
+      height: 55px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      color: white;
+      z-index: 99;
+      box-shadow: 0 0 0 0 rgba(200,134,10,0.7);
+      animation: pulse-ring 1.8s infinite;
+    }
+    @keyframes pulse-ring { 0% { box-shadow: 0 0 0 0 rgba(200,134,10,0.6); } 70% { box-shadow: 0 0 0 12px rgba(200,134,10,0); } 100% { box-shadow: 0 0 0 0 rgba(200,134,10,0); } }
+    /* scroll reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: 0.8s ease;
+    }
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    @media (max-width: 780px) {
+      .contact-grid { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 2.4rem; }
+      .section { padding: 3rem 1.2rem; }
+    }
+  </style>
 </head>
 <body>
-    <div class="bg-blur"></div>
-    <div class="overlay"></div>
 
-    <div class="content">
-        <div class="top-bar">
-            <div class="logo"><h1>BEAN<span>CHARGE</span></h1><p>Mobile Coffee Artisans</p></div>
-            <div class="nav-links">
-                <a href="#menu">Menu</a><a href="#gallery">Gallery</a><a href="#contact">Contact</a>
-            </div>
-        </div>
-
-        <div class="hero">
-            <h2>Your daily boost, wherever you are</h2>
-            <p>Premium coffee service in Soweto & Gauteng</p>
-            <a href="#menu" class="btn">Explore Menu <i class="fas fa-arrow-down"></i></a>
-        </div>
-
-        <div id="menu" class="section-card">
-            <h2 class="section-title">☕ Our Menu</h2>
-            <div class="menu-grid">
-                <div class="menu-card"><h3>Espresso Classics</h3><div class="menu-item"><span>Americano</span><span>R17 / R20</span></div><div class="menu-item"><span>Espresso</span><span>R15</span></div><div class="menu-item"><span>Double Espresso</span><span>R20</span></div></div>
-                <div class="menu-card"><h3>Milk Specialties</h3><div class="menu-item"><span>Cappuccino</span><span>R17 / R27</span></div><div class="menu-item"><span>Latte</span><span>R17 / R27</span></div><div class="menu-item"><span>Flat White</span><span>R17 / R27</span></div></div>
-                <div class="menu-card"><h3>Flavoured</h3><div class="menu-item"><span>Mocha</span><span>R20 / R30</span></div><div class="menu-item"><span>Vanilla Coffee</span><span>R15 / R30</span></div><div class="menu-item"><span>Vanilla & Choco</span><span>R17 / R30</span></div></div>
-                <div class="menu-card"><h3>Tea & More</h3><div class="menu-item"><span>Hot Chocolate</span><span>R15 / R30</span></div><div class="menu-item"><span>Chai Tea</span><span>R30</span></div><div class="menu-item"><span>Tea (w/ milk)</span><span>R15 / R18</span></div></div>
-            </div>
-        </div>
-
-        <div id="gallery" class="section-card">
-            <h2 class="section-title">📸 Moments at Work</h2>
-            <div class="gallery-grid">
-                <div class="gallery-item">📷 Add photo</div><div class="gallery-item">📷 Add photo</div>
-                <div class="gallery-item">📷 Add photo</div><div class="gallery-item">📷 Add photo</div>
-                <div class="gallery-item">📷 Add photo</div><div class="gallery-item">📷 Add photo</div>
-            </div>
-            <p style="text-align:center; margin-top:1rem;">👉 Replace with your own coffee service images</p>
-        </div>
-
-        <div id="contact" class="section-card">
-            <h2 class="section-title">📬 Book Your Event</h2>
-            <div class="contact-wrapper">
-                <div class="contact-form">
-                    <form action="https://formspree.io/f/xeqygqjg" method="POST">
-                        <input type="text" name="name" placeholder="Full name" required>
-                        <input type="tel" name="phone" placeholder="Phone" required>
-                        <input type="email" name="email" placeholder="Email">
-                        <textarea name="message" rows="3" placeholder="Event date, location, guests..."></textarea>
-                        <button type="submit">Send Enquiry <i class="fas fa-paper-plane"></i></button>
-                    </form>
-                </div>
-                <div class="contact-info">
-                    <p><i class="fas fa-phone-alt"></i> <a href="tel:+27693412372">069 341 2372</a></p>
-                    <p><i class="fas fa-envelope"></i> <a href="mailto:karabotsontsi@gmail.com">karabotsontsi@gmail.com</a></p>
-                    <p><i class="fab fa-whatsapp"></i> <a href="https://wa.me/27693412372">WhatsApp chat</a></p>
-                    <p><i class="fas fa-map-marker-alt"></i> Soweto, Gauteng (mobile)</p>
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d114955.745275518!2d27.8315572!3d-26.2480879!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1e95a7c8f4b3f8b5%3A0x5c5a5a5a5a5a5a5a!2sSoweto%2C%20South%20Africa!5e0!3m2!1sen!2sza!4v1650000000000!5m2!1sen!2sza" width="100%" height="180" style="border:0; border-radius:20px;" allowfullscreen></iframe>
-                </div>
-            </div>
-        </div>
-
-        <footer>
-            <p>© 2025 BEAN CHARGE COFFEE | Crafted in Soweto ☕</p>
-        </footer>
+<nav class="sticky-nav" id="navbar">
+  <div class="nav-container">
+    <div class="logo">
+      <a href="#" style="text-decoration:none">
+        <div class="logo-text">BEAN <span>CHARGE</span></div>
+        <div class="tagline-nav">Mobile Coffee Artisans · Soweto Since 2019</div>
+      </a>
     </div>
+    <div class="hamburger" id="hamburger">
+      <span></span><span></span><span></span>
+    </div>
+    <div class="nav-links" id="navLinks">
+      <a href="#home">Home</a>
+      <a href="#menu">Menu</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#booking">Book Event</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+</nav>
 
-    <a href="https://wa.me/27693412372" class="whatsapp-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
+<main>
+  <!-- Hero Section -->
+  <section id="home" class="hero">
+    <div class="hero-content">
+      <div class="floating-logo">
+        <svg class="coffee-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><path d="M6 1v3M10 1v3M14 1v3"/></svg>
+        <h1>BEAN CHARGE</h1>
+      </div>
+      <div class="stagger-text" id="staggerText">Mobile Coffee Artisans · Soweto Since 2019</div>
+      <div class="cta-group">
+        <a href="#menu" class="cta-btn cta-btn-primary">☕ View Menu</a>
+        <a href="#booking" class="cta-btn">📅 Book Your Event</a>
+      </div>
+    </div>
+    <div class="steam"><div></div><div></div><div></div></div>
+    <div class="scroll-indicator" id="scrollArrow">↓</div>
+  </section>
 
-    <!-- Optional: replace gallery placeholders with actual images later -->
-    <script>
-        // When you have real images, uncomment and change the URLs
-        // const images = ["photo1.jpg", "photo2.jpg", ...];
-        // document.querySelectorAll('.gallery-item').forEach((el,i) => {
-        //     if(images[i]) { el.style.backgroundImage = `url(${images[i]})`; el.innerHTML = ""; }
-        // });
-    </script>
+  <!-- About strip -->
+  <div class="about-strip reveal">
+    <div class="stat-card"><div class="stat-number">6 Years</div><div>Mobile Coffee Experience</div></div>
+    <div class="gold-divider"></div>
+    <div class="stat-card"><div class="stat-number">500+</div><div>Events Catered</div></div>
+    <div class="gold-divider"></div>
+    <div class="stat-card"><div class="stat-number">Soweto</div><div>Born & Based Here</div></div>
+  </div>
+
+  <!-- Menu Section -->
+  <section id="menu" class="section reveal">
+    <h2 class="section-title">THE CRAFT</h2>
+    <div class="menu-tabs" id="menuTabs">
+      <button class="category-tab active" data-category="espresso">Espresso Classics</button>
+      <button class="category-tab" data-category="milk">Milk Specialties</button>
+      <button class="category-tab" data-category="flavoured">Flavoured</button>
+      <button class="category-tab" data-category="tea">Tea & More</button>
+    </div>
+    <!-- Panes -->
+    <div id="espresso" class="menu-pane active-pane">
+      <div class="menu-item-card"><span class="item-name">Americano</span><span class="price">R17 / R20</span></div>
+      <div class="menu-item-card"><span class="item-name">Espresso</span><span class="price">R15</span></div>
+      <div class="menu-item-card"><span class="item-name">Double Espresso</span><span class="price">R20</span></div>
+    </div>
+    <div id="milk" class="menu-pane">
+      <div class="menu-item-card"><span class="item-name">Cappuccino</span><span class="price">R17 / R27</span></div>
+      <div class="menu-item-card"><span class="item-name">Latte</span><span class="price">R17 / R27</span></div>
+      <div class="menu-item-card"><span class="item-name">Flat White</span><span class="price">R17 / R27</span></div>
+    </div>
+    <div id="flavoured" class="menu-pane">
+      <div class="menu-item-card"><span class="item-name">Mocha</span><span class="price">R20 / R30</span></div>
+      <div class="menu-item-card"><span class="item-name">Vanilla Coffee</span><span class="price">R15 / R30</span></div>
+      <div class="menu-item-card"><span class="item-name">Vanilla & Choco</span><span class="price">R17 / R30</span></div>
+    </div>
+    <div id="tea" class="menu-pane">
+      <div class="menu-item-card"><span class="item-name">Hot Chocolate</span><span class="price">R15 / R30</span></div>
+      <div class="menu-item-card"><span class="item-name">Chai Tea</span><span class="price">R30</span></div>
+      <div class="menu-item-card"><span class="item-name">Tea (w/ milk)</span><span class="price">R15 / R18</span></div>
+    </div>
+  </section>
+
+  <!-- Gallery -->
+  <section id="gallery" class="section reveal">
+    <h2 class="section-title">MOMENTS AT WORK</h2>
+    <div class="gallery-grid">
+      <div class="gallery-placeholder"><svg width="40" viewBox="0 0 24 24" fill="none" stroke="gold"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg><span>Your photo here</span></div>
+      <div class="gallery-placeholder"><svg width="40" viewBox="0 0 24 24" fill="none" stroke="gold"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg><span>Your photo here</span></div>
+      <div class="gallery-placeholder"><svg width="40" viewBox="0 0 24 24" fill="none" stroke="gold"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg><span>Your photo here</span></div>
+      <div class="gallery-placeholder"><svg width="40" viewBox="0 0 24 24" fill="none" stroke="gold"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg><span>Your photo here</span></div>
+      <div class="gallery-placeholder"><svg width="40" viewBox="0 0 24 24" fill="none" stroke="gold"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg><span>Your photo here</span></div>
+      <div class="gallery-placeholder"><svg width="40" viewBox="0 0 24 24" fill="none" stroke="gold"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg><span>Your photo here</span></div>
+    </div>
+    <p style="text-align:center; margin-top:1rem; font-size:0.85rem;">✨ Replace these placeholder cards with your actual service photos.</p>
+  </section>
+
+  <!-- Why Bean Charge -->
+  <section class="section reveal">
+    <h2 class="section-title">WHY BEAN CHARGE</h2>
+    <div class="features-grid">
+      <div class="feature"><i>🚐</i><h3>We Come To You</h3><p>Event setup, anywhere in Gauteng — mobile bar to your doorstep.</p></div>
+      <div class="feature"><i>☕</i><h3>Specialty Grade Coffee</h3><p>Freshly pulled shots, ethically sourced beans, every time.</p></div>
+      <div class="feature"><i>❤️</i><h3>Born in Soweto</h3><p>Community rooted, 6 years running — local pride in every cup.</p></div>
+    </div>
+  </section>
+
+  <!-- Booking / Contact -->
+  <section id="booking" class="section reveal">
+    <h2 class="section-title">BOOK YOUR EVENT</h2>
+    <div class="contact-grid">
+      <div class="dark-form" id="eventForm">
+        <input type="text" id="name" placeholder="Full Name" required>
+        <input type="email" id="email" placeholder="Email Address">
+        <input type="date" id="eventDate">
+        <select id="eventType"><option>Corporate Event</option><option>Wedding</option><option>Private Party</option><option>Market / Festival</option></select>
+        <textarea id="message" rows="2" placeholder="Tell us more..."></textarea>
+        <button id="sendBookingBtn">Send enquiry →</button>
+      </div>
+      <div class="contact-cards" id="contact">
+        <p>📞 <a href="tel:+27693412372">069 341 2372</a></p>
+        <p>✉️ <a href="mailto:karabotsontsi@gmail.com">karabotsontsi@gmail.com</a></p>
+        <p>📍 Soweto, Gauteng (mobile service – we travel to you)</p>
+        <iframe width="100%" height="200" style="border:0; border-radius:18px" loading="lazy" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d114955.745275518!2d27.8315572!3d-26.2480879!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1e95a7c8f4b3f8b5%3A0x5c5a5a5a5a5a5a5a!2sSoweto%2C%20South%20Africa!5e0!3m2!1sen!2sza!4v1650000000000!5m2!1sen!2sza"></iframe>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="logo-text" style="font-size:1.3rem;">BEAN <span>CHARGE</span> COFFEE</div>
+  <div class="footer-icons">
+    <a href="https://wa.me/27693412372" target="_blank"><i class="fab fa-whatsapp"></i></a>
+    <a href="mailto:karabotsontsi@gmail.com"><i class="fas fa-envelope"></i></a>
+  </div>
+  <p>Crafted in Soweto ☕ · Est. 2019</p>
+  <p>© 2025 Bean Charge Coffee</p>
+</footer>
+
+<a href="https://wa.me/27693412372?text=Hello%20Bean%20Charge!%20I'd%20like%20to%20book%20your%20mobile%20coffee%20bar." class="whatsapp-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
+
+<!-- Font awesome icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+<script>
+  // Staggered text animation
+  const textSpan = document.getElementById('staggerText');
+  const textArr = textSpan.innerText.split('');
+  textSpan.innerHTML = '';
+  textArr.forEach((ch, i) => {
+    const span = document.createElement('span');
+    span.innerText = ch === ' ' ? '\u00A0' : ch;
+    span.style.animationDelay = `${i * 0.03}s`;
+    textSpan.appendChild(span);
+  });
+
+  // Menu tab switching
+  const tabs = document.querySelectorAll('.category-tab');
+  const panes = document.querySelectorAll('.menu-pane');
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const category = tab.dataset.category;
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      panes.forEach(pane => pane.classList.remove('active-pane'));
+      document.getElementById(category).classList.add('active-pane');
+    });
+  });
+
+  // Sticky nav active scroll + hamburger
+  const sections = document.querySelectorAll('section[id], div[id="booking"]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    const scrollPos = window.scrollY + 150;
+    sections.forEach(section => {
+      const sectionTop = section.offsetTop;
+      if (scrollPos >= sectionTop) current = section.getAttribute('id');
+    });
+    navLinks.forEach(link => {
+      link.classList.remove('active');
+      if (link.getAttribute('href') === `#${current}`) link.classList.add('active');
+    });
+    const navbar = document.getElementById('navbar');
+    if(window.scrollY > 50) navbar.style.backgroundColor = 'rgba(26, 10, 0, 0.95)';
+    else navbar.style.backgroundColor = 'rgba(26, 10, 0, 0.7)';
+  });
+
+  // Hamburger
+  const hamburger = document.getElementById('hamburger');
+  const navMenu = document.getElementById('navLinks');
+  hamburger.addEventListener('click', () => {
+    navMenu.classList.toggle('open');
+  });
+  document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', () => navMenu.classList.remove('open'));
+  });
+
+  // scroll reveal intersection observer
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add('active'); });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+
+  // WhatsApp booking prepopulate
+  document.getElementById('sendBookingBtn').addEventListener('click', (e) => {
+    e.preventDefault();
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const eventDate = document.getElementById('eventDate').value;
+    const eventType = document.getElementById('eventType').value;
+    const msg = document.getElementById('message').value;
+    const whatsappMsg = `Hello Bean Charge! I'd like to book an event.%0A%0AName: ${name}%0AEmail: ${email}%0ADate: ${eventDate}%0AType: ${eventType}%0AMessage: ${msg}`;
+    window.open(`https://wa.me/27693412372?text=${whatsappMsg}`, '_blank');
+  });
+
+  // Smooth scroll for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      e.preventDefault();
+      const targetId = this.getAttribute('href').substring(1);
+      const target = document.getElementById(targetId);
+      if(target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+  // scroll arrow click
+  document.getElementById('scrollArrow')?.addEventListener('click', () => {
+    document.getElementById('menu')?.scrollIntoView({ behavior: 'smooth' });
+  });
+</script>
 </body>
 </html>
