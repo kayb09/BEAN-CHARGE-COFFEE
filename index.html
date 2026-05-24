@@ -3,144 +3,56 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>BEAN CHARGE | 3D Coffee Experience · Soweto</title>
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700;900&family=DM+Sans:wght@400;500;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+  <title>BEAN CHARGE | Premium Mobile Coffee · Soweto</title>
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&family=Playfair+Display:wght@500;700;900&display=swap" rel="stylesheet">
   <style>
-    /* ------------------------------
-       CSS RESET + VARIABLES
-    ------------------------------ */
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
 
-    :root {
-      --espresso: #1A0A00;
-      --amber: #C8860A;
-      --cream: #F5E6C8;
-      --roast: #2B1500;
-      --text-light: #FAF3E0;
-      --glass: rgba(26, 10, 0, 0.85);
-      --transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-    }
-
     body {
-      background: var(--espresso);
-      color: var(--text-light);
-      font-family: 'DM Sans', sans-serif;
+      font-family: 'Inter', sans-serif;
+      background: #FEFAF5;  /* warm cream */
+      color: #2C2418;
       overflow-x: hidden;
     }
 
-    h1, h2, h3, .logo, .section-title {
-      font-family: 'Playfair Display', serif;
-    }
-
-    /* ----- 3D canvas background layer ----- */
-    #canvas-container {
+    /* 3D canvas container (fixed, but light background behind) */
+    #canvas-bg {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      z-index: -1;
+      z-index: 0;
       pointer-events: none;
     }
 
-    /* ----- UI content (above canvas) ----- */
+    /* content sits above canvas */
     .content {
       position: relative;
       z-index: 10;
-      background: rgba(26, 10, 0, 0.75);
-      backdrop-filter: blur(6px);
+      background: rgba(254, 250, 245, 0.92);
+      backdrop-filter: blur(2px);
     }
 
-    /* Sticky nav */
-    .sticky-nav {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: rgba(26, 10, 0, 0.85);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(200, 134, 10, 0.3);
-    }
-    .nav-container {
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 1rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-    .logo a {
-      text-decoration: none;
-      display: flex;
-      align-items: baseline;
-      gap: 6px;
-    }
-    .logo-text {
-      font-size: 1.6rem;
-      font-weight: 900;
-      color: var(--cream);
-    }
-    .logo-text span {
-      color: var(--amber);
-    }
-    .nav-links {
-      display: flex;
-      gap: 2rem;
-    }
-    .nav-links a {
-      color: var(--text-light);
-      text-decoration: none;
-      font-weight: 500;
-      transition: var(--transition);
-    }
-    .nav-links a:hover {
-      color: var(--amber);
-    }
-    .hamburger {
-      display: none;
-      flex-direction: column;
-      cursor: pointer;
-      gap: 5px;
-    }
-    .hamburger span {
-      width: 28px;
-      height: 2px;
-      background: var(--cream);
-    }
-    @media (max-width: 768px) {
-      .nav-links {
-        position: fixed;
-        top: 70px;
-        right: -100%;
-        width: 70%;
-        height: 100vh;
-        background: var(--roast);
-        backdrop-filter: blur(20px);
-        flex-direction: column;
-        padding: 2rem;
-        transition: 0.3s;
-      }
-      .nav-links.open {
-        right: 0;
-      }
-      .hamburger {
-        display: flex;
-      }
+    /* typography */
+    h1, h2, h3, .logo {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
     }
 
-    /* sections */
     .section {
-      padding: 5rem 2rem;
       max-width: 1280px;
       margin: 0 auto;
+      padding: 5rem 2rem;
     }
+
     .section-title {
-      font-size: 2.5rem;
+      font-size: 2.2rem;
       margin-bottom: 2rem;
       position: relative;
       display: inline-block;
@@ -150,161 +62,259 @@
       position: absolute;
       bottom: -8px;
       left: 0;
-      width: 70px;
+      width: 60px;
       height: 3px;
-      background: var(--amber);
+      background: #C8860A;
     }
 
-    /* Hero (overlay text) */
-    .hero-overlay {
-      text-align: center;
-      padding: 8rem 2rem;
+    /* nav */
+    .sticky-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(254, 250, 245, 0.96);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 1px 0 rgba(0,0,0,0.05);
     }
-    .hero-overlay h1 {
+    .nav-container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo {
+      font-size: 1.6rem;
+      letter-spacing: -0.5px;
+    }
+    .logo span {
+      color: #C8860A;
+    }
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+    }
+    .nav-links a {
+      text-decoration: none;
+      font-weight: 500;
+      color: #2C2418;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover {
+      color: #C8860A;
+    }
+    .btn-gold {
+      background: #C8860A;
+      color: white;
+      padding: 0.7rem 1.8rem;
+      border-radius: 40px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: 0.2s;
+      display: inline-block;
+    }
+    .btn-gold:hover {
+      background: #a56e08;
+      transform: translateY(-2px);
+    }
+    .btn-outline {
+      border: 2px solid #C8860A;
+      background: transparent;
+      color: #2C2418;
+      padding: 0.7rem 1.8rem;
+      border-radius: 40px;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+    }
+    .hamburger span {
+      width: 26px;
+      height: 2px;
+      background: #2C2418;
+    }
+    @media (max-width: 780px) {
+      .nav-links {
+        position: fixed;
+        top: 70px;
+        right: -100%;
+        width: 70%;
+        height: 100vh;
+        background: #FEFAF5;
+        flex-direction: column;
+        padding: 2rem;
+        transition: 0.3s;
+        box-shadow: -5px 0 20px rgba(0,0,0,0.05);
+      }
+      .nav-links.open {
+        right: 0;
+      }
+      .hamburger {
+        display: flex;
+      }
+    }
+
+    /* hero */
+    .hero {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 3rem;
+      flex-wrap: wrap;
+      min-height: 90vh;
+      padding: 4rem 2rem;
+    }
+    .hero-text {
+      flex: 1;
+    }
+    .hero-text h1 {
       font-size: 4rem;
-      background: linear-gradient(135deg, var(--cream) 30%, var(--amber) 90%);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
+      line-height: 1.05;
+      margin-bottom: 1rem;
     }
-    .hero-overlay p {
-      font-size: 1.2rem;
-      max-width: 600px;
-      margin: 1rem auto;
+    .hero-text h1 span {
+      color: #C8860A;
     }
-
-    /* about strip */
-    .about-strip {
-      background: var(--roast);
-      padding: 3rem 1.5rem;
+    .hero-text p {
+      font-size: 1.1rem;
+      color: #5A4A3A;
+      margin-bottom: 2rem;
+      max-width: 500px;
+    }
+    .hero-3d {
+      flex: 1;
+      height: 400px;
+      min-width: 300px;
+      position: relative;
+    }
+    /* stats band */
+    .stats-band {
+      background: white;
+      padding: 2rem;
       display: flex;
       justify-content: center;
-      gap: 2rem;
+      gap: 4rem;
       flex-wrap: wrap;
-      border-top: 1px solid rgba(200,134,10,0.4);
-      border-bottom: 1px solid rgba(200,134,10,0.4);
+      border-top: 1px solid #E8DDD0;
+      border-bottom: 1px solid #E8DDD0;
     }
-    .stat-card {
+    .stat {
       text-align: center;
-      min-width: 160px;
     }
     .stat-number {
-      font-size: 2.5rem;
-      color: var(--amber);
-      font-weight: bold;
-      font-family: 'Bebas Neue', cursive;
+      font-size: 2rem;
+      font-weight: 700;
+      color: #C8860A;
+      font-family: 'Playfair Display', serif;
     }
 
-    /* Menu */
+    /* menu */
     .menu-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 1.5rem;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 2rem;
       margin-top: 2rem;
     }
-    .menu-category {
-      background: rgba(43, 21, 0, 0.7);
-      backdrop-filter: blur(5px);
+    .menu-card {
+      background: white;
       border-radius: 24px;
       padding: 1.5rem;
-      border-left: 4px solid var(--amber);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.03);
+      transition: 0.2s;
+      border: 1px solid #F0E5D8;
     }
-    .menu-category h3 {
-      color: var(--amber);
+    .menu-card:hover {
+      transform: translateY(-4px);
+      border-color: #C8860A;
+    }
+    .menu-card h3 {
+      font-size: 1.4rem;
       margin-bottom: 1rem;
-      font-size: 1.5rem;
+      color: #2C2418;
     }
     .menu-item {
       display: flex;
       justify-content: space-between;
-      padding: 0.6rem 0;
-      border-bottom: 1px solid rgba(200,134,10,0.3);
+      padding: 0.5rem 0;
+      border-bottom: 1px dashed #E8DDD0;
     }
     .price {
-      font-family: 'Bebas Neue', cursive;
-      font-size: 1.2rem;
-      color: var(--amber);
+      font-weight: 700;
+      color: #C8860A;
     }
 
-    /* gallery placeholder (CSS-only) */
+    /* gallery placeholders */
     .gallery-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-      gap: 1rem;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
     }
-    .gallery-item {
-      background: linear-gradient(145deg, #3D2000, #2B1500);
+    .gallery-placeholder {
+      background: white;
       aspect-ratio: 1/1;
       border-radius: 20px;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 2rem;
+      border: 1px solid #E8DDD0;
       transition: 0.2s;
-      border: 1px solid rgba(200,134,10,0.2);
     }
-    .gallery-item:hover {
-      transform: scale(1.02);
-      border-color: var(--amber);
+    .gallery-placeholder:hover {
+      border-color: #C8860A;
     }
 
     /* features */
-    .features-grid {
+    .features {
       display: flex;
       gap: 2rem;
       flex-wrap: wrap;
       justify-content: center;
     }
     .feature {
-      background: rgba(43,21,0,0.7);
+      background: white;
       padding: 2rem;
       border-radius: 28px;
       width: 260px;
       text-align: center;
+      border: 1px solid #F0E5D8;
     }
 
-    /* booking form */
+    /* booking */
     .booking-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 2rem;
+      gap: 3rem;
     }
-    .dark-form input, .dark-form select, .dark-form textarea {
+    .form-group input, .form-group select, .form-group textarea {
       width: 100%;
       padding: 0.8rem;
       margin: 0.5rem 0;
-      background: #1f1004;
-      border: 1px solid #5a3a1a;
-      color: var(--text-light);
+      background: white;
+      border: 1px solid #E0D4C4;
       border-radius: 20px;
-    }
-    .dark-form button {
-      background: var(--amber);
-      border: none;
-      width: 100%;
-      padding: 0.9rem;
-      border-radius: 40px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    .contact-cards {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
+      font-family: 'Inter', sans-serif;
     }
     .contact-card {
-      background: rgba(43,21,0,0.7);
+      background: white;
       padding: 1rem;
       border-radius: 20px;
       display: flex;
       align-items: center;
       gap: 1rem;
+      margin-bottom: 1rem;
     }
     footer {
-      background: #0e0600;
       text-align: center;
       padding: 2rem;
-      border-top: 1px solid #35200c;
+      background: #2C2418;
+      color: #FEFAF5;
     }
     .wa-float {
       position: fixed;
@@ -318,102 +328,118 @@
       align-items: center;
       justify-content: center;
       z-index: 99;
-      animation: pulse 1.8s infinite;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     }
-    @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(200,134,10,0.6); } 70% { box-shadow: 0 0 0 12px rgba(200,134,10,0); } 100% { box-shadow: 0 0 0 0 rgba(200,134,10,0); } }
-    @media (max-width: 760px) { .booking-grid { grid-template-columns: 1fr; } .hero-overlay h1 { font-size: 2.5rem; } }
+    @media (max-width: 780px) {
+      .booking-grid {
+        grid-template-columns: 1fr;
+      }
+      .hero {
+        flex-direction: column;
+        text-align: center;
+      }
+      .hero-text p {
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
   </style>
 </head>
 <body>
 
-<!-- 3D canvas container -->
-<div id="canvas-container"></div>
+<div id="canvas-bg"></div>
 
-<!-- UI content -->
 <div class="content">
   <div class="sticky-nav">
     <div class="nav-container">
-      <div class="logo"><a href="#"><div class="logo-text">BEAN <span>CHARGE</span></div></a></div>
+      <div class="logo">BEAN <span>CHARGE</span></div>
       <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
       <div class="nav-links" id="navLinks">
         <a href="#menu">Menu</a>
-        <a href="#about">About</a>
-        <a href="#gallery">Gallery</a>
+        <a href="#about">Story</a>
+        <a href="#gallery">Moments</a>
         <a href="#booking">Book</a>
       </div>
     </div>
   </div>
 
-  <section class="hero-overlay">
-    <h1>BEAN CHARGE</h1>
-    <p>Mobile Coffee Artisans · Soweto Since 2019</p>
-    <div style="margin-top: 1.5rem;"><a href="#booking" class="btn-gold" style="background: var(--amber); padding: 0.8rem 2rem; border-radius: 40px; text-decoration: none; color: var(--espresso); font-weight: bold;">Book Your Event</a></div>
+  <section class="hero">
+    <div class="hero-text">
+      <h1>Premium coffee<br>wherever you are<span>.</span></h1>
+      <p>Specialty‑grade espresso, served at your event. Born in Soweto, crafted for Gauteng.</p>
+      <a href="#booking" class="btn-gold">Book your event →</a>
+    </div>
+    <div class="hero-3d" id="hero-3d"></div>
   </section>
 
-  <div class="about-strip">
-    <div class="stat-card"><div class="stat-number">6 Years</div><div>Mobile Coffee</div></div>
-    <div class="stat-card"><div class="stat-number">500+</div><div>Events Catered</div></div>
-    <div class="stat-card"><div class="stat-number">Soweto</div><div>Born & Based</div></div>
+  <div class="stats-band">
+    <div class="stat"><div class="stat-number">6+ years</div><div>Mobile excellence</div></div>
+    <div class="stat"><div class="stat-number">500+ events</div><div>Across Gauteng</div></div>
+    <div class="stat"><div class="stat-number">Soweto</div><div>Proudly rooted</div></div>
   </div>
 
-  <!-- MENU SECTION – ALL PRICES R15 -->
+  <!-- MENU – all R15 -->
   <section id="menu" class="section">
-    <h2 class="section-title">Our Craft</h2>
+    <h2 class="section-title">Our craft</h2>
     <div class="menu-grid">
-      <div class="menu-category"><h3>Espresso Classics</h3><div class="menu-item"><span>Americano</span><span class="price">R15</span></div><div class="menu-item"><span>Espresso</span><span class="price">R15</span></div><div class="menu-item"><span>Double Espresso</span><span class="price">R15</span></div></div>
-      <div class="menu-category"><h3>Milk Specialties</h3><div class="menu-item"><span>Cappuccino</span><span class="price">R15</span></div><div class="menu-item"><span>Latte</span><span class="price">R15</span></div><div class="menu-item"><span>Flat White</span><span class="price">R15</span></div></div>
-      <div class="menu-category"><h3>Flavoured</h3><div class="menu-item"><span>Mocha</span><span class="price">R15</span></div><div class="menu-item"><span>Vanilla Coffee</span><span class="price">R15</span></div><div class="menu-item"><span>Vanilla & Choco</span><span class="price">R15</span></div></div>
-      <div class="menu-category"><h3>Tea & More</h3><div class="menu-item"><span>Hot Chocolate</span><span class="price">R15</span></div><div class="menu-item"><span>Chai Tea</span><span class="price">R15</span></div><div class="menu-item"><span>Tea with Milk</span><span class="price">R15</span></div></div>
+      <div class="menu-card"><h3>Espresso classics</h3><div class="menu-item"><span>Americano</span><span class="price">R15</span></div><div class="menu-item"><span>Espresso</span><span class="price">R15</span></div><div class="menu-item"><span>Double Espresso</span><span class="price">R15</span></div></div>
+      <div class="menu-card"><h3>Milk specialties</h3><div class="menu-item"><span>Cappuccino</span><span class="price">R15</span></div><div class="menu-item"><span>Latte</span><span class="price">R15</span></div><div class="menu-item"><span>Flat White</span><span class="price">R15</span></div></div>
+      <div class="menu-card"><h3>Flavoured</h3><div class="menu-item"><span>Mocha</span><span class="price">R15</span></div><div class="menu-item"><span>Vanilla Coffee</span><span class="price">R15</span></div><div class="menu-item"><span>Vanilla & Choco</span><span class="price">R15</span></div></div>
+      <div class="menu-card"><h3>Tea & more</h3><div class="menu-item"><span>Hot Chocolate</span><span class="price">R15</span></div><div class="menu-item"><span>Chai Tea</span><span class="price">R15</span></div><div class="menu-item"><span>Tea with milk</span><span class="price">R15</span></div></div>
     </div>
   </section>
 
-  <!-- Gallery placeholders (no real images) -->
+  <!-- Gallery (placeholders) -->
   <section id="gallery" class="section">
-    <h2 class="section-title">Moments at Work</h2>
+    <h2 class="section-title">Moments at work</h2>
     <div class="gallery-grid">
-      <div class="gallery-item">☕</div><div class="gallery-item">⚡</div><div class="gallery-item">🔥</div>
-      <div class="gallery-item">🚐</div><div class="gallery-item">❤️</div><div class="gallery-item">📍</div>
+      <div class="gallery-placeholder">☕</div>
+      <div class="gallery-placeholder">⚡</div>
+      <div class="gallery-placeholder">🚐</div>
+      <div class="gallery-placeholder">📍</div>
+      <div class="gallery-placeholder">❤️</div>
+      <div class="gallery-placeholder">✨</div>
     </div>
-    <p style="text-align:center; margin-top:1rem;">✨ Add your service photos later (replace these icons)</p>
+    <p style="text-align:center; margin-top:1.5rem; color:#5A4A3A;">Add your own service photos – these are placeholders.</p>
   </section>
 
   <!-- Why Bean Charge -->
   <section class="section">
-    <h2 class="section-title">Why Us</h2>
-    <div class="features-grid">
-      <div class="feature"><div style="font-size:2rem;">🚐</div><h3>We Come To You</h3><p>Any event in Gauteng, fully mobile.</p></div>
-      <div class="feature"><div style="font-size:2rem;">☕</div><h3>Specialty Grade</h3><p>Freshly pulled shots, every time.</p></div>
-      <div class="feature"><div style="font-size:2rem;">❤️</div><h3>Soweto Proud</h3><p>6 years community-rooted.</p></div>
+    <h2 class="section-title">Why us</h2>
+    <div class="features">
+      <div class="feature"><div style="font-size:2rem;">🚐</div><h3>We come to you</h3><p>Any event, anywhere in Gauteng. Full setup.</p></div>
+      <div class="feature"><div style="font-size:2rem;">☕</div><h3>Specialty grade</h3><p>Freshly pulled shots, Brasilia machine.</p></div>
+      <div class="feature"><div style="font-size:2rem;">❤️</div><h3>Soweto proud</h3><p>Six years serving our community.</p></div>
     </div>
   </section>
 
   <!-- Booking -->
   <section id="booking" class="section">
-    <h2 class="section-title">Book Your Event</h2>
+    <h2 class="section-title">Book your event</h2>
     <div class="booking-grid">
-      <div class="dark-form">
-        <input type="text" id="name" placeholder="Full Name" required>
+      <div class="form-group">
+        <input type="text" id="name" placeholder="Full name">
         <input type="email" id="email" placeholder="Email">
         <input type="date" id="eventDate">
         <select id="eventType">
-          <option>Corporate Event</option><option>Wedding</option><option>Private Party</option><option>Market / Festival</option>
+          <option>Corporate event</option><option>Wedding</option><option>Private party</option><option>Market / festival</option>
         </select>
-        <textarea id="message" rows="2" placeholder="Event details..."></textarea>
-        <button id="sendBookingBtn">Send enquiry via WhatsApp</button>
+        <textarea id="message" rows="3" placeholder="Tell us about your event..."></textarea>
+        <button id="sendBookingBtn" class="btn-gold" style="width:100%; margin-top:0.5rem;">Send enquiry via WhatsApp</button>
       </div>
-      <div class="contact-cards">
-        <div class="contact-card">📞 <a href="tel:+27693412372" style="color:var(--amber);">069 341 2372</a></div>
-        <div class="contact-card">✉️ <a href="mailto:karabotsontsi@gmail.com" style="color:var(--amber);">karabotsontsi@gmail.com</a></div>
-        <div class="contact-card">📍 Soweto, Gauteng · Mobile Service</div>
-        <div style="border-radius:20px; overflow:hidden; margin-top:0.5rem;">
-          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d114955.745275518!2d27.8315572!3d-26.2480879!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1e95a7c8f4b3f8b5%3A0x5c5a5a5a5a5a5a5a!2sSoweto%2C%20South%20Africa!4v1650000000000" width="100%" height="180" style="border:0;" allowfullscreen></iframe>
+      <div>
+        <div class="contact-card">📞 <a href="tel:+27693412372" style="color:#C8860A;">069 341 2372</a></div>
+        <div class="contact-card">✉️ <a href="mailto:karabotsontsi@gmail.com" style="color:#C8860A;">karabotsontsi@gmail.com</a></div>
+        <div class="contact-card">📍 Soweto, Gauteng · Mobile service</div>
+        <div style="border-radius:20px; overflow:hidden; margin-top:1rem;">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d114955.745275518!2d27.8315572!3d-26.2480879!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1e95a7c8f4b3f8b5%3A0x5c5a5a5a5a5a5a5a!2sSoweto%2C%20South%20Africa!5e0!3m2!1sen!2sza!4v1650000000000" width="100%" height="200" style="border:0;" allowfullscreen></iframe>
         </div>
       </div>
     </div>
   </section>
 
   <footer>
-    <p>© 2025 BEAN CHARGE COFFEE · Crafted in Soweto ☕</p>
+    <p>© 2025 BEAN CHARGE COFFEE · Soweto, South Africa</p>
   </footer>
 </div>
 
@@ -421,136 +447,122 @@
   <svg width="28" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
 </a>
 
-<!-- Three.js script -->
+<!-- Three.js for subtle 3D bean in hero -->
 <script type="importmap">
   { "imports": { "three": "https://unpkg.com/three@0.128.0/build/three.module.js" } }
 </script>
 <script type="module">
   import * as THREE from 'three';
 
-  // Setup scene, camera, renderer
-  const container = document.getElementById('canvas-container');
+  const container = document.getElementById('hero-3d');
   const scene = new THREE.Scene();
-  scene.background = new THREE.Color(0x1A0A00);
-  scene.fog = new THREE.FogExp2(0x1A0A00, 0.012);
+  scene.background = null; // transparent
+  const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
+  camera.position.set(0, 0.5, 3.2);
+  camera.lookAt(0, 0.2, 0);
 
-  const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-  camera.position.set(0, 1.5, 4);
-  camera.lookAt(0, 0.8, 0);
-
-  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.shadowMap.enabled = true;
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  renderer.setSize(container.clientWidth, container.clientHeight);
+  renderer.setClearColor(0x000000, 0);
   container.appendChild(renderer.domElement);
 
-  // Lights
-  const ambientLight = new THREE.AmbientLight(0x404040);
-  scene.add(ambientLight);
-  const mainLight = new THREE.DirectionalLight(0xffeedd, 1);
-  mainLight.position.set(3, 5, 2);
-  mainLight.castShadow = true;
+  // lights
+  const ambient = new THREE.AmbientLight(0xffffff, 0.5);
+  scene.add(ambient);
+  const mainLight = new THREE.DirectionalLight(0xfff0e0, 1);
+  mainLight.position.set(2, 3, 2);
   scene.add(mainLight);
-  const fillLight = new THREE.PointLight(0xc8860a, 0.5);
-  fillLight.position.set(1, 1, 2);
+  const fillLight = new THREE.PointLight(0xc8860a, 0.4);
+  fillLight.position.set(1, 1, 1.5);
   scene.add(fillLight);
-  const backLight = new THREE.PointLight(0x8b5a2b, 0.4);
-  backLight.position.set(-1, 1.5, -2);
+  const backLight = new THREE.PointLight(0x8b5a2b, 0.3);
+  backLight.position.set(-1, 1, -1.5);
   scene.add(backLight);
 
-  // Create a procedural coffee bean using torus knot + spheres for realism
+  // Create a high-quality coffee bean
   const beanGroup = new THREE.Group();
-  // Main body
-  const bodyGeo = new THREE.SphereGeometry(0.45, 32, 32);
-  const bodyMat = new THREE.MeshStandardMaterial({ color: 0x5D3A1A, roughness: 0.3, metalness: 0.1 });
+
+  // Main body (squashed sphere)
+  const bodyGeo = new THREE.SphereGeometry(0.5, 64, 64);
+  const bodyMat = new THREE.MeshStandardMaterial({ color: 0x6f4e37, roughness: 0.25, metalness: 0.08 });
   const body = new THREE.Mesh(bodyGeo, bodyMat);
-  body.scale.set(1.2, 0.8, 0.7);
+  body.scale.set(1.3, 0.85, 0.8);
   beanGroup.add(body);
-  // Crease (cylinder)
-  const creaseGeo = new THREE.CylinderGeometry(0.2, 0.2, 0.8, 16);
-  const creaseMat = new THREE.MeshStandardMaterial({ color: 0x3E2723 });
+
+  // Crease (cylinder along the bean)
+  const creaseGeo = new THREE.CylinderGeometry(0.22, 0.22, 1.1, 24);
+  const creaseMat = new THREE.MeshStandardMaterial({ color: 0x4a2e22, roughness: 0.6 });
   const crease = new THREE.Mesh(creaseGeo, creaseMat);
   crease.rotation.z = Math.PI / 2;
   crease.position.y = 0.05;
   beanGroup.add(crease);
-  // Small highlight
-  const highlight = new THREE.Mesh(new THREE.SphereGeometry(0.08, 16, 16), new THREE.MeshStandardMaterial({ color: 0xC8860A, emissive: 0x442200 }));
-  highlight.position.set(0.35, 0.25, 0.4);
+
+  // Subtle highlight / rim
+  const highlightMat = new THREE.MeshStandardMaterial({ color: 0xc8860a, emissive: 0x442200 });
+  const highlight = new THREE.Mesh(new THREE.SphereGeometry(0.1, 24, 24), highlightMat);
+  highlight.position.set(0.45, 0.2, 0.5);
   beanGroup.add(highlight);
-  beanGroup.position.y = 0.2;
+
+  beanGroup.position.y = 0.1;
   scene.add(beanGroup);
 
-  // Add a simple floating coffee cup next to it
-  const cupGroup = new THREE.Group();
-  const cupBody = new THREE.Mesh(new THREE.CylinderGeometry(0.45, 0.3, 0.5, 32), new THREE.MeshStandardMaterial({ color: 0xF5E6C8, roughness: 0.2 }));
-  cupBody.castShadow = true;
-  cupGroup.add(cupBody);
-  const handle = new THREE.Mesh(new THREE.TorusGeometry(0.15, 0.05, 16, 32, Math.PI), new THREE.MeshStandardMaterial({ color: 0xF5E6C8 }));
-  handle.rotation.z = Math.PI / 2;
-  handle.position.set(0.55, 0.05, 0);
-  cupGroup.add(handle);
-  const coffeeLiquid = new THREE.Mesh(new THREE.CylinderGeometry(0.38, 0.38, 0.08, 32), new THREE.MeshStandardMaterial({ color: 0x3E2723, emissive: 0x1A0A00 }));
-  coffeeLiquid.position.y = 0.22;
-  cupGroup.add(coffeeLiquid);
-  cupGroup.position.set(1.2, -0.1, 0.6);
-  cupGroup.rotation.y = -0.5;
-  scene.add(cupGroup);
-
-  // Floating particles (steam effect)
-  const particleCount = 400;
+  // Floating particles (steam / aroma)
+  const particleCount = 300;
   const particleGeo = new THREE.BufferGeometry();
   const particlePositions = new Float32Array(particleCount * 3);
   for (let i = 0; i < particleCount; i++) {
-    particlePositions[i*3] = (Math.random() - 0.5) * 5;
-    particlePositions[i*3+1] = Math.random() * 2.5;
-    particlePositions[i*3+2] = (Math.random() - 0.5) * 4 - 1;
+    particlePositions[i*3] = (Math.random() - 0.5) * 2.5;
+    particlePositions[i*3+1] = Math.random() * 1.8;
+    particlePositions[i*3+2] = (Math.random() - 0.5) * 2.2;
   }
   particleGeo.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
-  const particleMat = new THREE.PointsMaterial({ color: 0xC8860A, size: 0.02, transparent: true, opacity: 0.4 });
+  const particleMat = new THREE.PointsMaterial({ color: 0xc8860a, size: 0.012, transparent: true, opacity: 0.3 });
   const particles = new THREE.Points(particleGeo, particleMat);
   scene.add(particles);
 
-  // Simple ground reflection disc
-  const groundDisc = new THREE.Mesh(new THREE.CircleGeometry(2.5, 16), new THREE.MeshStandardMaterial({ color: 0x2B1500, roughness: 0.8, metalness: 0.1, transparent: true, opacity: 0.4 }));
-  groundDisc.rotation.x = -Math.PI / 2;
-  groundDisc.position.y = -0.6;
-  groundDisc.receiveShadow = true;
-  scene.add(groundDisc);
-
-  // Animation loop
   let time = 0;
   function animate() {
     requestAnimationFrame(animate);
     time += 0.012;
-    // Rotate bean
-    beanGroup.rotation.y = time * 0.8;
-    beanGroup.rotation.x = Math.sin(time * 0.6) * 0.2;
-    beanGroup.rotation.z = Math.cos(time * 0.5) * 0.1;
-    // Slight cup floating
-    cupGroup.position.y = -0.1 + Math.sin(time * 1.2) * 0.03;
-    // Rotate particles
+    // Bean rotation
+    beanGroup.rotation.y = time * 0.6;
+    beanGroup.rotation.x = Math.sin(time * 0.5) * 0.15;
+    beanGroup.rotation.z = Math.cos(time * 0.4) * 0.1;
+    // Particles drift
     particles.rotation.y += 0.002;
-    camera.lookAt(0, 0.5, 0);
+    particles.rotation.x = Math.sin(time * 0.2) * 0.05;
+
     renderer.render(scene, camera);
   }
   animate();
 
   window.addEventListener('resize', () => {
-    camera.aspect = window.innerWidth / window.innerHeight;
+    const width = container.clientWidth;
+    const height = container.clientHeight;
+    renderer.setSize(width, height);
+    camera.aspect = width / height;
     camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
   });
 </script>
 
 <script>
-  // Mobile menu toggle
+  // mobile menu
   const hamburger = document.getElementById('hamburger');
   const navLinks = document.getElementById('navLinks');
   hamburger.addEventListener('click', () => navLinks.classList.toggle('open'));
-  document.querySelectorAll('.nav-links a').forEach(link => link.addEventListener('click', () => navLinks.classList.remove('open')));
+  document.querySelectorAll('.nav-links a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
 
   // WhatsApp booking
   const sendBtn = document.getElementById('sendBookingBtn');
   sendBtn.addEventListener('click', () => {
     const name = document.getElementById('name').value;
     const email = document.getElementById('email').value;
-    const date = document.getElementB
+    const date = document.getElementById('eventDate').value;
+    const type = document.getElementById('eventType').value;
+    const msg = document.getElementById('message').value;
+    const text = `Hello Bean Charge! I'd like to book an event.%0A%0AName: ${name}%0AEmail: ${email}%0ADate: ${date}%0AType: ${type}%0AMessage: ${msg}`;
+    window.open(`https://wa.me/27693412372?text=${encodeURIComponent(text)}`, '_blank');
+  });
+</script>
+</body>
+</html>
