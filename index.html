@@ -2,317 +2,245 @@
 <html lang="en-ZA">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BEAN CHARGE</title>
 
-<title>BEAN CHARGE | 3D Mobile Coffee Experience</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:wght@600;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
 <style>
-
-/* RESET */
 *{margin:0;padding:0;box-sizing:border-box}
 body{
   font-family:Inter,sans-serif;
-  background:#fdf9f2;
-  color:#2c2418;
+  background:#f7f1e8;
+  color:#2b1d14;
   overflow-x:hidden;
 }
 
-/* HERO CANVAS WRAPPER */
-#hero{
-  position:relative;
+/* HERO */
+.hero{
   height:100vh;
-  width:100%;
-  overflow:hidden;
-  background: radial-gradient(circle at top, #f6eadc, #1a120d);
+  position:relative;
+  background: radial-gradient(circle at top,#3a2418,#120b08);
 }
-
 canvas{
+  width:100%;
+  height:100%;
   display:block;
-  position:absolute;
-  top:0;left:0;
-  width:100%;
-  height:100%;
-  z-index:1;
 }
-
-/* HERO UI */
-.hero-ui{
+.overlay{
   position:absolute;
-  z-index:2;
-  width:100%;
-  height:100%;
+  inset:0;
   display:flex;
   flex-direction:column;
   justify-content:center;
   align-items:center;
   text-align:center;
-  color:white;
+  color:#fff;
   pointer-events:none;
-  background: radial-gradient(circle, rgba(0,0,0,0.2), rgba(0,0,0,0.55));
 }
-
-.hero-ui h1{
-  font-family:'Playfair Display',serif;
+.overlay h1{
   font-size:clamp(2.5rem,6vw,5rem);
+  letter-spacing:-1px;
 }
-
-.hero-ui p{
+.overlay p{
+  opacity:.8;
   margin-top:10px;
-  opacity:0.85;
-}
-
-.tag{
-  margin-top:20px;
-  padding:8px 16px;
-  border-radius:999px;
-  font-size:12px;
-  background:rgba(255,255,255,0.12);
 }
 
 /* NAV */
-nav{
+.nav{
   position:sticky;
   top:0;
-  z-index:10;
-  background:rgba(253,249,242,0.9);
+  background:#f7f1e8cc;
   backdrop-filter:blur(10px);
-  padding:1rem 2rem;
   display:flex;
   justify-content:space-between;
-}
-
-.logo{
-  font-family:'Playfair Display';
-  font-size:1.4rem;
-}
-
-.logo span{color:#c8860a}
-
-.links{
-  display:flex;
-  gap:20px;
-}
-
-.links a{
-  text-decoration:none;
-  color:#2c2418;
-  font-weight:500;
+  padding:15px 25px;
+  font-weight:600;
 }
 
 /* SECTIONS */
 section{
-  padding:5rem 10%;
+  padding:70px 20px;
+  max-width:1000px;
+  margin:auto;
 }
 
 h2{
-  font-family:'Playfair Display';
-  font-size:2rem;
-  margin-bottom:1rem;
+  margin-bottom:20px;
+  font-size:28px;
 }
 
-/* MENU */
 .menu{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-  gap:20px;
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:15px;
 }
 
 .card{
   background:white;
   padding:20px;
-  border-radius:16px;
-  box-shadow:0 10px 30px rgba(0,0,0,0.05);
+  border-radius:15px;
 }
 
-.price{color:#c8860a;font-weight:700}
-
-/* BOOKING */
-input,select,textarea{
+/* FORM */
+input,textarea,select{
   width:100%;
-  padding:12px;
-  margin:8px 0;
-  border-radius:12px;
+  padding:10px;
+  margin:6px 0;
+  border-radius:10px;
   border:1px solid #ddd;
 }
 
 button{
-  background:#c8860a;
+  background:#c08a2b;
   color:white;
-  padding:12px 20px;
   border:none;
-  border-radius:30px;
+  padding:12px;
+  width:100%;
+  border-radius:10px;
   cursor:pointer;
 }
 
-/* MOBILE */
-@media(max-width:768px){
-  section{padding:3rem 1.5rem}
+footer{
+  text-align:center;
+  padding:30px;
+  background:#120b08;
+  color:white;
 }
 </style>
 </head>
 
 <body>
 
-<!-- HERO -->
-<div id="hero">
+<div class="hero">
+  <div id="scene"></div>
 
-  <div class="hero-ui">
+  <div class="overlay">
     <h1>BEAN CHARGE</h1>
-    <p>Interactive 3D Mobile Coffee Experience · Soweto</p>
-    <div class="tag">Drag to explore coffee world</div>
+    <p>Mobile coffee experience</p>
   </div>
-
 </div>
 
-<!-- NAV -->
-<nav>
-  <div class="logo">BEAN <span>CHARGE</span></div>
-  <div class="links">
-    <a href="#menu">Menu</a>
-    <a href="#booking">Book</a>
-  </div>
-</nav>
+<div class="nav">
+  <div>BEAN CHARGE</div>
+  <div>Menu · Book · Contact</div>
+</div>
 
-<!-- MENU -->
-<section id="menu">
+<section>
   <h2>Menu</h2>
   <div class="menu">
-    <div class="card">Espresso <div class="price">R15</div></div>
-    <div class="card">Cappuccino <div class="price">R15</div></div>
-    <div class="card">Latte <div class="price">R15</div></div>
-    <div class="card">Americano <div class="price">R15</div></div>
+    <div class="card">Espresso<br>R15</div>
+    <div class="card">Americano<br>R15</div>
+    <div class="card">Latte<br>R15</div>
+    <div class="card">Cappuccino<br>R15</div>
   </div>
 </section>
 
-<!-- BOOKING -->
-<section id="booking">
-  <h2>Booking</h2>
-
+<section>
+  <h2>Book</h2>
   <input id="name" placeholder="Name">
   <input id="email" placeholder="Email">
   <input id="date" type="date">
-  <select id="type">
-    <option>Wedding</option>
-    <option>Corporate</option>
-    <option>Private</option>
-  </select>
-  <textarea id="msg" placeholder="Message"></textarea>
-
-  <button id="send">Send WhatsApp</button>
+  <textarea id="msg" placeholder="Event details"></textarea>
+  <button onclick="send()">Send via WhatsApp</button>
 </section>
 
-<!-- THREE.JS -->
+<footer>
+© BEAN CHARGE
+</footer>
+
 <script src="https://cdn.jsdelivr.net/npm/three@0.161.0/build/three.min.js"></script>
 
 <script>
-/* SAFE MOUNT */
-const hero = document.getElementById("hero");
-
 const scene = new THREE.Scene();
 
-const camera = new THREE.PerspectiveCamera(
-  60,
-  window.innerWidth / window.innerHeight,
-  0.1,
-  1000
-);
+const camera = new THREE.PerspectiveCamera(60,innerWidth/innerHeight,0.1,100);
 camera.position.z = 6;
 
-const renderer = new THREE.WebGLRenderer({ antialias:true, alpha:true });
-renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
-renderer.setClearColor(0x000000,0);
-
-hero.appendChild(renderer.domElement);
+const renderer = new THREE.WebGLRenderer({antialias:true,alpha:true});
+renderer.setSize(innerWidth,innerHeight);
+document.getElementById("scene").appendChild(renderer.domElement);
 
 /* LIGHTS */
-scene.add(new THREE.AmbientLight(0xffd7b0,0.6));
-const light = new THREE.PointLight(0xffffff,1.2);
-light.position.set(3,4,3);
+const light = new THREE.PointLight(0xffcc88,1.5);
+light.position.set(2,3,3);
 scene.add(light);
+
+scene.add(new THREE.AmbientLight(0xffffff,0.3));
 
 /* CUP */
 const cup = new THREE.Mesh(
-  new THREE.CylinderGeometry(1.2,1,2.2,64),
-  new THREE.MeshStandardMaterial({ color:0xf5efe6 })
+  new THREE.CylinderGeometry(1,0.8,2,40),
+  new THREE.MeshStandardMaterial({color:0xf2e6d8})
 );
 scene.add(cup);
 
-/* COFFEE TOP */
+/* COFFEE */
 const coffee = new THREE.Mesh(
-  new THREE.CylinderGeometry(1.05,1.05,0.12,64),
-  new THREE.MeshStandardMaterial({ color:0x3b2416 })
+  new THREE.CylinderGeometry(0.9,0.9,0.2,40),
+  new THREE.MeshStandardMaterial({color:0x3b2416})
 );
-coffee.position.y = 1.1;
+coffee.position.y=0.9;
 scene.add(coffee);
 
 /* PORTAFILTER */
-const port = new THREE.Mesh(
-  new THREE.BoxGeometry(2,0.3,0.6),
-  new THREE.MeshStandardMaterial({ color:0x2a1b12 })
+const pf = new THREE.Mesh(
+  new THREE.BoxGeometry(1.5,0.2,0.6),
+  new THREE.MeshStandardMaterial({color:0x2b1b12})
 );
-port.position.set(-2,-1,0);
-scene.add(port);
+pf.position.set(-2,-1,0);
+scene.add(pf);
 
 /* BEANS */
 const beans=[];
-for(let i=0;i<80;i++){
+for(let i=0;i<120;i++){
   const b=new THREE.Mesh(
-    new THREE.SphereGeometry(0.07,10,10),
-    new THREE.MeshStandardMaterial({ color:0x4b2f1d })
+    new THREE.SphereGeometry(0.06,8,8),
+    new THREE.MeshStandardMaterial({color:0x4a2f1d})
   );
   b.position.set(
     (Math.random()-0.5)*8,
     (Math.random()-0.5)*5,
-    (Math.random()-0.5)*5
+    (Math.random()-0.5)*4
   );
   scene.add(b);
   beans.push(b);
 }
 
-/* INTERACTION */
-let mx=0,my=0;
-
-window.addEventListener("mousemove",(e)=>{
-  mx=(e.clientX/window.innerWidth-0.5)*2;
-  my=(e.clientY/window.innerHeight-0.5)*2;
-});
-
 function animate(){
   requestAnimationFrame(animate);
 
-  cup.rotation.y += 0.002;
-  cup.rotation.x = my*0.3;
-  cup.rotation.y += mx*0.002;
+  cup.rotation.y += 0.003;
+  coffee.rotation.y += 0.003;
+  pf.rotation.y += 0.002;
 
-  beans.forEach((b,i)=>{
-    b.position.y += Math.sin(Date.now()*0.001+i)*0.002;
+  beans.forEach(b=>{
+    b.position.y += 0.003;
+    if(b.position.y>3)b.position.y=-3;
   });
 
   renderer.render(scene,camera);
 }
 animate();
 
-/* FIX RESIZE (THIS WAS YOUR BUG) */
 window.addEventListener("resize",()=>{
-  camera.aspect=window.innerWidth/window.innerHeight;
+  camera.aspect=innerWidth/innerHeight;
   camera.updateProjectionMatrix();
-  renderer.setSize(window.innerWidth,window.innerHeight);
+  renderer.setSize(innerWidth,innerHeight);
 });
 
-/* WHATSAPP */
-document.getElementById("send").onclick=()=>{
-  const text=`Hi Bean Charge, I want to book:
-Name: ${name.value}
-Email: ${email.value}
-Date: ${date.value}
-Type: ${type.value}
-Message: ${msg.value}`;
+/* WhatsApp */
+function send(){
+  const name=document.getElementById("name").value;
+  const email=document.getElementById("email").value;
+  const date=document.getElementById("date").value;
+  const msg=document.getElementById("msg").value;
 
-  window.open("https://wa.me/27693412372?text="+encodeURIComponent(text));
-};
+  const text=`Booking:%0A${name}%0A${email}%0A${date}%0A${msg}`;
+
+  window.open(`https://wa.me/27693412372?text=${text}`);
+}
 </script>
 
 </body>
