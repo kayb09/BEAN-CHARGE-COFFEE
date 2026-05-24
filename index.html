@@ -1,568 +1,1198 @@
 <!DOCTYPE html>
 <html lang="en-ZA">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>BEAN CHARGE | Premium Mobile Coffee · Soweto</title>
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&family=Playfair+Display:wght@500;700;900&display=swap" rel="stylesheet">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    body {
-      font-family: 'Inter', sans-serif;
-      background: #FEFAF5;  /* warm cream */
-      color: #2C2418;
-      overflow-x: hidden;
-    }
+<title>BEAN CHARGE | Premium Mobile Coffee Bar</title>
 
-    /* 3D canvas container (fixed, but light background behind) */
-    #canvas-bg {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
-      pointer-events: none;
-    }
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    /* content sits above canvas */
-    .content {
-      position: relative;
-      z-index: 10;
-      background: rgba(254, 250, 245, 0.92);
-      backdrop-filter: blur(2px);
-    }
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
 
-    /* typography */
-    h1, h2, h3, .logo {
-      font-family: 'Playfair Display', serif;
-      font-weight: 700;
-    }
+<style>
 
-    .section {
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 5rem 2rem;
-    }
+:root{
+  --cream:#FDF8F2;
+  --cream-dark:#F5EBDD;
+  --brown:#2A1E16;
+  --brown-light:#4B372B;
+  --gold:#C8922E;
+  --gold-dark:#A87418;
+  --white:#ffffff;
+  --shadow:0 15px 40px rgba(0,0,0,0.08);
+}
 
-    .section-title {
-      font-size: 2.2rem;
-      margin-bottom: 2rem;
-      position: relative;
-      display: inline-block;
-    }
-    .section-title::after {
-      content: '';
-      position: absolute;
-      bottom: -8px;
-      left: 0;
-      width: 60px;
-      height: 3px;
-      background: #C8860A;
-    }
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
 
-    /* nav */
-    .sticky-nav {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: rgba(254, 250, 245, 0.96);
-      backdrop-filter: blur(10px);
-      box-shadow: 0 1px 0 rgba(0,0,0,0.05);
-    }
-    .nav-container {
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 1rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .logo {
-      font-size: 1.6rem;
-      letter-spacing: -0.5px;
-    }
-    .logo span {
-      color: #C8860A;
-    }
-    .nav-links {
-      display: flex;
-      gap: 2rem;
-    }
-    .nav-links a {
-      text-decoration: none;
-      font-weight: 500;
-      color: #2C2418;
-      transition: color 0.2s;
-    }
-    .nav-links a:hover {
-      color: #C8860A;
-    }
-    .btn-gold {
-      background: #C8860A;
-      color: white;
-      padding: 0.7rem 1.8rem;
-      border-radius: 40px;
-      text-decoration: none;
-      font-weight: 600;
-      transition: 0.2s;
-      display: inline-block;
-    }
-    .btn-gold:hover {
-      background: #a56e08;
-      transform: translateY(-2px);
-    }
-    .btn-outline {
-      border: 2px solid #C8860A;
-      background: transparent;
-      color: #2C2418;
-      padding: 0.7rem 1.8rem;
-      border-radius: 40px;
-      text-decoration: none;
-      font-weight: 600;
-    }
-    .hamburger {
-      display: none;
-      flex-direction: column;
-      gap: 5px;
-      cursor: pointer;
-    }
-    .hamburger span {
-      width: 26px;
-      height: 2px;
-      background: #2C2418;
-    }
-    @media (max-width: 780px) {
-      .nav-links {
-        position: fixed;
-        top: 70px;
-        right: -100%;
-        width: 70%;
-        height: 100vh;
-        background: #FEFAF5;
-        flex-direction: column;
-        padding: 2rem;
-        transition: 0.3s;
-        box-shadow: -5px 0 20px rgba(0,0,0,0.05);
-      }
-      .nav-links.open {
-        right: 0;
-      }
-      .hamburger {
-        display: flex;
-      }
-    }
+html{
+  scroll-behavior:smooth;
+}
 
-    /* hero */
-    .hero {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 3rem;
-      flex-wrap: wrap;
-      min-height: 90vh;
-      padding: 4rem 2rem;
-    }
-    .hero-text {
-      flex: 1;
-    }
-    .hero-text h1 {
-      font-size: 4rem;
-      line-height: 1.05;
-      margin-bottom: 1rem;
-    }
-    .hero-text h1 span {
-      color: #C8860A;
-    }
-    .hero-text p {
-      font-size: 1.1rem;
-      color: #5A4A3A;
-      margin-bottom: 2rem;
-      max-width: 500px;
-    }
-    .hero-3d {
-      flex: 1;
-      height: 400px;
-      min-width: 300px;
-      position: relative;
-    }
-    /* stats band */
-    .stats-band {
-      background: white;
-      padding: 2rem;
-      display: flex;
-      justify-content: center;
-      gap: 4rem;
-      flex-wrap: wrap;
-      border-top: 1px solid #E8DDD0;
-      border-bottom: 1px solid #E8DDD0;
-    }
-    .stat {
-      text-align: center;
-    }
-    .stat-number {
-      font-size: 2rem;
-      font-weight: 700;
-      color: #C8860A;
-      font-family: 'Playfair Display', serif;
-    }
+body{
+  font-family:'Inter',sans-serif;
+  background:var(--cream);
+  color:var(--brown);
+  overflow-x:hidden;
+  line-height:1.6;
+}
 
-    /* menu */
-    .menu-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 2rem;
-      margin-top: 2rem;
-    }
-    .menu-card {
-      background: white;
-      border-radius: 24px;
-      padding: 1.5rem;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.03);
-      transition: 0.2s;
-      border: 1px solid #F0E5D8;
-    }
-    .menu-card:hover {
-      transform: translateY(-4px);
-      border-color: #C8860A;
-    }
-    .menu-card h3 {
-      font-size: 1.4rem;
-      margin-bottom: 1rem;
-      color: #2C2418;
-    }
-    .menu-item {
-      display: flex;
-      justify-content: space-between;
-      padding: 0.5rem 0;
-      border-bottom: 1px dashed #E8DDD0;
-    }
-    .price {
-      font-weight: 700;
-      color: #C8860A;
-    }
+img{
+  max-width:100%;
+  display:block;
+}
 
-    /* gallery placeholders */
-    .gallery-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-      gap: 1.5rem;
-      margin-top: 2rem;
-    }
-    .gallery-placeholder {
-      background: white;
-      aspect-ratio: 1/1;
-      border-radius: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2rem;
-      border: 1px solid #E8DDD0;
-      transition: 0.2s;
-    }
-    .gallery-placeholder:hover {
-      border-color: #C8860A;
-    }
+.container{
+  width:100%;
+  max-width:1280px;
+  margin:auto;
+  padding:0 5%;
+}
 
-    /* features */
-    .features {
-      display: flex;
-      gap: 2rem;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-    .feature {
-      background: white;
-      padding: 2rem;
-      border-radius: 28px;
-      width: 260px;
-      text-align: center;
-      border: 1px solid #F0E5D8;
-    }
+h1,h2,h3,h4{
+  font-family:'Playfair Display',serif;
+  line-height:1.1;
+}
 
-    /* booking */
-    .booking-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 3rem;
-    }
-    .form-group input, .form-group select, .form-group textarea {
-      width: 100%;
-      padding: 0.8rem;
-      margin: 0.5rem 0;
-      background: white;
-      border: 1px solid #E0D4C4;
-      border-radius: 20px;
-      font-family: 'Inter', sans-serif;
-    }
-    .contact-card {
-      background: white;
-      padding: 1rem;
-      border-radius: 20px;
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      margin-bottom: 1rem;
-    }
-    footer {
-      text-align: center;
-      padding: 2rem;
-      background: #2C2418;
-      color: #FEFAF5;
-    }
-    .wa-float {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: #25D366;
-      width: 55px;
-      height: 55px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 99;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    }
-    @media (max-width: 780px) {
-      .booking-grid {
-        grid-template-columns: 1fr;
-      }
-      .hero {
-        flex-direction: column;
-        text-align: center;
-      }
-      .hero-text p {
-        margin-left: auto;
-        margin-right: auto;
-      }
-    }
-  </style>
+section{
+  position:relative;
+}
+
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  padding:15px 28px;
+  border-radius:999px;
+  text-decoration:none;
+  transition:0.3s ease;
+  font-weight:600;
+  cursor:pointer;
+  border:none;
+}
+
+.btn-gold{
+  background:var(--gold);
+  color:white;
+}
+
+.btn-gold:hover{
+  background:var(--gold-dark);
+  transform:translateY(-3px);
+}
+
+.btn-outline{
+  border:1px solid rgba(255,255,255,0.5);
+  color:white;
+  backdrop-filter:blur(10px);
+}
+
+.btn-outline:hover{
+  background:white;
+  color:var(--brown);
+}
+
+.section-heading{
+  margin-bottom:3rem;
+}
+
+.section-heading span{
+  color:var(--gold);
+  font-size:0.85rem;
+  letter-spacing:2px;
+  font-weight:700;
+  display:block;
+  margin-bottom:1rem;
+}
+
+.section-heading h2{
+  font-size:clamp(2.2rem,5vw,4rem);
+}
+
+.section-heading p{
+  max-width:650px;
+  margin-top:1rem;
+  color:var(--brown-light);
+}
+
+/* NAV */
+
+.navbar{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  z-index:1000;
+  transition:0.3s ease;
+}
+
+.navbar.scrolled{
+  background:rgba(253,248,242,0.96);
+  backdrop-filter:blur(10px);
+  box-shadow:0 10px 30px rgba(0,0,0,0.05);
+}
+
+.nav-inner{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:1.2rem 5%;
+}
+
+.logo{
+  color:white;
+  text-decoration:none;
+  font-size:1.6rem;
+  font-family:'Playfair Display',serif;
+  font-weight:800;
+}
+
+.navbar.scrolled .logo{
+  color:var(--brown);
+}
+
+.logo span{
+  color:var(--gold);
+}
+
+.nav-links{
+  display:flex;
+  gap:2rem;
+}
+
+.nav-links a{
+  color:white;
+  text-decoration:none;
+  font-weight:500;
+  transition:0.3s;
+}
+
+.navbar.scrolled .nav-links a{
+  color:var(--brown);
+}
+
+.nav-links a:hover{
+  color:var(--gold);
+}
+
+.menu-toggle{
+  display:none;
+  flex-direction:column;
+  gap:5px;
+  cursor:pointer;
+}
+
+.menu-toggle span{
+  width:28px;
+  height:2px;
+  background:white;
+}
+
+.navbar.scrolled .menu-toggle span{
+  background:var(--brown);
+}
+
+/* HERO */
+
+.hero{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  background:
+  linear-gradient(
+    rgba(20,15,10,0.62),
+    rgba(20,15,10,0.55)
+  ),
+  url('https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=1800&q=90');
+  background-size:cover;
+  background-position:center;
+  position:relative;
+  overflow:hidden;
+}
+
+.hero::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:
+  radial-gradient(circle at top right,
+  rgba(200,146,46,0.25),
+  transparent 30%);
+}
+
+.hero-content{
+  position:relative;
+  z-index:2;
+  max-width:760px;
+  padding-top:80px;
+}
+
+.hero-tag{
+  color:var(--gold);
+  letter-spacing:3px;
+  font-size:0.82rem;
+  font-weight:700;
+  margin-bottom:1rem;
+}
+
+.hero h1{
+  color:white;
+  font-size:clamp(3.2rem,9vw,6.5rem);
+  margin-bottom:1.5rem;
+}
+
+.hero p{
+  color:rgba(255,255,255,0.9);
+  font-size:1.1rem;
+  max-width:650px;
+  margin-bottom:2rem;
+}
+
+.hero-buttons{
+  display:flex;
+  gap:1rem;
+  flex-wrap:wrap;
+}
+
+/* ABOUT */
+
+.about{
+  padding:7rem 0;
+}
+
+.about-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:5rem;
+  align-items:center;
+}
+
+.about-image{
+  position:relative;
+}
+
+.about-image img{
+  border-radius:30px;
+  height:620px;
+  object-fit:cover;
+  box-shadow:var(--shadow);
+}
+
+.about-card{
+  position:absolute;
+  bottom:25px;
+  left:25px;
+  background:white;
+  padding:1.2rem 1.5rem;
+  border-radius:20px;
+  box-shadow:var(--shadow);
+}
+
+.about-card h3{
+  color:var(--gold);
+  font-size:2rem;
+}
+
+.about-text p{
+  margin-bottom:1.4rem;
+  color:var(--brown-light);
+  font-size:1.03rem;
+}
+
+/* MENU */
+
+.menu{
+  background:#f7efe4;
+  padding:7rem 0;
+}
+
+.menu-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:2rem;
+}
+
+.menu-card{
+  background:white;
+  border-radius:28px;
+  padding:2rem;
+  box-shadow:var(--shadow);
+  border:1px solid #eadfce;
+  transition:0.3s ease;
+}
+
+.menu-card:hover{
+  transform:translateY(-8px);
+}
+
+.menu-card h3{
+  margin-bottom:1.5rem;
+  font-size:1.6rem;
+}
+
+.menu-item{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:0.9rem 0;
+  border-bottom:1px solid #eee2d3;
+}
+
+.menu-item:last-child{
+  border-bottom:none;
+}
+
+.price{
+  color:var(--gold);
+  font-weight:700;
+}
+
+/* GALLERY */
+
+.gallery{
+  padding:7rem 0;
+}
+
+.gallery-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:1.2rem;
+}
+
+.gallery-item{
+  overflow:hidden;
+  border-radius:28px;
+  position:relative;
+  height:320px;
+}
+
+.gallery-item img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  transition:0.5s ease;
+}
+
+.gallery-item:hover img{
+  transform:scale(1.08);
+}
+
+/* FEATURES */
+
+.features{
+  padding:7rem 0;
+  background:var(--brown);
+  color:white;
+}
+
+.features .section-heading p{
+  color:rgba(255,255,255,0.8);
+}
+
+.features-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:2rem;
+}
+
+.feature{
+  background:linear-gradient(
+  180deg,
+  rgba(255,255,255,0.08),
+  rgba(255,255,255,0.03)
+  );
+  border:1px solid rgba(255,255,255,0.08);
+  padding:2.5rem;
+  border-radius:28px;
+  backdrop-filter:blur(10px);
+}
+
+.feature-icon{
+  font-size:2rem;
+  margin-bottom:1rem;
+}
+
+.feature h3{
+  margin-bottom:1rem;
+  font-size:1.5rem;
+}
+
+/* BOOKING */
+
+.booking{
+  padding:7rem 0;
+}
+
+.booking-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:4rem;
+}
+
+.form-wrap{
+  background:white;
+  border-radius:30px;
+  padding:2rem;
+  box-shadow:var(--shadow);
+}
+
+.form-group{
+  margin-bottom:1rem;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select{
+  width:100%;
+  padding:1rem;
+  border-radius:18px;
+  border:1px solid #e7d7c7;
+  background:#fffdf9;
+  font-family:'Inter',sans-serif;
+  outline:none;
+}
+
+.form-group textarea{
+  resize:none;
+}
+
+.contact-card{
+  background:white;
+  border-radius:24px;
+  padding:1.4rem;
+  margin-bottom:1rem;
+  display:flex;
+  gap:1rem;
+  align-items:flex-start;
+  box-shadow:var(--shadow);
+}
+
+.contact-card strong{
+  display:block;
+  margin-bottom:0.2rem;
+}
+
+.contact-card a{
+  color:var(--gold);
+  text-decoration:none;
+}
+
+.map{
+  overflow:hidden;
+  border-radius:30px;
+  box-shadow:var(--shadow);
+  margin-top:1rem;
+}
+
+/* FOOTER */
+
+footer{
+  background:#1c140e;
+  color:white;
+  padding:4rem 5%;
+}
+
+.footer-grid{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:2rem;
+  flex-wrap:wrap;
+}
+
+.footer-logo{
+  font-size:2rem;
+  font-family:'Playfair Display',serif;
+}
+
+.footer-logo span{
+  color:var(--gold);
+}
+
+.footer-links{
+  display:flex;
+  gap:1rem;
+  flex-wrap:wrap;
+}
+
+.footer-links a{
+  color:#d9cfc3;
+  text-decoration:none;
+}
+
+.footer-links a:hover{
+  color:var(--gold);
+}
+
+.footer-copy{
+  margin-top:2rem;
+  color:#9f9488;
+  font-size:0.92rem;
+}
+
+/* FLOATING WHATSAPP */
+
+.whatsapp{
+  position:fixed;
+  right:20px;
+  bottom:20px;
+  width:60px;
+  height:60px;
+  border-radius:50%;
+  background:#25D366;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:999;
+  box-shadow:0 10px 30px rgba(0,0,0,0.2);
+}
+
+/* RESPONSIVE */
+
+@media(max-width:980px){
+
+  .about-grid,
+  .booking-grid{
+    grid-template-columns:1fr;
+  }
+
+  .gallery-grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .about-image img{
+    height:500px;
+  }
+}
+
+@media(max-width:768px){
+
+  .nav-links{
+    position:fixed;
+    top:80px;
+    right:-100%;
+    width:80%;
+    height:100vh;
+    background:var(--cream);
+    flex-direction:column;
+    padding:3rem 2rem;
+    transition:0.4s ease;
+  }
+
+  .nav-links.active{
+    right:0;
+  }
+
+  .nav-links a{
+    color:var(--brown) !important;
+    font-size:1.1rem;
+  }
+
+  .menu-toggle{
+    display:flex;
+  }
+
+  .hero{
+    min-height:92vh;
+  }
+
+  .gallery-grid{
+    grid-template-columns:1fr;
+  }
+
+  .hero-buttons{
+    flex-direction:column;
+    align-items:flex-start;
+  }
+
+  .about-image img{
+    height:400px;
+  }
+
+  .section-heading h2{
+    font-size:2.5rem;
+  }
+
+}
+
+</style>
 </head>
+
 <body>
 
-<div id="canvas-bg"></div>
+<!-- NAV -->
 
-<div class="content">
-  <div class="sticky-nav">
-    <div class="nav-container">
-      <div class="logo">BEAN <span>CHARGE</span></div>
-      <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
-      <div class="nav-links" id="navLinks">
-        <a href="#menu">Menu</a>
-        <a href="#about">Story</a>
-        <a href="#gallery">Moments</a>
-        <a href="#booking">Book</a>
-      </div>
+<nav class="navbar" id="navbar">
+  <div class="nav-inner">
+
+    <a href="#" class="logo">
+      BEAN <span>CHARGE</span>
+    </a>
+
+    <div class="menu-toggle" id="menuToggle">
+      <span></span>
+      <span></span>
+      <span></span>
     </div>
+
+    <div class="nav-links" id="navLinks">
+      <a href="#about">About</a>
+      <a href="#menu">Menu</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#booking">Book</a>
+    </div>
+
+  </div>
+</nav>
+
+<!-- HERO -->
+
+<section class="hero">
+
+  <div class="container">
+
+    <div class="hero-content">
+
+      <div class="hero-tag">
+        PREMIUM MOBILE COFFEE EXPERIENCE
+      </div>
+
+      <h1>
+        Crafted Coffee.<br>
+        Powered by Soweto.
+      </h1>
+
+      <p>
+        Bean Charge brings specialty café culture directly to your
+        event, market, office, wedding, activation, or celebration
+        across Gauteng.
+      </p>
+
+      <div class="hero-buttons">
+
+        <a href="#booking" class="btn btn-gold">
+          Book Bean Charge
+        </a>
+
+        <a href="#menu" class="btn btn-outline">
+          Explore Menu
+        </a>
+
+      </div>
+
+    </div>
+
   </div>
 
-  <section class="hero">
-    <div class="hero-text">
-      <h1>Premium coffee<br>wherever you are<span>.</span></h1>
-      <p>Specialty‑grade espresso, served at your event. Born in Soweto, crafted for Gauteng.</p>
-      <a href="#booking" class="btn-gold">Book your event →</a>
-    </div>
-    <div class="hero-3d" id="hero-3d"></div>
-  </section>
+</section>
 
-  <div class="stats-band">
-    <div class="stat"><div class="stat-number">6+ years</div><div>Mobile excellence</div></div>
-    <div class="stat"><div class="stat-number">500+ events</div><div>Across Gauteng</div></div>
-    <div class="stat"><div class="stat-number">Soweto</div><div>Proudly rooted</div></div>
-  </div>
+<!-- ABOUT -->
 
-  <!-- MENU – all R15 -->
-  <section id="menu" class="section">
-    <h2 class="section-title">Our craft</h2>
-    <div class="menu-grid">
-      <div class="menu-card"><h3>Espresso classics</h3><div class="menu-item"><span>Americano</span><span class="price">R15</span></div><div class="menu-item"><span>Espresso</span><span class="price">R15</span></div><div class="menu-item"><span>Double Espresso</span><span class="price">R15</span></div></div>
-      <div class="menu-card"><h3>Milk specialties</h3><div class="menu-item"><span>Cappuccino</span><span class="price">R15</span></div><div class="menu-item"><span>Latte</span><span class="price">R15</span></div><div class="menu-item"><span>Flat White</span><span class="price">R15</span></div></div>
-      <div class="menu-card"><h3>Flavoured</h3><div class="menu-item"><span>Mocha</span><span class="price">R15</span></div><div class="menu-item"><span>Vanilla Coffee</span><span class="price">R15</span></div><div class="menu-item"><span>Vanilla & Choco</span><span class="price">R15</span></div></div>
-      <div class="menu-card"><h3>Tea & more</h3><div class="menu-item"><span>Hot Chocolate</span><span class="price">R15</span></div><div class="menu-item"><span>Chai Tea</span><span class="price">R15</span></div><div class="menu-item"><span>Tea with milk</span><span class="price">R15</span></div></div>
-    </div>
-  </section>
+<section class="about" id="about">
 
-  <!-- Gallery (placeholders) -->
-  <section id="gallery" class="section">
-    <h2 class="section-title">Moments at work</h2>
-    <div class="gallery-grid">
-      <div class="gallery-placeholder">☕</div>
-      <div class="gallery-placeholder">⚡</div>
-      <div class="gallery-placeholder">🚐</div>
-      <div class="gallery-placeholder">📍</div>
-      <div class="gallery-placeholder">❤️</div>
-      <div class="gallery-placeholder">✨</div>
-    </div>
-    <p style="text-align:center; margin-top:1.5rem; color:#5A4A3A;">Add your own service photos – these are placeholders.</p>
-  </section>
+  <div class="container">
 
-  <!-- Why Bean Charge -->
-  <section class="section">
-    <h2 class="section-title">Why us</h2>
-    <div class="features">
-      <div class="feature"><div style="font-size:2rem;">🚐</div><h3>We come to you</h3><p>Any event, anywhere in Gauteng. Full setup.</p></div>
-      <div class="feature"><div style="font-size:2rem;">☕</div><h3>Specialty grade</h3><p>Freshly pulled shots, Brasilia machine.</p></div>
-      <div class="feature"><div style="font-size:2rem;">❤️</div><h3>Soweto proud</h3><p>Six years serving our community.</p></div>
-    </div>
-  </section>
+    <div class="about-grid">
 
-  <!-- Booking -->
-  <section id="booking" class="section">
-    <h2 class="section-title">Book your event</h2>
-    <div class="booking-grid">
-      <div class="form-group">
-        <input type="text" id="name" placeholder="Full name">
-        <input type="email" id="email" placeholder="Email">
-        <input type="date" id="eventDate">
-        <select id="eventType">
-          <option>Corporate event</option><option>Wedding</option><option>Private party</option><option>Market / festival</option>
-        </select>
-        <textarea id="message" rows="3" placeholder="Tell us about your event..."></textarea>
-        <button id="sendBookingBtn" class="btn-gold" style="width:100%; margin-top:0.5rem;">Send enquiry via WhatsApp</button>
-      </div>
-      <div>
-        <div class="contact-card">📞 <a href="tel:+27693412372" style="color:#C8860A;">069 341 2372</a></div>
-        <div class="contact-card">✉️ <a href="mailto:karabotsontsi@gmail.com" style="color:#C8860A;">karabotsontsi@gmail.com</a></div>
-        <div class="contact-card">📍 Soweto, Gauteng · Mobile service</div>
-        <div style="border-radius:20px; overflow:hidden; margin-top:1rem;">
-          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d114955.745275518!2d27.8315572!3d-26.2480879!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1e95a7c8f4b3f8b5%3A0x5c5a5a5a5a5a5a5a!2sSoweto%2C%20South%20Africa!5e0!3m2!1sen!2sza!4v1650000000000" width="100%" height="200" style="border:0;" allowfullscreen></iframe>
+      <div class="about-text">
+
+        <div class="section-heading">
+
+          <span>ROOTED IN COMMUNITY</span>
+
+          <h2>
+            Bringing premium coffee culture to Soweto.
+          </h2>
+
         </div>
+
+        <p>
+          Bean Charge is a premium mobile coffee experience proudly
+          based in Soweto, South Africa. Since 2019, we've served
+          specialty-grade coffee at weddings, street markets,
+          private events, festivals, brand activations, and
+          corporate functions throughout Gauteng.
+        </p>
+
+        <p>
+          With over 500 events catered, our mission has remained
+          simple — create memorable coffee moments while bringing
+          people together through exceptional service, authentic
+          hospitality, and expertly brewed espresso.
+        </p>
+
+        <p>
+          Our professional mobile setup includes a commercial
+          Brasilia espresso machine, freshly ground beans,
+          handcrafted beverages, and a warm atmosphere inspired by
+          modern café culture and the spirit of Soweto.
+        </p>
+
+        <a href="#booking" class="btn btn-gold">
+          Book Your Experience
+        </a>
+
       </div>
+
+      <div class="about-image">
+
+        <img
+          src="https://images.unsplash.com/photo-1517705008128-361805f42e86?auto=format&fit=crop&w=1200&q=90"
+          alt="Barista pouring coffee">
+
+        <div class="about-card">
+          <h3>500+</h3>
+          <p>Events catered across Gauteng</p>
+        </div>
+
+      </div>
+
     </div>
-  </section>
 
-  <footer>
-    <p>© 2025 BEAN CHARGE COFFEE · Soweto, South Africa</p>
-  </footer>
-</div>
+  </div>
 
-<a class="wa-float" href="https://wa.me/27693412372?text=Hi%20Bean%20Charge!%20I'd%20like%20to%20book%20an%20event." target="_blank">
-  <svg width="28" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</section>
+
+<!-- MENU -->
+
+<section class="menu" id="menu">
+
+  <div class="container">
+
+    <div class="section-heading">
+
+      <span>OUR MENU</span>
+
+      <h2>
+        Freshly brewed favourites.
+      </h2>
+
+      <p>
+        All beverages served in 250ml cups · Premium quality · R15 each
+      </p>
+
+    </div>
+
+    <div class="menu-grid">
+
+      <div class="menu-card">
+
+        <h3>Espresso Classics</h3>
+
+        <div class="menu-item">
+          <span>Espresso</span>
+          <span class="price">R15</span>
+        </div>
+
+        <div class="menu-item">
+          <span>Double Espresso</span>
+          <span class="price">R15</span>
+        </div>
+
+        <div class="menu-item">
+          <span>Americano</span>
+          <span class="price">R15</span>
+        </div>
+
+      </div>
+
+      <div class="menu-card">
+
+        <h3>Milk Specialties</h3>
+
+        <div class="menu-item">
+          <span>Cappuccino</span>
+          <span class="price">R15</span>
+        </div>
+
+        <div class="menu-item">
+          <span>Latte</span>
+          <span class="price">R15</span>
+        </div>
+
+        <div class="menu-item">
+          <span>Flat White</span>
+          <span class="price">R15</span>
+        </div>
+
+      </div>
+
+      <div class="menu-card">
+
+        <h3>Flavoured Coffee</h3>
+
+        <div class="menu-item">
+          <span>Mocha</span>
+          <span class="price">R15</span>
+        </div>
+
+        <div class="menu-item">
+          <span>Vanilla Coffee</span>
+          <span class="price">R15</span>
+        </div>
+
+        <div class="menu-item">
+          <span>Chocolate Vanilla</span>
+          <span class="price">R15</span>
+        </div>
+
+      </div>
+
+      <div class="menu-card">
+
+        <h3>Tea & More</h3>
+
+        <div class="menu-item">
+          <span>Hot Chocolate</span>
+          <span class="price">R15</span>
+        </div>
+
+        <div class="menu-item">
+          <span>Chai Tea</span>
+          <span class="price">R15</span>
+        </div>
+
+        <div class="menu-item">
+          <span>Tea with Milk</span>
+          <span class="price">R15</span>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- GALLERY -->
+
+<section class="gallery" id="gallery">
+
+  <div class="container">
+
+    <div class="section-heading">
+
+      <span>BEAN CHARGE MOMENTS</span>
+
+      <h2>
+        Coffee experiences in motion.
+      </h2>
+
+    </div>
+
+    <div class="gallery-grid">
+
+      <div class="gallery-item">
+        <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=1000&q=90" alt="">
+      </div>
+
+      <div class="gallery-item">
+        <img src="https://images.unsplash.com/photo-1521017432531-fbd92d768814?auto=format&fit=crop&w=1000&q=90" alt="">
+      </div>
+
+      <div class="gallery-item">
+        <img src="https://images.unsplash.com/photo-1511920170033-f8396924c348?auto=format&fit=crop&w=1000&q=90" alt="">
+      </div>
+
+      <div class="gallery-item">
+        <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=1000&q=90" alt="">
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- FEATURES -->
+
+<section class="features">
+
+  <div class="container">
+
+    <div class="section-heading">
+
+      <span>WHY BEAN CHARGE</span>
+
+      <h2>
+        A premium coffee experience wherever you are.
+      </h2>
+
+      <p>
+        Built for markets, activations, weddings, offices,
+        productions, and unforgettable community events.
+      </p>
+
+    </div>
+
+    <div class="features-grid">
+
+      <div class="feature">
+
+        <div class="feature-icon">☕</div>
+
+        <h3>Specialty Coffee</h3>
+
+        <p>
+          Professionally brewed espresso beverages crafted using
+          quality beans and commercial café equipment.
+        </p>
+
+      </div>
+
+      <div class="feature">
+
+        <div class="feature-icon">🚐</div>
+
+        <h3>Fully Mobile</h3>
+
+        <p>
+          We bring the café directly to your event anywhere
+          in Gauteng with our complete mobile coffee setup.
+        </p>
+
+      </div>
+
+      <div class="feature">
+
+        <div class="feature-icon">❤️</div>
+
+        <h3>Proudly Soweto</h3>
+
+        <p>
+          Community-rooted hospitality with six years of experience
+          serving authentic coffee culture across Johannesburg.
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- BOOKING -->
+
+<section class="booking" id="booking">
+
+  <div class="container">
+
+    <div class="section-heading">
+
+      <span>BOOK BEAN CHARGE</span>
+
+      <h2>
+        Let's serve your next event.
+      </h2>
+
+    </div>
+
+    <div class="booking-grid">
+
+      <div class="form-wrap">
+
+        <div class="form-group">
+          <input type="text" id="name" placeholder="Full Name">
+        </div>
+
+        <div class="form-group">
+          <input type="email" id="email" placeholder="Email Address">
+        </div>
+
+        <div class="form-group">
+          <input type="date" id="date">
+        </div>
+
+        <div class="form-group">
+          <select id="event">
+            <option>Corporate Event</option>
+            <option>Wedding</option>
+            <option>Private Event</option>
+            <option>Festival / Market</option>
+            <option>Brand Activation</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <textarea rows="5" id="message" placeholder="Tell us about your event..."></textarea>
+        </div>
+
+        <button class="btn btn-gold" style="width:100%;" id="sendBtn">
+          Send Booking via WhatsApp
+        </button>
+
+      </div>
+
+      <div>
+
+        <div class="contact-card">
+
+          <div>
+            <strong>Phone</strong>
+            <a href="tel:+27693412372">
+              +27 69 341 2372
+            </a>
+          </div>
+
+        </div>
+
+        <div class="contact-card">
+
+          <div>
+            <strong>Email</strong>
+            <a href="mailto:karabotsontsi@gmail.com">
+              karabotsontsi@gmail.com
+            </a>
+          </div>
+
+        </div>
+
+        <div class="contact-card">
+
+          <div>
+            <strong>Location</strong>
+            <p>Soweto, Johannesburg · Mobile Service</p>
+          </div>
+
+        </div>
+
+        <div class="map">
+
+          <iframe
+          src="https://maps.google.com/maps?q=Soweto%20Johannesburg&t=&z=11&ie=UTF8&iwloc=&output=embed"
+          width="100%"
+          height="320"
+          style="border:0;"
+          loading="lazy">
+          </iframe>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- FOOTER -->
+
+<footer>
+
+  <div class="footer-grid">
+
+    <div>
+
+      <div class="footer-logo">
+        BEAN <span>CHARGE</span>
+      </div>
+
+      <p>
+        Premium mobile coffee experiences rooted in Soweto.
+      </p>
+
+    </div>
+
+    <div class="footer-links">
+
+      <a href="https://wa.me/27693412372">WhatsApp</a>
+      <a href="mailto:karabotsontsi@gmail.com">Email</a>
+      <a href="tel:+27693412372">Call</a>
+
+    </div>
+
+  </div>
+
+  <div class="footer-copy">
+    © 2026 Bean Charge Coffee · Soweto, South Africa
+  </div>
+
+</footer>
+
+<!-- WHATSAPP FLOAT -->
+
+<a
+class="whatsapp"
+href="https://wa.me/27693412372"
+target="_blank">
+
+<svg width="30" viewBox="0 0 24 24" fill="white">
+<path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347"/>
+</svg>
+
 </a>
 
-<!-- Three.js for subtle 3D bean in hero -->
-<script type="importmap">
-  { "imports": { "three": "https://unpkg.com/three@0.128.0/build/three.module.js" } }
-</script>
-<script type="module">
-  import * as THREE from 'three';
-
-  const container = document.getElementById('hero-3d');
-  const scene = new THREE.Scene();
-  scene.background = null; // transparent
-  const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
-  camera.position.set(0, 0.5, 3.2);
-  camera.lookAt(0, 0.2, 0);
-
-  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-  renderer.setSize(container.clientWidth, container.clientHeight);
-  renderer.setClearColor(0x000000, 0);
-  container.appendChild(renderer.domElement);
-
-  // lights
-  const ambient = new THREE.AmbientLight(0xffffff, 0.5);
-  scene.add(ambient);
-  const mainLight = new THREE.DirectionalLight(0xfff0e0, 1);
-  mainLight.position.set(2, 3, 2);
-  scene.add(mainLight);
-  const fillLight = new THREE.PointLight(0xc8860a, 0.4);
-  fillLight.position.set(1, 1, 1.5);
-  scene.add(fillLight);
-  const backLight = new THREE.PointLight(0x8b5a2b, 0.3);
-  backLight.position.set(-1, 1, -1.5);
-  scene.add(backLight);
-
-  // Create a high-quality coffee bean
-  const beanGroup = new THREE.Group();
-
-  // Main body (squashed sphere)
-  const bodyGeo = new THREE.SphereGeometry(0.5, 64, 64);
-  const bodyMat = new THREE.MeshStandardMaterial({ color: 0x6f4e37, roughness: 0.25, metalness: 0.08 });
-  const body = new THREE.Mesh(bodyGeo, bodyMat);
-  body.scale.set(1.3, 0.85, 0.8);
-  beanGroup.add(body);
-
-  // Crease (cylinder along the bean)
-  const creaseGeo = new THREE.CylinderGeometry(0.22, 0.22, 1.1, 24);
-  const creaseMat = new THREE.MeshStandardMaterial({ color: 0x4a2e22, roughness: 0.6 });
-  const crease = new THREE.Mesh(creaseGeo, creaseMat);
-  crease.rotation.z = Math.PI / 2;
-  crease.position.y = 0.05;
-  beanGroup.add(crease);
-
-  // Subtle highlight / rim
-  const highlightMat = new THREE.MeshStandardMaterial({ color: 0xc8860a, emissive: 0x442200 });
-  const highlight = new THREE.Mesh(new THREE.SphereGeometry(0.1, 24, 24), highlightMat);
-  highlight.position.set(0.45, 0.2, 0.5);
-  beanGroup.add(highlight);
-
-  beanGroup.position.y = 0.1;
-  scene.add(beanGroup);
-
-  // Floating particles (steam / aroma)
-  const particleCount = 300;
-  const particleGeo = new THREE.BufferGeometry();
-  const particlePositions = new Float32Array(particleCount * 3);
-  for (let i = 0; i < particleCount; i++) {
-    particlePositions[i*3] = (Math.random() - 0.5) * 2.5;
-    particlePositions[i*3+1] = Math.random() * 1.8;
-    particlePositions[i*3+2] = (Math.random() - 0.5) * 2.2;
-  }
-  particleGeo.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
-  const particleMat = new THREE.PointsMaterial({ color: 0xc8860a, size: 0.012, transparent: true, opacity: 0.3 });
-  const particles = new THREE.Points(particleGeo, particleMat);
-  scene.add(particles);
-
-  let time = 0;
-  function animate() {
-    requestAnimationFrame(animate);
-    time += 0.012;
-    // Bean rotation
-    beanGroup.rotation.y = time * 0.6;
-    beanGroup.rotation.x = Math.sin(time * 0.5) * 0.15;
-    beanGroup.rotation.z = Math.cos(time * 0.4) * 0.1;
-    // Particles drift
-    particles.rotation.y += 0.002;
-    particles.rotation.x = Math.sin(time * 0.2) * 0.05;
-
-    renderer.render(scene, camera);
-  }
-  animate();
-
-  window.addEventListener('resize', () => {
-    const width = container.clientWidth;
-    const height = container.clientHeight;
-    renderer.setSize(width, height);
-    camera.aspect = width / height;
-    camera.updateProjectionMatrix();
-  });
-</script>
-
 <script>
-  // mobile menu
-  const hamburger = document.getElementById('hamburger');
-  const navLinks = document.getElementById('navLinks');
-  hamburger.addEventListener('click', () => navLinks.classList.toggle('open'));
-  document.querySelectorAll('.nav-links a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
 
-  // WhatsApp booking
-  const sendBtn = document.getElementById('sendBookingBtn');
-  sendBtn.addEventListener('click', () => {
-    const name = document.getElementById('name').value;
-    const email = document.getElementById('email').value;
-    const date = document.getElementById('eventDate').value;
-    const type = document.getElementById('eventType').value;
-    const msg = document.getElementById('message').value;
-    const text = `Hello Bean Charge! I'd like to book an event.%0A%0AName: ${name}%0AEmail: ${email}%0ADate: ${date}%0AType: ${type}%0AMessage: ${msg}`;
-    window.open(`https://wa.me/27693412372?text=${encodeURIComponent(text)}`, '_blank');
+/* NAV SCROLL */
+
+window.addEventListener('scroll', () => {
+
+  const navbar = document.getElementById('navbar');
+
+  if(window.scrollY > 40){
+    navbar.classList.add('scrolled');
+  }else{
+    navbar.classList.remove('scrolled');
+  }
+
+});
+
+/* MOBILE MENU */
+
+const menuToggle = document.getElementById('menuToggle');
+const navLinks = document.getElementById('navLinks');
+
+menuToggle.addEventListener('click', () => {
+  navLinks.classList.toggle('active');
+});
+
+document.querySelectorAll('.nav-links a').forEach(link => {
+  link.addEventListener('click', () => {
+    navLinks.classList.remove('active');
   });
+});
+
+/* WHATSAPP BOOKING */
+
+document.getElementById('sendBtn').addEventListener('click', () => {
+
+  const name = document.getElementById('name').value;
+  const email = document.getElementById('email').value;
+  const date = document.getElementById('date').value;
+  const event = document.getElementById('event').value;
+  const message = document.getElementById('message').value;
+
+  const text =
+`Hello Bean Charge!
+
+I'd like to book your mobile coffee service.
+
+Name: ${name}
+Email: ${email}
+Date: ${date}
+Event Type: ${event}
+
+Message:
+${message}`;
+
+  window.open(
+    `https://wa.me/27693412372?text=${encodeURIComponent(text)}`,
+    '_blank'
+  );
+
+});
+
 </script>
+
 </body>
 </html>
