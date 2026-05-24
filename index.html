@@ -3,10 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>BEAN CHARGE · Mobile Coffee Artisans | Soweto</title>
-  <!-- Google Fonts + CSS Reset -->
+  <title>BEAN CHARGE | 3D Coffee Experience · Soweto</title>
+  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700;900&family=DM+Sans:wght@400;500;700&family=Bebas+Neue&display=swap" rel="stylesheet">
   <style>
+    /* ------------------------------
+       CSS RESET + VARIABLES
+    ------------------------------ */
     * {
       margin: 0;
       padding: 0;
@@ -27,35 +30,45 @@
       background: var(--espresso);
       color: var(--text-light);
       font-family: 'DM Sans', sans-serif;
-      line-height: 1.5;
-      scroll-behavior: smooth;
+      overflow-x: hidden;
     }
 
-    /* Typography */
     h1, h2, h3, .logo, .section-title {
       font-family: 'Playfair Display', serif;
-      font-weight: 700;
-    }
-    .price, .category-tab, .stat-number, .cta-btn {
-      font-family: 'Bebas Neue', cursive;
-      letter-spacing: 1px;
     }
 
-    /* Sticky Nav - glass morphism */
+    /* ----- 3D canvas background layer ----- */
+    #canvas-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    /* ----- UI content (above canvas) ----- */
+    .content {
+      position: relative;
+      z-index: 10;
+      background: rgba(26, 10, 0, 0.75);
+      backdrop-filter: blur(6px);
+    }
+
+    /* Sticky nav */
     .sticky-nav {
       position: sticky;
       top: 0;
-      z-index: 1000;
-      background: transparent;
+      z-index: 100;
+      background: rgba(26, 10, 0, 0.85);
       backdrop-filter: blur(12px);
-      background-color: rgba(26, 10, 0, 0.7);
-      transition: background 0.2s, backdrop-filter 0.2s;
       border-bottom: 1px solid rgba(200, 134, 10, 0.3);
     }
     .nav-container {
       max-width: 1280px;
       margin: 0 auto;
-      padding: 0.9rem 2rem;
+      padding: 1rem 2rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -66,39 +79,28 @@
       display: flex;
       align-items: baseline;
       gap: 6px;
-      flex-wrap: wrap;
     }
     .logo-text {
-      font-size: 1.8rem;
+      font-size: 1.6rem;
       font-weight: 900;
-      letter-spacing: -0.5px;
       color: var(--cream);
     }
     .logo-text span {
       color: var(--amber);
     }
-    .tagline-nav {
-      font-size: 0.7rem;
-      opacity: 0.8;
-      font-family: 'DM Sans';
-      margin-left: 8px;
-    }
     .nav-links {
       display: flex;
       gap: 2rem;
-      align-items: center;
     }
     .nav-links a {
       color: var(--text-light);
       text-decoration: none;
       font-weight: 500;
       transition: var(--transition);
-      font-size: 1rem;
     }
-    .nav-links a:hover, .nav-links a.active {
+    .nav-links a:hover {
       color: var(--amber);
     }
-    /* hamburger (mobile) */
     .hamburger {
       display: none;
       flex-direction: column;
@@ -109,9 +111,8 @@
       width: 28px;
       height: 2px;
       background: var(--cream);
-      transition: 0.3s;
     }
-    @media (max-width: 780px) {
+    @media (max-width: 768px) {
       .nav-links {
         position: fixed;
         top: 70px;
@@ -123,8 +124,6 @@
         flex-direction: column;
         padding: 2rem;
         transition: 0.3s;
-        gap: 2rem;
-        box-shadow: -5px 0 20px rgba(0,0,0,0.6);
       }
       .nav-links.open {
         right: 0;
@@ -132,158 +131,9 @@
       .hamburger {
         display: flex;
       }
-      .nav-container {
-        padding: 0.8rem 1.5rem;
-      }
     }
 
-    /* Hero */
-    .hero {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      position: relative;
-      background: radial-gradient(circle at 30% 10%, #2B1500 0%, #1A0A00 90%);
-      overflow: hidden;
-      padding: 2rem;
-    }
-    .hero-content {
-      max-width: 800px;
-      z-index: 2;
-    }
-    .floating-logo {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 15px;
-      flex-wrap: wrap;
-      margin-bottom: 1rem;
-    }
-    .coffee-svg {
-      width: 55px;
-      height: 55px;
-      filter: drop-shadow(0 0 5px var(--amber));
-    }
-    .hero h1 {
-      font-size: 4rem;
-      letter-spacing: -1px;
-      background: linear-gradient(135deg, var(--cream) 30%, var(--amber) 90%);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-    .stagger-text {
-      font-size: 1.4rem;
-      letter-spacing: 2px;
-      margin: 1rem 0;
-      overflow: hidden;
-    }
-    .stagger-text span {
-      display: inline-block;
-      opacity: 0;
-      transform: translateY(20px);
-      animation: fadeUp 0.4s forwards;
-    }
-    @keyframes fadeUp {
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .cta-group {
-      display: flex;
-      gap: 1.5rem;
-      justify-content: center;
-      margin: 2rem 0;
-      flex-wrap: wrap;
-    }
-    .cta-btn {
-      background: transparent;
-      border: 2px solid var(--amber);
-      padding: 0.8rem 2rem;
-      border-radius: 40px;
-      text-decoration: none;
-      color: var(--cream);
-      font-weight: bold;
-      transition: var(--transition);
-      font-size: 1.1rem;
-      display: inline-block;
-    }
-    .cta-btn-primary {
-      background: var(--amber);
-      color: var(--espresso);
-      border: none;
-    }
-    .cta-btn-primary:hover {
-      background: #b07108;
-      transform: scale(1.02);
-    }
-    .cta-btn:hover {
-      background: var(--amber);
-      color: var(--espresso);
-    }
-    /* Steam particles */
-    .steam {
-      position: absolute;
-      bottom: 10%;
-      left: 0;
-      right: 0;
-      display: flex;
-      justify-content: center;
-      gap: 30px;
-      pointer-events: none;
-    }
-    .steam div {
-      width: 8px;
-      height: 40px;
-      background: radial-gradient(white, transparent);
-      opacity: 0.3;
-      border-radius: 50%;
-      animation: steamMove 3s infinite ease-in-out;
-    }
-    .steam div:nth-child(2) { animation-delay: 1s; height: 55px; width: 12px; }
-    .steam div:nth-child(3) { animation-delay: 2s; height: 35px; }
-    @keyframes steamMove {
-      0% { transform: translateY(0) scale(1); opacity: 0.2; }
-      100% { transform: translateY(-80px) scale(1.5); opacity: 0; }
-    }
-    .scroll-indicator {
-      position: absolute;
-      bottom: 25px;
-      left: 50%;
-      transform: translateX(-50%);
-      animation: bounce 2s infinite;
-      cursor: pointer;
-    }
-    @keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0);} 50%{transform:translateX(-50%) translateY(10px);} }
-
-    /* About strip */
-    .about-strip {
-      background: var(--roast);
-      padding: 3rem 1.5rem;
-      display: flex;
-      justify-content: center;
-      gap: 2rem;
-      flex-wrap: wrap;
-      border-top: 1px solid rgba(200,134,10,0.4);
-      border-bottom: 1px solid rgba(200,134,10,0.4);
-    }
-    .stat-card {
-      text-align: center;
-      min-width: 160px;
-    }
-    .stat-number {
-      font-size: 2.5rem;
-      color: var(--amber);
-      font-weight: bold;
-    }
-    .gold-divider {
-      width: 1px;
-      background: var(--amber);
-      opacity: 0.4;
-    }
-    @media (max-width: 700px) { .gold-divider { display: none; } }
-
-    /* Sections general */
+    /* sections */
     .section {
       padding: 5rem 2rem;
       max-width: 1280px;
@@ -304,121 +154,129 @@
       height: 3px;
       background: var(--amber);
     }
-    /* Menu Tabs */
-    .menu-tabs {
+
+    /* Hero (overlay text) */
+    .hero-overlay {
+      text-align: center;
+      padding: 8rem 2rem;
+    }
+    .hero-overlay h1 {
+      font-size: 4rem;
+      background: linear-gradient(135deg, var(--cream) 30%, var(--amber) 90%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .hero-overlay p {
+      font-size: 1.2rem;
+      max-width: 600px;
+      margin: 1rem auto;
+    }
+
+    /* about strip */
+    .about-strip {
+      background: var(--roast);
+      padding: 3rem 1.5rem;
       display: flex;
-      gap: 0.8rem;
+      justify-content: center;
+      gap: 2rem;
       flex-wrap: wrap;
-      margin-bottom: 2rem;
-      border-bottom: 1px solid #332211;
-      padding-bottom: 1rem;
+      border-top: 1px solid rgba(200,134,10,0.4);
+      border-bottom: 1px solid rgba(200,134,10,0.4);
     }
-    .category-tab {
-      background: none;
-      border: none;
-      font-size: 1rem;
-      padding: 0.5rem 1.2rem;
-      color: var(--cream);
-      cursor: pointer;
-      transition: 0.2s;
-      border-radius: 40px;
-      font-weight: bold;
+    .stat-card {
+      text-align: center;
+      min-width: 160px;
     }
-    .category-tab.active, .category-tab:hover {
-      background: var(--amber);
-      color: var(--espresso);
-    }
-    .menu-pane {
-      display: none;
-      animation: fadeSlide 0.3s ease;
-    }
-    .menu-pane.active-pane {
-      display: block;
-    }
-    @keyframes fadeSlide {
-      from { opacity: 0; transform: translateY(10px);}
-      to { opacity: 1; transform: translateY(0);}
-    }
-    .menu-item-card {
-      background: var(--surface-card);
-      background: #2B1500cc;
-      backdrop-filter: blur(4px);
-      border-radius: 18px;
-      padding: 0.8rem 1.2rem;
-      margin-bottom: 1rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-left: 4px solid transparent;
-      transition: 0.2s;
-    }
-    .menu-item-card:hover {
-      border-left-color: var(--amber);
-      transform: translateX(6px);
-    }
-    .item-name {
-      font-weight: 500;
-    }
-    .price {
-      font-size: 1.35rem;
+    .stat-number {
+      font-size: 2.5rem;
       color: var(--amber);
+      font-weight: bold;
+      font-family: 'Bebas Neue', cursive;
     }
-    /* gallery */
-    .gallery-grid {
+
+    /* Menu */
+    .menu-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
       gap: 1.5rem;
       margin-top: 2rem;
     }
-    .gallery-placeholder {
-      background: #2B1500;
-      border-radius: 20px;
-      aspect-ratio: 1/1;
+    .menu-category {
+      background: rgba(43, 21, 0, 0.7);
+      backdrop-filter: blur(5px);
+      border-radius: 24px;
+      padding: 1.5rem;
+      border-left: 4px solid var(--amber);
+    }
+    .menu-category h3 {
+      color: var(--amber);
+      margin-bottom: 1rem;
+      font-size: 1.5rem;
+    }
+    .menu-item {
       display: flex;
-      flex-direction: column;
+      justify-content: space-between;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid rgba(200,134,10,0.3);
+    }
+    .price {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 1.2rem;
+      color: var(--amber);
+    }
+
+    /* gallery placeholder (CSS-only) */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 1rem;
+    }
+    .gallery-item {
+      background: linear-gradient(145deg, #3D2000, #2B1500);
+      aspect-ratio: 1/1;
+      border-radius: 20px;
+      display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
+      font-size: 2rem;
       transition: 0.2s;
-      border: 1px solid #5a3a1a;
-      cursor: pointer;
+      border: 1px solid rgba(200,134,10,0.2);
     }
-    .gallery-placeholder:hover {
+    .gallery-item:hover {
       transform: scale(1.02);
       border-color: var(--amber);
     }
-    /* feature blocks */
+
+    /* features */
     .features-grid {
       display: flex;
       gap: 2rem;
       flex-wrap: wrap;
       justify-content: center;
-      margin-top: 2rem;
     }
     .feature {
       background: rgba(43,21,0,0.7);
-      backdrop-filter: blur(5px);
       padding: 2rem;
       border-radius: 28px;
-      width: 280px;
+      width: 260px;
       text-align: center;
     }
-    .feature i { font-size: 2.4rem; color: var(--amber); margin-bottom: 1rem; display: block; }
-    /* contact form & info */
-    .contact-grid {
+
+    /* booking form */
+    .booking-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 2rem;
     }
     .dark-form input, .dark-form select, .dark-form textarea {
       width: 100%;
-      padding: 1rem;
-      margin: 0.8rem 0;
+      padding: 0.8rem;
+      margin: 0.5rem 0;
       background: #1f1004;
       border: 1px solid #5a3a1a;
       color: var(--text-light);
       border-radius: 20px;
-      font-family: 'DM Sans';
     }
     .dark-form button {
       background: var(--amber);
@@ -427,41 +285,31 @@
       padding: 0.9rem;
       border-radius: 40px;
       font-weight: bold;
-      font-size: 1rem;
       cursor: pointer;
     }
-    .contact-cards p {
-      margin: 1rem 0;
+    .contact-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .contact-card {
+      background: rgba(43,21,0,0.7);
+      padding: 1rem;
+      border-radius: 20px;
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 1rem;
     }
-    .contact-cards a {
-      color: var(--amber);
-      text-decoration: none;
-    }
-    iframe {
-      border-radius: 20px;
-      margin-top: 1.2rem;
-    }
-    /* footer */
-    .footer {
+    footer {
       background: #0e0600;
       text-align: center;
       padding: 2rem;
       border-top: 1px solid #35200c;
     }
-    .footer-icons a {
-      color: var(--amber);
-      margin: 0 0.6rem;
-      font-size: 1.4rem;
-      transition: 0.2s;
-    }
-    /* floating WhatsApp */
-    .whatsapp-float {
+    .wa-float {
       position: fixed;
-      bottom: 22px;
-      right: 22px;
+      bottom: 20px;
+      right: 20px;
       background: #25D366;
       width: 55px;
       height: 55px;
@@ -469,259 +317,240 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 2rem;
-      color: white;
       z-index: 99;
-      box-shadow: 0 0 0 0 rgba(200,134,10,0.7);
-      animation: pulse-ring 1.8s infinite;
+      animation: pulse 1.8s infinite;
     }
-    @keyframes pulse-ring { 0% { box-shadow: 0 0 0 0 rgba(200,134,10,0.6); } 70% { box-shadow: 0 0 0 12px rgba(200,134,10,0); } 100% { box-shadow: 0 0 0 0 rgba(200,134,10,0); } }
-    /* scroll reveal */
-    .reveal {
-      opacity: 0;
-      transform: translateY(30px);
-      transition: 0.8s ease;
-    }
-    .reveal.active {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    @media (max-width: 780px) {
-      .contact-grid { grid-template-columns: 1fr; }
-      .hero h1 { font-size: 2.4rem; }
-      .section { padding: 3rem 1.2rem; }
-    }
+    @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(200,134,10,0.6); } 70% { box-shadow: 0 0 0 12px rgba(200,134,10,0); } 100% { box-shadow: 0 0 0 0 rgba(200,134,10,0); } }
+    @media (max-width: 760px) { .booking-grid { grid-template-columns: 1fr; } .hero-overlay h1 { font-size: 2.5rem; } }
   </style>
 </head>
 <body>
 
-<nav class="sticky-nav" id="navbar">
-  <div class="nav-container">
-    <div class="logo">
-      <a href="#" style="text-decoration:none">
-        <div class="logo-text">BEAN <span>CHARGE</span></div>
-        <div class="tagline-nav">Mobile Coffee Artisans · Soweto Since 2019</div>
-      </a>
-    </div>
-    <div class="hamburger" id="hamburger">
-      <span></span><span></span><span></span>
-    </div>
-    <div class="nav-links" id="navLinks">
-      <a href="#home">Home</a>
-      <a href="#menu">Menu</a>
-      <a href="#gallery">Gallery</a>
-      <a href="#booking">Book Event</a>
-      <a href="#contact">Contact</a>
+<!-- 3D canvas container -->
+<div id="canvas-container"></div>
+
+<!-- UI content -->
+<div class="content">
+  <div class="sticky-nav">
+    <div class="nav-container">
+      <div class="logo"><a href="#"><div class="logo-text">BEAN <span>CHARGE</span></div></a></div>
+      <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+      <div class="nav-links" id="navLinks">
+        <a href="#menu">Menu</a>
+        <a href="#about">About</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#booking">Book</a>
+      </div>
     </div>
   </div>
-</nav>
 
-<main>
-  <!-- Hero Section -->
-  <section id="home" class="hero">
-    <div class="hero-content">
-      <div class="floating-logo">
-        <svg class="coffee-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><path d="M6 1v3M10 1v3M14 1v3"/></svg>
-        <h1>BEAN CHARGE</h1>
-      </div>
-      <div class="stagger-text" id="staggerText">Mobile Coffee Artisans · Soweto Since 2019</div>
-      <div class="cta-group">
-        <a href="#menu" class="cta-btn cta-btn-primary">☕ View Menu</a>
-        <a href="#booking" class="cta-btn">📅 Book Your Event</a>
-      </div>
-    </div>
-    <div class="steam"><div></div><div></div><div></div></div>
-    <div class="scroll-indicator" id="scrollArrow">↓</div>
+  <section class="hero-overlay">
+    <h1>BEAN CHARGE</h1>
+    <p>Mobile Coffee Artisans · Soweto Since 2019</p>
+    <div style="margin-top: 1.5rem;"><a href="#booking" class="btn-gold" style="background: var(--amber); padding: 0.8rem 2rem; border-radius: 40px; text-decoration: none; color: var(--espresso); font-weight: bold;">Book Your Event</a></div>
   </section>
 
-  <!-- About strip -->
-  <div class="about-strip reveal">
-    <div class="stat-card"><div class="stat-number">6 Years</div><div>Mobile Coffee Experience</div></div>
-    <div class="gold-divider"></div>
+  <div class="about-strip">
+    <div class="stat-card"><div class="stat-number">6 Years</div><div>Mobile Coffee</div></div>
     <div class="stat-card"><div class="stat-number">500+</div><div>Events Catered</div></div>
-    <div class="gold-divider"></div>
-    <div class="stat-card"><div class="stat-number">Soweto</div><div>Born & Based Here</div></div>
+    <div class="stat-card"><div class="stat-number">Soweto</div><div>Born & Based</div></div>
   </div>
 
-  <!-- Menu Section -->
-  <section id="menu" class="section reveal">
-    <h2 class="section-title">THE CRAFT</h2>
-    <div class="menu-tabs" id="menuTabs">
-      <button class="category-tab active" data-category="espresso">Espresso Classics</button>
-      <button class="category-tab" data-category="milk">Milk Specialties</button>
-      <button class="category-tab" data-category="flavoured">Flavoured</button>
-      <button class="category-tab" data-category="tea">Tea & More</button>
-    </div>
-    <!-- Panes -->
-    <div id="espresso" class="menu-pane active-pane">
-      <div class="menu-item-card"><span class="item-name">Americano</span><span class="price">R17 / R20</span></div>
-      <div class="menu-item-card"><span class="item-name">Espresso</span><span class="price">R15</span></div>
-      <div class="menu-item-card"><span class="item-name">Double Espresso</span><span class="price">R20</span></div>
-    </div>
-    <div id="milk" class="menu-pane">
-      <div class="menu-item-card"><span class="item-name">Cappuccino</span><span class="price">R17 / R27</span></div>
-      <div class="menu-item-card"><span class="item-name">Latte</span><span class="price">R17 / R27</span></div>
-      <div class="menu-item-card"><span class="item-name">Flat White</span><span class="price">R17 / R27</span></div>
-    </div>
-    <div id="flavoured" class="menu-pane">
-      <div class="menu-item-card"><span class="item-name">Mocha</span><span class="price">R20 / R30</span></div>
-      <div class="menu-item-card"><span class="item-name">Vanilla Coffee</span><span class="price">R15 / R30</span></div>
-      <div class="menu-item-card"><span class="item-name">Vanilla & Choco</span><span class="price">R17 / R30</span></div>
-    </div>
-    <div id="tea" class="menu-pane">
-      <div class="menu-item-card"><span class="item-name">Hot Chocolate</span><span class="price">R15 / R30</span></div>
-      <div class="menu-item-card"><span class="item-name">Chai Tea</span><span class="price">R30</span></div>
-      <div class="menu-item-card"><span class="item-name">Tea (w/ milk)</span><span class="price">R15 / R18</span></div>
+  <!-- MENU SECTION – ALL PRICES R15 -->
+  <section id="menu" class="section">
+    <h2 class="section-title">Our Craft</h2>
+    <div class="menu-grid">
+      <div class="menu-category"><h3>Espresso Classics</h3><div class="menu-item"><span>Americano</span><span class="price">R15</span></div><div class="menu-item"><span>Espresso</span><span class="price">R15</span></div><div class="menu-item"><span>Double Espresso</span><span class="price">R15</span></div></div>
+      <div class="menu-category"><h3>Milk Specialties</h3><div class="menu-item"><span>Cappuccino</span><span class="price">R15</span></div><div class="menu-item"><span>Latte</span><span class="price">R15</span></div><div class="menu-item"><span>Flat White</span><span class="price">R15</span></div></div>
+      <div class="menu-category"><h3>Flavoured</h3><div class="menu-item"><span>Mocha</span><span class="price">R15</span></div><div class="menu-item"><span>Vanilla Coffee</span><span class="price">R15</span></div><div class="menu-item"><span>Vanilla & Choco</span><span class="price">R15</span></div></div>
+      <div class="menu-category"><h3>Tea & More</h3><div class="menu-item"><span>Hot Chocolate</span><span class="price">R15</span></div><div class="menu-item"><span>Chai Tea</span><span class="price">R15</span></div><div class="menu-item"><span>Tea with Milk</span><span class="price">R15</span></div></div>
     </div>
   </section>
 
-  <!-- Gallery -->
-  <section id="gallery" class="section reveal">
-    <h2 class="section-title">MOMENTS AT WORK</h2>
+  <!-- Gallery placeholders (no real images) -->
+  <section id="gallery" class="section">
+    <h2 class="section-title">Moments at Work</h2>
     <div class="gallery-grid">
-      <div class="gallery-placeholder"><svg width="40" viewBox="0 0 24 24" fill="none" stroke="gold"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg><span>Your photo here</span></div>
-      <div class="gallery-placeholder"><svg width="40" viewBox="0 0 24 24" fill="none" stroke="gold"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg><span>Your photo here</span></div>
-      <div class="gallery-placeholder"><svg width="40" viewBox="0 0 24 24" fill="none" stroke="gold"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg><span>Your photo here</span></div>
-      <div class="gallery-placeholder"><svg width="40" viewBox="0 0 24 24" fill="none" stroke="gold"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg><span>Your photo here</span></div>
-      <div class="gallery-placeholder"><svg width="40" viewBox="0 0 24 24" fill="none" stroke="gold"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg><span>Your photo here</span></div>
-      <div class="gallery-placeholder"><svg width="40" viewBox="0 0 24 24" fill="none" stroke="gold"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg><span>Your photo here</span></div>
+      <div class="gallery-item">☕</div><div class="gallery-item">⚡</div><div class="gallery-item">🔥</div>
+      <div class="gallery-item">🚐</div><div class="gallery-item">❤️</div><div class="gallery-item">📍</div>
     </div>
-    <p style="text-align:center; margin-top:1rem; font-size:0.85rem;">✨ Replace these placeholder cards with your actual service photos.</p>
+    <p style="text-align:center; margin-top:1rem;">✨ Add your service photos later (replace these icons)</p>
   </section>
 
   <!-- Why Bean Charge -->
-  <section class="section reveal">
-    <h2 class="section-title">WHY BEAN CHARGE</h2>
+  <section class="section">
+    <h2 class="section-title">Why Us</h2>
     <div class="features-grid">
-      <div class="feature"><i>🚐</i><h3>We Come To You</h3><p>Event setup, anywhere in Gauteng — mobile bar to your doorstep.</p></div>
-      <div class="feature"><i>☕</i><h3>Specialty Grade Coffee</h3><p>Freshly pulled shots, ethically sourced beans, every time.</p></div>
-      <div class="feature"><i>❤️</i><h3>Born in Soweto</h3><p>Community rooted, 6 years running — local pride in every cup.</p></div>
+      <div class="feature"><div style="font-size:2rem;">🚐</div><h3>We Come To You</h3><p>Any event in Gauteng, fully mobile.</p></div>
+      <div class="feature"><div style="font-size:2rem;">☕</div><h3>Specialty Grade</h3><p>Freshly pulled shots, every time.</p></div>
+      <div class="feature"><div style="font-size:2rem;">❤️</div><h3>Soweto Proud</h3><p>6 years community-rooted.</p></div>
     </div>
   </section>
 
-  <!-- Booking / Contact -->
-  <section id="booking" class="section reveal">
-    <h2 class="section-title">BOOK YOUR EVENT</h2>
-    <div class="contact-grid">
-      <div class="dark-form" id="eventForm">
+  <!-- Booking -->
+  <section id="booking" class="section">
+    <h2 class="section-title">Book Your Event</h2>
+    <div class="booking-grid">
+      <div class="dark-form">
         <input type="text" id="name" placeholder="Full Name" required>
-        <input type="email" id="email" placeholder="Email Address">
+        <input type="email" id="email" placeholder="Email">
         <input type="date" id="eventDate">
-        <select id="eventType"><option>Corporate Event</option><option>Wedding</option><option>Private Party</option><option>Market / Festival</option></select>
-        <textarea id="message" rows="2" placeholder="Tell us more..."></textarea>
-        <button id="sendBookingBtn">Send enquiry →</button>
+        <select id="eventType">
+          <option>Corporate Event</option><option>Wedding</option><option>Private Party</option><option>Market / Festival</option>
+        </select>
+        <textarea id="message" rows="2" placeholder="Event details..."></textarea>
+        <button id="sendBookingBtn">Send enquiry via WhatsApp</button>
       </div>
-      <div class="contact-cards" id="contact">
-        <p>📞 <a href="tel:+27693412372">069 341 2372</a></p>
-        <p>✉️ <a href="mailto:karabotsontsi@gmail.com">karabotsontsi@gmail.com</a></p>
-        <p>📍 Soweto, Gauteng (mobile service – we travel to you)</p>
-        <iframe width="100%" height="200" style="border:0; border-radius:18px" loading="lazy" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d114955.745275518!2d27.8315572!3d-26.2480879!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1e95a7c8f4b3f8b5%3A0x5c5a5a5a5a5a5a5a!2sSoweto%2C%20South%20Africa!5e0!3m2!1sen!2sza!4v1650000000000!5m2!1sen!2sza"></iframe>
+      <div class="contact-cards">
+        <div class="contact-card">📞 <a href="tel:+27693412372" style="color:var(--amber);">069 341 2372</a></div>
+        <div class="contact-card">✉️ <a href="mailto:karabotsontsi@gmail.com" style="color:var(--amber);">karabotsontsi@gmail.com</a></div>
+        <div class="contact-card">📍 Soweto, Gauteng · Mobile Service</div>
+        <div style="border-radius:20px; overflow:hidden; margin-top:0.5rem;">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d114955.745275518!2d27.8315572!3d-26.2480879!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1e95a7c8f4b3f8b5%3A0x5c5a5a5a5a5a5a5a!2sSoweto%2C%20South%20Africa!4v1650000000000" width="100%" height="180" style="border:0;" allowfullscreen></iframe>
+        </div>
       </div>
     </div>
   </section>
-</main>
 
-<footer class="footer">
-  <div class="logo-text" style="font-size:1.3rem;">BEAN <span>CHARGE</span> COFFEE</div>
-  <div class="footer-icons">
-    <a href="https://wa.me/27693412372" target="_blank"><i class="fab fa-whatsapp"></i></a>
-    <a href="mailto:karabotsontsi@gmail.com"><i class="fas fa-envelope"></i></a>
-  </div>
-  <p>Crafted in Soweto ☕ · Est. 2019</p>
-  <p>© 2025 Bean Charge Coffee</p>
-</footer>
+  <footer>
+    <p>© 2025 BEAN CHARGE COFFEE · Crafted in Soweto ☕</p>
+  </footer>
+</div>
 
-<a href="https://wa.me/27693412372?text=Hello%20Bean%20Charge!%20I'd%20like%20to%20book%20your%20mobile%20coffee%20bar." class="whatsapp-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
+<a class="wa-float" href="https://wa.me/27693412372?text=Hi%20Bean%20Charge!%20I'd%20like%20to%20book%20an%20event." target="_blank">
+  <svg width="28" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
 
-<!-- Font awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<!-- Three.js script -->
+<script type="importmap">
+  { "imports": { "three": "https://unpkg.com/three@0.128.0/build/three.module.js" } }
+</script>
+<script type="module">
+  import * as THREE from 'three';
 
-<script>
-  // Staggered text animation
-  const textSpan = document.getElementById('staggerText');
-  const textArr = textSpan.innerText.split('');
-  textSpan.innerHTML = '';
-  textArr.forEach((ch, i) => {
-    const span = document.createElement('span');
-    span.innerText = ch === ' ' ? '\u00A0' : ch;
-    span.style.animationDelay = `${i * 0.03}s`;
-    textSpan.appendChild(span);
-  });
+  // Setup scene, camera, renderer
+  const container = document.getElementById('canvas-container');
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x1A0A00);
+  scene.fog = new THREE.FogExp2(0x1A0A00, 0.012);
 
-  // Menu tab switching
-  const tabs = document.querySelectorAll('.category-tab');
-  const panes = document.querySelectorAll('.menu-pane');
-  tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      const category = tab.dataset.category;
-      tabs.forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-      panes.forEach(pane => pane.classList.remove('active-pane'));
-      document.getElementById(category).classList.add('active-pane');
-    });
-  });
+  const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+  camera.position.set(0, 1.5, 4);
+  camera.lookAt(0, 0.8, 0);
 
-  // Sticky nav active scroll + hamburger
-  const sections = document.querySelectorAll('section[id], div[id="booking"]');
-  const navLinks = document.querySelectorAll('.nav-links a');
-  window.addEventListener('scroll', () => {
-    let current = '';
-    const scrollPos = window.scrollY + 150;
-    sections.forEach(section => {
-      const sectionTop = section.offsetTop;
-      if (scrollPos >= sectionTop) current = section.getAttribute('id');
-    });
-    navLinks.forEach(link => {
-      link.classList.remove('active');
-      if (link.getAttribute('href') === `#${current}`) link.classList.add('active');
-    });
-    const navbar = document.getElementById('navbar');
-    if(window.scrollY > 50) navbar.style.backgroundColor = 'rgba(26, 10, 0, 0.95)';
-    else navbar.style.backgroundColor = 'rgba(26, 10, 0, 0.7)';
-  });
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.shadowMap.enabled = true;
+  container.appendChild(renderer.domElement);
 
-  // Hamburger
-  const hamburger = document.getElementById('hamburger');
-  const navMenu = document.getElementById('navLinks');
-  hamburger.addEventListener('click', () => {
-    navMenu.classList.toggle('open');
-  });
-  document.querySelectorAll('.nav-links a').forEach(link => {
-    link.addEventListener('click', () => navMenu.classList.remove('open'));
-  });
+  // Lights
+  const ambientLight = new THREE.AmbientLight(0x404040);
+  scene.add(ambientLight);
+  const mainLight = new THREE.DirectionalLight(0xffeedd, 1);
+  mainLight.position.set(3, 5, 2);
+  mainLight.castShadow = true;
+  scene.add(mainLight);
+  const fillLight = new THREE.PointLight(0xc8860a, 0.5);
+  fillLight.position.set(1, 1, 2);
+  scene.add(fillLight);
+  const backLight = new THREE.PointLight(0x8b5a2b, 0.4);
+  backLight.position.set(-1, 1.5, -2);
+  scene.add(backLight);
 
-  // scroll reveal intersection observer
-  const reveals = document.querySelectorAll('.reveal');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add('active'); });
-  }, { threshold: 0.1 });
-  reveals.forEach(el => observer.observe(el));
+  // Create a procedural coffee bean using torus knot + spheres for realism
+  const beanGroup = new THREE.Group();
+  // Main body
+  const bodyGeo = new THREE.SphereGeometry(0.45, 32, 32);
+  const bodyMat = new THREE.MeshStandardMaterial({ color: 0x5D3A1A, roughness: 0.3, metalness: 0.1 });
+  const body = new THREE.Mesh(bodyGeo, bodyMat);
+  body.scale.set(1.2, 0.8, 0.7);
+  beanGroup.add(body);
+  // Crease (cylinder)
+  const creaseGeo = new THREE.CylinderGeometry(0.2, 0.2, 0.8, 16);
+  const creaseMat = new THREE.MeshStandardMaterial({ color: 0x3E2723 });
+  const crease = new THREE.Mesh(creaseGeo, creaseMat);
+  crease.rotation.z = Math.PI / 2;
+  crease.position.y = 0.05;
+  beanGroup.add(crease);
+  // Small highlight
+  const highlight = new THREE.Mesh(new THREE.SphereGeometry(0.08, 16, 16), new THREE.MeshStandardMaterial({ color: 0xC8860A, emissive: 0x442200 }));
+  highlight.position.set(0.35, 0.25, 0.4);
+  beanGroup.add(highlight);
+  beanGroup.position.y = 0.2;
+  scene.add(beanGroup);
 
-  // WhatsApp booking prepopulate
-  document.getElementById('sendBookingBtn').addEventListener('click', (e) => {
-    e.preventDefault();
-    const name = document.getElementById('name').value;
-    const email = document.getElementById('email').value;
-    const eventDate = document.getElementById('eventDate').value;
-    const eventType = document.getElementById('eventType').value;
-    const msg = document.getElementById('message').value;
-    const whatsappMsg = `Hello Bean Charge! I'd like to book an event.%0A%0AName: ${name}%0AEmail: ${email}%0ADate: ${eventDate}%0AType: ${eventType}%0AMessage: ${msg}`;
-    window.open(`https://wa.me/27693412372?text=${whatsappMsg}`, '_blank');
-  });
+  // Add a simple floating coffee cup next to it
+  const cupGroup = new THREE.Group();
+  const cupBody = new THREE.Mesh(new THREE.CylinderGeometry(0.45, 0.3, 0.5, 32), new THREE.MeshStandardMaterial({ color: 0xF5E6C8, roughness: 0.2 }));
+  cupBody.castShadow = true;
+  cupGroup.add(cupBody);
+  const handle = new THREE.Mesh(new THREE.TorusGeometry(0.15, 0.05, 16, 32, Math.PI), new THREE.MeshStandardMaterial({ color: 0xF5E6C8 }));
+  handle.rotation.z = Math.PI / 2;
+  handle.position.set(0.55, 0.05, 0);
+  cupGroup.add(handle);
+  const coffeeLiquid = new THREE.Mesh(new THREE.CylinderGeometry(0.38, 0.38, 0.08, 32), new THREE.MeshStandardMaterial({ color: 0x3E2723, emissive: 0x1A0A00 }));
+  coffeeLiquid.position.y = 0.22;
+  cupGroup.add(coffeeLiquid);
+  cupGroup.position.set(1.2, -0.1, 0.6);
+  cupGroup.rotation.y = -0.5;
+  scene.add(cupGroup);
 
-  // Smooth scroll for anchor links
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-      e.preventDefault();
-      const targetId = this.getAttribute('href').substring(1);
-      const target = document.getElementById(targetId);
-      if(target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    });
-  });
-  // scroll arrow click
-  document.getElementById('scrollArrow')?.addEventListener('click', () => {
-    document.getElementById('menu')?.scrollIntoView({ behavior: 'smooth' });
+  // Floating particles (steam effect)
+  const particleCount = 400;
+  const particleGeo = new THREE.BufferGeometry();
+  const particlePositions = new Float32Array(particleCount * 3);
+  for (let i = 0; i < particleCount; i++) {
+    particlePositions[i*3] = (Math.random() - 0.5) * 5;
+    particlePositions[i*3+1] = Math.random() * 2.5;
+    particlePositions[i*3+2] = (Math.random() - 0.5) * 4 - 1;
+  }
+  particleGeo.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
+  const particleMat = new THREE.PointsMaterial({ color: 0xC8860A, size: 0.02, transparent: true, opacity: 0.4 });
+  const particles = new THREE.Points(particleGeo, particleMat);
+  scene.add(particles);
+
+  // Simple ground reflection disc
+  const groundDisc = new THREE.Mesh(new THREE.CircleGeometry(2.5, 16), new THREE.MeshStandardMaterial({ color: 0x2B1500, roughness: 0.8, metalness: 0.1, transparent: true, opacity: 0.4 }));
+  groundDisc.rotation.x = -Math.PI / 2;
+  groundDisc.position.y = -0.6;
+  groundDisc.receiveShadow = true;
+  scene.add(groundDisc);
+
+  // Animation loop
+  let time = 0;
+  function animate() {
+    requestAnimationFrame(animate);
+    time += 0.012;
+    // Rotate bean
+    beanGroup.rotation.y = time * 0.8;
+    beanGroup.rotation.x = Math.sin(time * 0.6) * 0.2;
+    beanGroup.rotation.z = Math.cos(time * 0.5) * 0.1;
+    // Slight cup floating
+    cupGroup.position.y = -0.1 + Math.sin(time * 1.2) * 0.03;
+    // Rotate particles
+    particles.rotation.y += 0.002;
+    camera.lookAt(0, 0.5, 0);
+    renderer.render(scene, camera);
+  }
+  animate();
+
+  window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
   });
 </script>
-</body>
-</html>
+
+<script>
+  // Mobile menu toggle
+  const hamburger = document.getElementById('hamburger');
+  const navLinks = document.getElementById('navLinks');
+  hamburger.addEventListener('click', () => navLinks.classList.toggle('open'));
+  document.querySelectorAll('.nav-links a').forEach(link => link.addEventListener('click', () => navLinks.classList.remove('open')));
+
+  // WhatsApp booking
+  const sendBtn = document.getElementById('sendBookingBtn');
+  sendBtn.addEventListener('click', () => {
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const date = document.getElementB
