@@ -1,188 +1,714 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-ZA">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>BEAN CHARGE 3D</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>BEAN CHARGE | 3D Mobile Coffee Bar · Soweto</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&family=Playfair+Display:wght@500;700;900&display=swap" rel="stylesheet">
+  <style>
+    /* ----- GLOBAL ----- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #FDF9F2;
+      color: #2C2418;
+      overflow-x: hidden;
+    }
+    h1, h2, h3, .logo {
+      font-family: 'Playfair Display', serif;
+    }
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+    .btn-gold {
+      background: #C8860A;
+      color: white;
+      padding: 0.8rem 2rem;
+      border-radius: 40px;
+      text-decoration: none;
+      font-weight: 600;
+      display: inline-block;
+      transition: 0.2s;
+      border: none;
+      cursor: pointer;
+    }
+    .btn-gold:hover {
+      background: #A56E08;
+      transform: translateY(-2px);
+    }
 
-<style>
-body {
-  margin: 0;
-  overflow: hidden;
-  font-family: Arial, sans-serif;
-  background: radial-gradient(circle at top, #f6eadc, #1a120d);
-}
+    /* ----- HERO (3D Canvas full viewport) ----- */
+    #hero-canvas {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      background: radial-gradient(circle at top, #f6eadc, #1a120d);
+      overflow: hidden;
+    }
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+    .hero-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: white;
+      pointer-events: none;
+      z-index: 10;
+      background: radial-gradient(ellipse at center, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.5) 100%);
+    }
+    .hero-overlay h1 {
+      font-size: clamp(2.5rem, 8vw, 5rem);
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      text-shadow: 0 2px 15px rgba(0,0,0,0.3);
+    }
+    .hero-overlay p {
+      font-size: 1.1rem;
+      max-width: 500px;
+      margin: 1rem auto;
+      opacity: 0.9;
+    }
+    .hero-overlay .tag {
+      margin-top: 1.5rem;
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(8px);
+      padding: 0.5rem 1.2rem;
+      border-radius: 60px;
+      font-size: 0.8rem;
+      letter-spacing: 0.5px;
+    }
+    .scroll-hint {
+      position: absolute;
+      bottom: 25px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: white;
+      font-size: 0.8rem;
+      background: rgba(0,0,0,0.4);
+      padding: 0.3rem 0.8rem;
+      border-radius: 30px;
+      pointer-events: none;
+      z-index: 10;
+    }
 
-canvas {
-  display: block;
-}
+    /* ----- Navigation (sticky after hero) ----- */
+    .sticky-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(253, 249, 242, 0.96);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 1px 0 rgba(0,0,0,0.05);
+    }
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+    .logo {
+      font-size: 1.6rem;
+    }
+    .logo span {
+      color: #C8860A;
+    }
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+    }
+    .nav-links a {
+      text-decoration: none;
+      font-weight: 500;
+      color: #2C2418;
+    }
+    .nav-links a:hover {
+      color: #C8860A;
+    }
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+    }
+    .hamburger span {
+      width: 26px;
+      height: 2px;
+      background: #2C2418;
+    }
 
-.overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  padding: 40px;
-  color: white;
-  pointer-events: none;
-}
+    /* ----- Content sections (below hero) ----- */
+    .section {
+      padding: 5rem 0;
+    }
+    .section-title {
+      font-size: 2.2rem;
+      margin-bottom: 2rem;
+      position: relative;
+      display: inline-block;
+    }
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 60px;
+      height: 3px;
+      background: #C8860A;
+    }
 
-.title {
-  font-size: 60px;
-  font-weight: bold;
-  letter-spacing: 2px;
-}
+    /* About grid */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+    .about-text p {
+      margin-bottom: 1.2rem;
+      color: #4A3A2A;
+      line-height: 1.6;
+    }
+    .about-image img {
+      width: 100%;
+      border-radius: 24px;
+      object-fit: cover;
+      height: 400px;
+    }
 
-.subtitle {
-  opacity: 0.7;
-  margin-top: 10px;
-}
+    /* Menu grid – all R15 */
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 2rem;
+      margin-top: 1rem;
+    }
+    .menu-card {
+      background: white;
+      border-radius: 20px;
+      padding: 1.5rem;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+      border: 1px solid #F0E5D8;
+    }
+    .menu-card h3 {
+      font-size: 1.4rem;
+      margin-bottom: 1rem;
+    }
+    .menu-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid #F0E5D8;
+    }
+    .price {
+      font-weight: 700;
+      color: #C8860A;
+    }
 
-.tag {
-  margin-top: 20px;
-  display: inline-block;
-  padding: 10px 18px;
-  border: 1px solid rgba(255,255,255,0.3);
-  border-radius: 999px;
-  font-size: 12px;
-}
-</style>
+    /* Gallery */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1.5rem;
+    }
+    .gallery-item {
+      border-radius: 20px;
+      overflow: hidden;
+      height: 240px;
+    }
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: 0.3s;
+    }
+    .gallery-item img:hover {
+      transform: scale(1.03);
+    }
+
+    /* Features */
+    .features-grid {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 2rem;
+    }
+    .feature {
+      background: white;
+      padding: 2rem;
+      border-radius: 24px;
+      width: 260px;
+      text-align: center;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.03);
+    }
+    .feature-icon {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    /* Booking */
+    .booking-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+    }
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%;
+      padding: 0.8rem;
+      margin: 0.5rem 0 1rem 0;
+      background: white;
+      border: 1px solid #E0D4C4;
+      border-radius: 20px;
+      font-family: 'Inter', sans-serif;
+    }
+    .contact-card {
+      background: white;
+      padding: 1rem 1.2rem;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .map {
+      border-radius: 20px;
+      overflow: hidden;
+      margin-top: 1rem;
+    }
+
+    /* Footer */
+    footer {
+      background: #2C2418;
+      color: #FDF9F2;
+      text-align: center;
+      padding: 2rem;
+    }
+    .footer-links {
+      margin-top: 1rem;
+    }
+    .footer-links a {
+      color: #C8860A;
+      margin: 0 0.5rem;
+      text-decoration: none;
+    }
+
+    /* WhatsApp float */
+    .wa-float {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #25D366;
+      width: 55px;
+      height: 55px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 99;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    /* Responsive */
+    @media (max-width: 780px) {
+      .nav-links {
+        position: fixed;
+        top: 70px;
+        right: -100%;
+        width: 70%;
+        height: 100vh;
+        background: #FDF9F2;
+        flex-direction: column;
+        padding: 2rem;
+        transition: 0.3s;
+      }
+      .nav-links.open {
+        right: 0;
+      }
+      .hamburger {
+        display: flex;
+      }
+      .about-grid, .booking-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      .section {
+        padding: 3rem 0;
+      }
+      .container {
+        padding: 0 1.5rem;
+      }
+    }
+  </style>
 </head>
-
 <body>
 
-<div class="overlay">
-  <div class="title">BEAN CHARGE</div>
-  <div class="subtitle">Interactive 3D Mobile Coffee Experience · Soweto</div>
-  <div class="tag">Move your mouse ✦ drag to explore</div>
+<!-- 3D Hero Canvas -->
+<div id="hero-canvas">
+  <div class="hero-overlay">
+    <h1>BEAN CHARGE</h1>
+    <p>Mobile coffee bar · Specialty grade · Born in Soweto</p>
+    <div class="tag">☕ Drag to rotate the cup | Scroll for menu</div>
+  </div>
+  <div class="scroll-hint">↓ Scroll to explore</div>
 </div>
 
+<!-- Navigation (sticky after hero) -->
+<div class="sticky-nav">
+  <div class="nav-container">
+    <div class="logo">BEAN <span>CHARGE</span></div>
+    <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+    <div class="nav-links" id="navLinks">
+      <a href="#about">About</a>
+      <a href="#menu">Menu</a>
+      <a href="#gallery">Moments</a>
+      <a href="#booking">Book</a>
+    </div>
+  </div>
+</div>
+
+<!-- Content Sections -->
+<div class="container">
+  <!-- About Section (story & stats integrated) -->
+  <section id="about" class="section">
+    <div class="about-grid">
+      <div class="about-text">
+        <h2 class="section-title">Rooted in Soweto</h2>
+        <p>For six years, Bean Charge has been bringing specialty-grade coffee to the streets, markets, weddings, and corporate events of Gauteng. We're not just a vendor – we're part of the community.</p>
+        <p>Over 500 events catered, from intimate gatherings to large festivals. Our mobile setup means we come to you, fully equipped with a Brasilia 2-group espresso machine, freshly ground beans, and baristas who care.</p>
+        <p>Great coffee shouldn't be trapped inside four walls. We bring the café to your doorstep.</p>
+        <a href="#booking" class="btn-gold" style="margin-top: 1rem;">Book your event →</a>
+      </div>
+      <div class="about-image">
+        <img src="https://images.unsplash.com/photo-1600093463592-8e8ae6d8d6f6?auto=format&fit=crop&w=800&q=80" alt="Barista pouring coffee">
+      </div>
+    </div>
+  </section>
+
+  <!-- Menu: all R15 (250ml) -->
+  <section id="menu" class="section">
+    <h2 class="section-title">Our menu</h2>
+    <div class="menu-grid">
+      <div class="menu-card"><h3>Espresso classics</h3><div class="menu-item"><span>Americano</span><span class="price">R15</span></div><div class="menu-item"><span>Espresso</span><span class="price">R15</span></div><div class="menu-item"><span>Double Espresso</span><span class="price">R15</span></div></div>
+      <div class="menu-card"><h3>Milk specialties</h3><div class="menu-item"><span>Cappuccino</span><span class="price">R15</span></div><div class="menu-item"><span>Latte</span><span class="price">R15</span></div><div class="menu-item"><span>Flat White</span><span class="price">R15</span></div></div>
+      <div class="menu-card"><h3>Flavoured</h3><div class="menu-item"><span>Mocha</span><span class="price">R15</span></div><div class="menu-item"><span>Vanilla Coffee</span><span class="price">R15</span></div><div class="menu-item"><span>Vanilla & Choco</span><span class="price">R15</span></div></div>
+      <div class="menu-card"><h3>Tea & more</h3><div class="menu-item"><span>Hot Chocolate</span><span class="price">R15</span></div><div class="menu-item"><span>Chai Tea</span><span class="price">R15</span></div><div class="menu-item"><span>Tea with milk</span><span class="price">R15</span></div></div>
+    </div>
+  </section>
+
+  <!-- Gallery (real Unsplash images) -->
+  <section id="gallery" class="section">
+    <h2 class="section-title">Moments at work</h2>
+    <div class="gallery-grid">
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1442512595331-e89e73853f31?auto=format&fit=crop&w=600&q=80" alt="Coffee brewing"></div>
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?auto=format&fit=crop&w=600&q=80" alt="Coffee cup"></div>
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=600&q=80" alt="Barista at event"></div>
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1507133750040-4a8f57021571?auto=format&fit=crop&w=600&q=80" alt="Coffee setup"></div>
+    </div>
+  </section>
+
+  <!-- Why Bean Charge (features) -->
+  <section class="section">
+    <h2 class="section-title">Why us</h2>
+    <div class="features-grid">
+      <div class="feature"><div class="feature-icon">🚐</div><h3>We come to you</h3><p>Any event, anywhere in Gauteng. Full mobile setup.</p></div>
+      <div class="feature"><div class="feature-icon">☕</div><h3>Specialty grade</h3><p>Freshly pulled shots on a professional Brasilia machine.</p></div>
+      <div class="feature"><div class="feature-icon">❤️</div><h3>Soweto proud</h3><p>Six years serving our community with pride.</p></div>
+    </div>
+  </section>
+
+  <!-- Booking & Contact -->
+  <section id="booking" class="section">
+    <h2 class="section-title">Book your event</h2>
+    <div class="booking-grid">
+      <div>
+        <div class="form-group">
+          <input type="text" id="name" placeholder="Full name">
+          <input type="email" id="email" placeholder="Email">
+          <input type="date" id="eventDate">
+          <select id="eventType">
+            <option>Corporate event</option><option>Wedding</option><option>Private party</option><option>Market / festival</option>
+          </select>
+          <textarea id="message" rows="3" placeholder="Tell us about your event..."></textarea>
+          <button id="sendBookingBtn" class="btn-gold" style="width:100%;">Send enquiry via WhatsApp</button>
+        </div>
+      </div>
+      <div>
+        <div class="contact-card">📞 <a href="tel:+27693412372" style="color:#C8860A;">069 341 2372</a></div>
+        <div class="contact-card">✉️ <a href="mailto:karabotsontsi@gmail.com" style="color:#C8860A;">karabotsontsi@gmail.com</a></div>
+        <div class="contact-card">📍 Soweto, Gauteng · Mobile service</div>
+        <div class="map">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d114955.745275518!2d27.8315572!3d-26.2480879!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1e95a7c8f4b3f8b5%3A0x5c5a5a5a5a5a5a5a!2sSoweto%2C%20South%20Africa!5e0!3m2!1sen!2sza!4v1650000000000" width="100%" height="200" style="border:0;" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <p>© 2025 BEAN CHARGE COFFEE · Soweto, South Africa</p>
+  <div class="footer-links">
+    <a href="tel:+27693412372">Call</a> |
+    <a href="mailto:karabotsontsi@gmail.com">Email</a> |
+    <a href="https://wa.me/27693412372">WhatsApp</a>
+  </div>
+</footer>
+
+<a class="wa-float" href="https://wa.me/27693412372?text=Hi%20Bean%20Charge!%20I'd%20like%20to%20book%20an%20event." target="_blank">
+  <svg width="28" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<!-- Three.js code (enhanced version of user's 3D scene) -->
 <script src="https://cdn.jsdelivr.net/npm/three@0.161.0/build/three.min.js"></script>
-
 <script>
-let scene, camera, renderer;
-let cup, beans = [];
+  (function() {
+    // Setup scene, camera, renderer inside #hero-canvas
+    const container = document.getElementById('hero-canvas');
+    const width = container.clientWidth;
+    const height = container.clientHeight;
 
-init();
-animate();
+    const scene = new THREE.Scene();
+    scene.background = null; // transparent, we'll let CSS gradient show through? Actually we'll set background in CSS, but Three.js renders over it. Better to make scene transparent and let CSS gradient show. But we need background to be visible. We'll set a clear color with alpha 0.
+    scene.background = new THREE.Color(0x000000); // fallback, but we'll use CSS gradient behind. Actually we can set renderer alpha:true and let CSS gradient behind canvas.
+    // But user's original had radial gradient on body. We'll set the canvas to be absolute and background transparent.
+    // Let's rework: make the canvas background transparent, and the CSS gradient on #hero-canvas will show through.
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(width, height);
+    renderer.setClearColor(0x000000, 0); // transparent
+    container.appendChild(renderer.domElement);
+    // Position the canvas absolutely inside #hero-canvas
+    renderer.domElement.style.position = 'absolute';
+    renderer.domElement.style.top = '0';
+    renderer.domElement.style.left = '0';
+    renderer.domElement.style.width = '100%';
+    renderer.domElement.style.height = '100%';
+    renderer.domElement.style.display = 'block';
 
-function init() {
+    const camera = new THREE.PerspectiveCamera(60, width / height, 0.1, 1000);
+    camera.position.set(0, 1.5, 6);
+    camera.lookAt(0, 1, 0);
 
-  scene = new THREE.Scene();
+    // Lights
+    const ambientLight = new THREE.AmbientLight(0xffd7b0, 0.5);
+    scene.add(ambientLight);
+    const mainLight = new THREE.PointLight(0xffcc88, 1.2);
+    mainLight.position.set(3, 4, 2);
+    scene.add(mainLight);
+    const fillLight = new THREE.PointLight(0x8866aa, 0.4);
+    fillLight.position.set(-2, 1, 3);
+    scene.add(fillLight);
+    const backLight = new THREE.PointLight(0xffaa66, 0.5);
+    backLight.position.set(0, 2, -3);
+    scene.add(backLight);
 
-  camera = new THREE.PerspectiveCamera(
-    60,
-    window.innerWidth / window.innerHeight,
-    0.1,
-    1000
-  );
+    // Cup (improved geometry and material)
+    const cupGeo = new THREE.CylinderGeometry(1.2, 0.9, 2.2, 64);
+    const cupMat = new THREE.MeshStandardMaterial({
+      color: 0xF5EFE6,
+      roughness: 0.3,
+      metalness: 0.05,
+      emissive: 0x221100,
+      emissiveIntensity: 0.1
+    });
+    const cup = new THREE.Mesh(cupGeo, cupMat);
+    cup.castShadow = true;
+    cup.receiveShadow = false;
+    scene.add(cup);
 
-  camera.position.z = 8;
+    // Coffee liquid surface
+    const coffeeGeo = new THREE.CylinderGeometry(1.05, 1.05, 0.12, 64);
+    const coffeeMat = new THREE.MeshStandardMaterial({
+      color: 0x4B2F1D,
+      roughness: 0.2,
+      metalness: 0.05,
+      emissive: 0x2A1508,
+      emissiveIntensity: 0.2
+    });
+    const coffeeLiquid = new THREE.Mesh(coffeeGeo, coffeeMat);
+    coffeeLiquid.position.y = 1.05;
+    scene.add(coffeeLiquid);
 
-  renderer = new THREE.WebGLRenderer({ antialias: true });
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setPixelRatio(window.devicePixelRatio);
-  document.body.appendChild(renderer.domElement);
+    // Handle (improved shape)
+    const handleGeo = new THREE.TorusGeometry(0.65, 0.12, 32, 60);
+    const handleMat = new THREE.MeshStandardMaterial({ color: 0xEADBC6, roughness: 0.2 });
+    const handle = new THREE.Mesh(handleGeo, handleMat);
+    handle.position.set(1.25, 0.2, 0);
+    handle.rotation.z = Math.PI / 2;
+    handle.rotation.y = 0.2;
+    scene.add(handle);
 
-  // LIGHTS
-  const light = new THREE.PointLight(0xffffff, 1.2);
-  light.position.set(5, 5, 5);
-  scene.add(light);
+    // Portafilter group (simple)
+    const portafilterGroup = new THREE.Group();
+    const portBase = new THREE.Mesh(new THREE.BoxGeometry(1.6, 0.2, 0.6), new THREE.MeshStandardMaterial({ color: 0x3A2A1E, metalness: 0.5, roughness: 0.4 }));
+    portBase.position.set(0, 0, 0);
+    portafilterGroup.add(portBase);
+    const portHandle = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.15, 0.15), new THREE.MeshStandardMaterial({ color: 0x5A3A2A }));
+    portHandle.position.set(-1.0, 0.05, 0);
+    portafilterGroup.add(portHandle);
+    portafilterGroup.position.set(-2.2, -0.8, 0.8);
+    portafilterGroup.rotation.z = -0.3;
+    portafilterGroup.rotation.x = 0.2;
+    scene.add(portafilterGroup);
 
-  const ambient = new THREE.AmbientLight(0xffd7b0, 0.4);
-  scene.add(ambient);
+    // Coffee beans (particles with slight randomness in shape? use spheres but varying sizes)
+    const beanGroup = [];
+    const beanGeoSmall = new THREE.SphereGeometry(0.08, 16, 16);
+    const beanMatSmall = new THREE.MeshStandardMaterial({ color: 0x5E3A1E, roughness: 0.3 });
+    for (let i = 0; i < 180; i++) {
+      const bean = new THREE.Mesh(beanGeoSmall, beanMatSmall);
+      // Spread around a volume
+      bean.position.x = (Math.random() - 0.5) * 7;
+      bean.position.y = (Math.random() - 0.5) * 4 + 0.5;
+      bean.position.z = (Math.random() - 0.5) * 6 - 1;
+      bean.scale.set(1, 0.7 + Math.random()*0.3, 1);
+      scene.add(bean);
+      beanGroup.push(bean);
+    }
 
-  // CUP (main model)
-  const cupGeo = new THREE.CylinderGeometry(1.2, 1, 2.5, 32);
-  const cupMat = new THREE.MeshStandardMaterial({
-    color: 0xf5efe6,
-    roughness: 0.4,
-    metalness: 0.1
-  });
+    // Steam particles (tiny floating spheres)
+    const steamCount = 200;
+    const steamParticles = [];
+    const steamMat = new THREE.MeshStandardMaterial({ color: 0xDDCCAA, emissive: 0x442200, emissiveIntensity: 0.1, transparent: true, opacity: 0.3 });
+    for (let i = 0; i < steamCount; i++) {
+      const particle = new THREE.Mesh(new THREE.SphereGeometry(0.03, 6, 6), steamMat);
+      particle.position.x = (Math.random() - 0.5) * 2.5;
+      particle.position.y = Math.random() * 1.8;
+      particle.position.z = (Math.random() - 0.5) * 2.5;
+      scene.add(particle);
+      steamParticles.push(particle);
+    }
 
-  cup = new THREE.Mesh(cupGeo, cupMat);
-  scene.add(cup);
+    // Add a subtle rim light
+    const rimLight = new THREE.PointLight(0xCC9966, 0.6);
+    rimLight.position.set(1, 2, 2);
+    scene.add(rimLight);
 
-  // TOP COFFEE SURFACE
-  const coffeeGeo = new THREE.CylinderGeometry(1.1, 1.1, 0.1, 32);
-  const coffeeMat = new THREE.MeshStandardMaterial({
-    color: 0x3b2416,
-    roughness: 0.2
-  });
+    // Simple shadow catcher ground (invisible but for shadows)
+    const shadowPlane = new THREE.Mesh(new THREE.PlaneGeometry(6, 6), new THREE.ShadowMaterial({ opacity: 0.3, color: 0x000000, transparent: true, side: THREE.DoubleSide }));
+    shadowPlane.rotation.x = -Math.PI / 2;
+    shadowPlane.position.y = -1.1;
+    shadowPlane.receiveShadow = true;
+    scene.add(shadowPlane);
 
-  const coffee = new THREE.Mesh(coffeeGeo, coffeeMat);
-  coffee.position.y = 1.25;
-  scene.add(coffee);
+    // Enable shadows for some objects
+    cup.castShadow = true;
+    coffeeLiquid.castShadow = true;
+    portafilterGroup.children.forEach(c => c.castShadow = true);
+    beanGroup.forEach(b => b.castShadow = true);
+    mainLight.castShadow = true;
+    mainLight.shadow.mapSize.width = 1024;
+    mainLight.shadow.mapSize.height = 1024;
 
-  // HANDLE
-  const handleGeo = new THREE.TorusGeometry(0.6, 0.15, 16, 50);
-  const handleMat = new THREE.MeshStandardMaterial({
-    color: 0xe7dccf
-  });
+    // Mouse/touch interaction
+    let targetRotationY = 0;
+    let targetRotationX = 0;
+    let currentRotY = 0;
+    let currentRotX = 0;
+    
+    function onPointerMove(e) {
+      const clientX = e.clientX || (e.touches ? e.touches[0].clientX : 0);
+      const clientY = e.clientY || (e.touches ? e.touches[0].clientY : 0);
+      const normX = (clientX / window.innerWidth) * 2 - 1;
+      const normY = (clientY / window.innerHeight) * 2 - 1;
+      targetRotationY = normX * 0.8;
+      targetRotationX = normY * 0.4;
+    }
+    window.addEventListener('mousemove', onPointerMove);
+    window.addEventListener('touchmove', onPointerMove);
+    // Optional: reset when leaving
+    window.addEventListener('mouseleave', () => {
+      targetRotationY = 0;
+      targetRotationX = 0;
+    });
 
-  const handle = new THREE.Mesh(handleGeo, handleMat);
-  handle.position.x = 1.2;
-  handle.rotation.z = Math.PI / 2;
-  scene.add(handle);
+    // Auto-rotation slight idle drift
+    let autoRot = 0;
 
-  // PORTAFILTER (simple)
-  const portGeo = new THREE.BoxGeometry(2, 0.3, 0.6);
-  const portMat = new THREE.MeshStandardMaterial({ color: 0x2a1b12 });
-
-  const portafilter = new THREE.Mesh(portGeo, portMat);
-  portafilter.position.set(-3, -1.5, 0);
-  portafilter.rotation.z = -0.4;
-  scene.add(portafilter);
-
-  // COFFEE BEANS (particles)
-  const beanGeo = new THREE.SphereGeometry(0.08, 12, 12);
-  const beanMat = new THREE.MeshStandardMaterial({ color: 0x4b2f1d });
-
-  for (let i = 0; i < 80; i++) {
-
-    const bean = new THREE.Mesh(beanGeo, beanMat);
-
-    bean.position.x = (Math.random() - 0.5) * 10;
-    bean.position.y = (Math.random() - 0.5) * 6;
-    bean.position.z = (Math.random() - 0.5) * 6;
-
-    scene.add(bean);
-    beans.push(bean);
-  }
-
-  // RESIZE
-  window.addEventListener("resize", () => {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-  });
-
-  // MOUSE MOVE INTERACTION
-  document.addEventListener("mousemove", (e) => {
-
-    const x = (e.clientX / window.innerWidth - 0.5) * 2;
-    const y = (e.clientY / window.innerHeight - 0.5) * 2;
-
-    cup.rotation.y = x * 0.8;
-    cup.rotation.x = y * 0.4;
-
-    handle.rotation.y = x * 0.5;
-  });
-}
-
-function animate() {
-
-  requestAnimationFrame(animate);
-
-  cup.rotation.y += 0.002;
-
-  beans.forEach((b, i) => {
-    b.position.y += Math.sin(Date.now() * 0.001 + i) * 0.002;
-  });
-
-  renderer.render(scene, camera);
-}
+    // Animation loop
+    let time = 0;
+    function animate() {
+      requestAnimationFrame(animate);
+      time += 0.016;
+      
+      // Smooth rotation interpolation
+      currentRotY += (targetRotationY - currentRotY) * 0.08;
+      currentRotX += (targetRotationX - currentRotX) * 0.08;
+      cup.rotation.y = currentRotY + Math.sin(time * 0.2) * 0.05;
+      cup.rotation.x = currentRotX * 0.6;
+      coffeeLiquid.rotation.y = cup.rotation.y;
+      handle.rotation.y = cup.rotation.y;
+      handle.position.x = 1.25 + Math.sin(time) * 0.02;
+      
+      // Animate beans (float)
+      beanGroup.forEach((bean, idx) => {
+        bean.position.y += Math.sin(time * 1.5 + idx) * 0.002;
+      });
+      
+      // Steam particles drift upward
+      steamParticles.forEach(p => {
+        p.position.y += 0.003;
+        if (p.position.y > 1.6) p.position.y = 0.2;
+        p.position.x += (Math.random() - 0.5) * 0.008;
+        p.position.z += (Math.random() - 0.5) * 0.008;
+        p.position.x = Math.min(Math.max(p.position.x, -1.2), 1.2);
+        p.position.z = Math.min(Math.max(p.position.z, -1.2), 1.2);
+      });
+      
+      // Portafilter subtle movement
+      portafilterGroup.rotation.z = -0.3 + Math.sin(time * 1.2) * 0.03;
+      
+      renderer.render(scene, camera);
+    }
+    
+    animate();
+    
+    // Handle resize
+    window.addEventListener('resize', () => {
+      const w = container.clientWidth;
+      const h = container.clientHeight;
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      renderer.setSize(w, h);
+    });
+  })();
 </script>
 
+<script>
+  // Mobile menu toggle
+  const hamburger = document.getElementById('hamburger');
+  const navLinks = document.getElementById('navLinks');
+  hamburger.addEventListener('click', () => navLinks.classList.toggle('open'));
+  document.querySelectorAll('.nav-links a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+
+  // WhatsApp booking
+  const sendBtn = document.getElementById('sendBookingBtn');
+  sendBtn.addEventListener('click', () => {
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const date = document.getElementById('eventDate').value;
+    const type = document.getElementById('eventType').value;
+    const msg = document.getElementById('message').value;
+    const text = `Hello Bean Charge! I'd like to book an event.%0A%0AName: ${name}%0AEmail: ${email}%0ADate: ${date}%0AType: ${type}%0AMessage: ${msg}`;
+    window.open(`https://wa.me/27693412372?text=${encodeURIComponent(text)}`, '_blank');
+  });
+</script>
 </body>
 </html>
