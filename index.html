@@ -3,8 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>BEAN CHARGE · Mobile Coffee Bar</title>
-  <!-- Google Fonts: clean serif + sans-serif (Roman/Arial feel) -->
+  <title>BEAN CHARGE · Mobile Coffee Bar | Soweto</title>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:opsz,wght@14..32,300;400;500;600&display=swap" rel="stylesheet">
   <style>
     * {
@@ -12,15 +11,26 @@
       padding: 0;
       box-sizing: border-box;
     }
-
     body {
       font-family: 'Inter', sans-serif;
       background: #FEF9F0;
       color: #2C2418;
-      line-height: 1.5;
+      overflow-x: hidden;
     }
-
-    /* Header & Navigation (no logo, just slick text) */
+    /* subtle pattern */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: radial-gradient(#C8860A 0.6px, transparent 0.6px);
+      background-size: 24px 24px;
+      opacity: 0.035;
+      pointer-events: none;
+      z-index: -1;
+    }
     .sticky-nav {
       position: sticky;
       top: 0;
@@ -39,30 +49,26 @@
     }
     .brand-text {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.6rem;
+      font-size: 1.8rem;
       font-weight: 700;
       letter-spacing: -0.3px;
       color: #2C2418;
       text-decoration: none;
     }
-    .brand-text span {
-      color: #C8860A;
-    }
+    .brand-text span { color: #C8860A; }
     .nav-links {
       display: flex;
-      gap: 2rem;
+      gap: 1.5rem;
+      flex-wrap: wrap;
     }
     .nav-links a {
-      font-family: 'Inter', sans-serif;
       font-weight: 500;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       color: #2C2418;
       text-decoration: none;
       transition: color 0.2s;
     }
-    .nav-links a:hover {
-      color: #C8860A;
-    }
+    .nav-links a:hover { color: #C8860A; }
     .hamburger {
       display: none;
       flex-direction: column;
@@ -74,34 +80,52 @@
       height: 2px;
       background: #2C2418;
     }
-
-    /* Hero – full‑screen with background image (Seattle’s Best style) */
+    /* Hero */
     .hero {
-      height: 90vh;
-      background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.2)), url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=1600&q=80');
+      height: 85vh;
+      background: linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.15)), url('https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=1600&q=80');
       background-size: cover;
-      background-position: center 40%;
+      background-position: center 35%;
       display: flex;
       align-items: center;
       justify-content: center;
       text-align: center;
       color: white;
+      position: relative;
+    }
+    .hero::after {
+      content: '☕';
+      position: absolute;
+      bottom: 8%;
+      right: 4%;
+      font-size: 3rem;
+      opacity: 0.2;
+      pointer-events: none;
+    }
+    .hero::before {
+      content: '⚡';
+      position: absolute;
+      top: 12%;
+      left: 4%;
+      font-size: 2.5rem;
+      opacity: 0.15;
     }
     .hero-content {
       max-width: 700px;
       padding: 2rem;
+      background: rgba(0,0,0,0.3);
+      backdrop-filter: blur(3px);
+      border-radius: 24px;
     }
     .hero-content h1 {
       font-family: 'Cormorant Garamond', serif;
       font-size: clamp(3rem, 8vw, 5rem);
       font-weight: 700;
-      letter-spacing: -0.02em;
       margin-bottom: 0.5rem;
     }
     .hero-content p {
       font-size: 1.1rem;
       margin-bottom: 1.8rem;
-      opacity: 0.9;
     }
     .btn-gold {
       background: #C8860A;
@@ -119,15 +143,11 @@
       background: #A56E08;
       transform: translateY(-2px);
     }
-
-    /* Container */
     .container {
       max-width: 1100px;
       margin: 0 auto;
       padding: 0 2rem;
     }
-
-    /* Menu section – all R15 */
     .section {
       padding: 5rem 0;
       border-bottom: 1px solid #E8DDD0;
@@ -152,7 +172,30 @@
       height: 3px;
       background: #C8860A;
     }
-
+    /* Two column layouts */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+    }
+    .coffee-icon-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+    .coffee-icon-item {
+      background: white;
+      border-radius: 20px;
+      padding: 1rem;
+      text-align: center;
+      border: 1px solid #F0E5D8;
+    }
+    .coffee-icon-item span {
+      font-size: 2rem;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
     .menu-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -160,14 +203,18 @@
     }
     .menu-card {
       background: white;
-      border-radius: 20px;
+      border-radius: 24px;
       padding: 1.5rem;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.03);
       border: 1px solid #F0E5D8;
+      transition: transform 0.2s;
+    }
+    .menu-card:hover {
+      transform: translateY(-4px);
     }
     .menu-card h3 {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.4rem;
+      font-size: 1.5rem;
       font-weight: 600;
       margin-bottom: 1rem;
       color: #C8860A;
@@ -182,8 +229,43 @@
       font-weight: 600;
       color: #C8860A;
     }
-
-    /* Booking & Contact – two columns */
+    .package-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 2rem;
+    }
+    .package-card {
+      background: white;
+      border-radius: 24px;
+      padding: 1.5rem;
+      text-align: center;
+      border: 1px solid #F0E5D8;
+    }
+    .package-card span {
+      font-size: 2rem;
+      display: block;
+      margin-bottom: 0.75rem;
+    }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 1rem;
+    }
+    .gallery-icon {
+      background: white;
+      aspect-ratio: 1/1;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      border: 1px solid #F0E5D8;
+      transition: 0.2s;
+    }
+    .gallery-icon:hover {
+      border-color: #C8860A;
+      transform: scale(1.02);
+    }
     .booking-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -195,35 +277,21 @@
       margin: 0.5rem 0 1rem 0;
       background: white;
       border: 1px solid #E0D4C4;
-      border-radius: 12px;
-      font-family: 'Inter', sans-serif;
+      border-radius: 16px;
     }
     .contact-card {
       background: white;
       padding: 1rem 1.2rem;
-      border-radius: 16px;
+      border-radius: 20px;
       display: flex;
       align-items: center;
       gap: 1rem;
       margin-bottom: 1rem;
       border: 1px solid #F0E5D8;
     }
-    .contact-card a {
-      color: #C8860A;
-      text-decoration: none;
-    }
-    .map {
-      border-radius: 16px;
-      overflow: hidden;
-      margin-top: 1rem;
-    }
-    iframe {
-      width: 100%;
-      height: 200px;
-      border: none;
-    }
-
-    /* Footer */
+    .contact-card a { color: #C8860A; text-decoration: none; }
+    .map { border-radius: 20px; overflow: hidden; margin-top: 1rem; }
+    iframe { width: 100%; height: 200px; border: none; }
     footer {
       background: #2C2418;
       color: #FDF9F2;
@@ -239,8 +307,6 @@
       text-decoration: none;
       margin: 0 0.3rem;
     }
-
-    /* WhatsApp float */
     .wa-float {
       position: fixed;
       bottom: 20px;
@@ -255,7 +321,6 @@
       z-index: 99;
       box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     }
-
     @media (max-width: 780px) {
       .nav-links {
         position: fixed;
@@ -269,44 +334,34 @@
         transition: 0.3s;
         gap: 1.5rem;
       }
-      .nav-links.open {
-        right: 0;
-      }
-      .hamburger {
-        display: flex;
-      }
-      .booking-grid {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-      }
-      .section {
-        padding: 3rem 0;
-      }
-      .container {
-        padding: 0 1.5rem;
-      }
-      .hero {
-        height: 80vh;
-      }
+      .nav-links.open { right: 0; }
+      .hamburger { display: flex; }
+      .two-col, .booking-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .section { padding: 3rem 0; }
+      .container { padding: 0 1.5rem; }
+      .hero { height: 75vh; }
     }
   </style>
 </head>
 <body>
 
-<!-- Sticky Navigation (no logo, pure text) -->
 <div class="sticky-nav">
   <div class="nav-container">
     <a href="#" class="brand-text">BEAN <span>CHARGE</span></a>
     <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
     <div class="nav-links" id="navLinks">
+      <a href="#about">About</a>
+      <a href="#coffee">Our Coffee</a>
       <a href="#menu">Menu</a>
+      <a href="#events">Events</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#loyalty">Loyalty</a>
       <a href="#booking">Book</a>
       <a href="#contact">Contact</a>
     </div>
   </div>
 </div>
 
-<!-- Hero Section (full‑screen, image background, Seattle's Best style) -->
 <section class="hero">
   <div class="hero-content">
     <h1>BEAN CHARGE</h1>
@@ -316,38 +371,94 @@
 </section>
 
 <div class="container">
-  <!-- Menu Section – all items R15 (250ml) -->
-  <section id="menu" class="section">
-    <h2 class="section-title">Our menu</h2>
-    <div class="menu-grid">
-      <div class="menu-card">
-        <h3>Espresso classics</h3>
-        <div class="menu-item"><span>Americano</span><span class="price">R15</span></div>
-        <div class="menu-item"><span>Espresso</span><span class="price">R15</span></div>
-        <div class="menu-item"><span>Double Espresso</span><span class="price">R15</span></div>
+  <!-- About -->
+  <section id="about" class="section">
+    <div class="two-col">
+      <div>
+        <h2 class="section-title">Rooted in Soweto</h2>
+        <p style="margin-bottom:1rem;">Bean Charge began as a simple idea: bring specialty‑grade espresso to the people, wherever they are. No coffee shop walls – just exceptional coffee, served fresh from our mobile cart.</p>
+        <p>We’ve poured at markets, weddings, corporate events, and street corners across Gauteng. Every cup tells a story of craft, community, and pride.</p>
       </div>
-      <div class="menu-card">
-        <h3>Milk specialties</h3>
-        <div class="menu-item"><span>Cappuccino</span><span class="price">R15</span></div>
-        <div class="menu-item"><span>Latte</span><span class="price">R15</span></div>
-        <div class="menu-item"><span>Flat White</span><span class="price">R15</span></div>
-      </div>
-      <div class="menu-card">
-        <h3>Flavoured</h3>
-        <div class="menu-item"><span>Mocha</span><span class="price">R15</span></div>
-        <div class="menu-item"><span>Vanilla Coffee</span><span class="price">R15</span></div>
-        <div class="menu-item"><span>Vanilla & Choco</span><span class="price">R15</span></div>
-      </div>
-      <div class="menu-card">
-        <h3>Tea & more</h3>
-        <div class="menu-item"><span>Hot Chocolate</span><span class="price">R15</span></div>
-        <div class="menu-item"><span>Chai Tea</span><span class="price">R15</span></div>
-        <div class="menu-item"><span>Tea with milk</span><span class="price">R15</span></div>
+      <div class="coffee-icon-grid">
+        <div class="coffee-icon-item"><span>🚐</span><div>Fully mobile</div></div>
+        <div class="coffee-icon-item"><span>☕</span><div>Specialty beans</div></div>
+        <div class="coffee-icon-item"><span>⚡</span><div>Freshly pulled</div></div>
+        <div class="coffee-icon-item"><span>📍</span><div>Soweto born</div></div>
       </div>
     </div>
   </section>
 
-  <!-- Booking & Contact Section -->
+  <!-- Our Coffee -->
+  <section id="coffee" class="section">
+    <h2 class="section-title">Our coffee</h2>
+    <div class="two-col">
+      <div>
+        <p>We source single‑origin and blended beans from ethical traders. Each batch is roasted locally to highlight chocolate, nut, and subtle fruit notes. On event day, we grind per order and pull every shot on a Brasilia 2‑group machine — the same quality you'd expect from a top specialty café.</p>
+        <p style="margin-top:1rem;">No shortcuts. No stale espresso. Just honest, delicious coffee.</p>
+      </div>
+      <div class="coffee-icon-grid">
+        <div class="coffee-icon-item"><span>🌱</span><div>Ethically sourced</div></div>
+        <div class="coffee-icon-item"><span>🔥</span><div>Freshly roasted</div></div>
+        <div class="coffee-icon-item"><span>⚙️</span><div>Ground to order</div></div>
+        <div class="coffee-icon-item"><span>🏆</span><div>Brasilia machine</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Menu (all R15) -->
+  <section id="menu" class="section">
+    <h2 class="section-title">Our menu</h2>
+    <div class="menu-grid">
+      <div class="menu-card"><h3>Espresso classics</h3><div class="menu-item"><span>Americano</span><span class="price">R15</span></div><div class="menu-item"><span>Espresso</span><span class="price">R15</span></div><div class="menu-item"><span>Double Espresso</span><span class="price">R15</span></div></div>
+      <div class="menu-card"><h3>Milk specialties</h3><div class="menu-item"><span>Cappuccino</span><span class="price">R15</span></div><div class="menu-item"><span>Latte</span><span class="price">R15</span></div><div class="menu-item"><span>Flat White</span><span class="price">R15</span></div></div>
+      <div class="menu-card"><h3>Flavoured</h3><div class="menu-item"><span>Mocha</span><span class="price">R15</span></div><div class="menu-item"><span>Vanilla Coffee</span><span class="price">R15</span></div><div class="menu-item"><span>Vanilla & Choco</span><span class="price">R15</span></div></div>
+      <div class="menu-card"><h3>Tea & more</h3><div class="menu-item"><span>Hot Chocolate</span><span class="price">R15</span></div><div class="menu-item"><span>Chai Tea</span><span class="price">R15</span></div><div class="menu-item"><span>Tea with milk</span><span class="price">R15</span></div></div>
+    </div>
+  </section>
+
+  <!-- Events & Packages -->
+  <section id="events" class="section">
+    <h2 class="section-title">Events & packages</h2>
+    <div class="package-grid">
+      <div class="package-card"><span>🏢</span><h3>Corporate</h3><p>Office coffee breaks, client meetings, staff appreciation days. We bring the full cart to you.</p></div>
+      <div class="package-card"><span>💍</span><h3>Weddings</h3><p>Signature coffee for your guests – a memorable touch for your big day.</p></div>
+      <div class="package-card"><span>🎉</span><h3>Private parties</h3><p>Birthdays, anniversaries, family gatherings. Coffee that keeps the energy high.</p></div>
+      <div class="package-card"><span>🎪</span><h3>Markets & festivals</h3><p>We’ve served thousands of cups at local events – reliable, fast, friendly.</p></div>
+    </div>
+  </section>
+
+  <!-- Gallery (icon only, no real photos) -->
+  <section id="gallery" class="section">
+    <h2 class="section-title">Behind the cart</h2>
+    <div class="gallery-grid">
+      <div class="gallery-icon">☕</div>
+      <div class="gallery-icon">⚡</div>
+      <div class="gallery-icon">🚐</div>
+      <div class="gallery-icon">🔥</div>
+      <div class="gallery-icon">🍫</div>
+      <div class="gallery-icon">🌱</div>
+    </div>
+    <p style="text-align:center; margin-top:1rem; font-size:0.85rem;">(Add your own photos later – these are placeholders)</p>
+  </section>
+
+  <!-- Loyalty (simple, no numbers) -->
+  <section id="loyalty" class="section">
+    <div class="two-col">
+      <div>
+        <h2 class="section-title">Brewchain loyalty</h2>
+        <p>Every cup earns you points toward free drinks and exclusive perks. It’s our way of saying thank you for keeping Bean Charge rolling.</p>
+        <p style="margin-top:0.5rem;">Ask us about our digital loyalty card – fast, easy, and rewarding.</p>
+      </div>
+      <div class="coffee-icon-grid">
+        <div class="coffee-icon-item"><span>🪙</span><div>Earn points</div></div>
+        <div class="coffee-icon-item"><span>🎁</span><div>Redeem rewards</div></div>
+        <div class="coffee-icon-item"><span>📱</span><div>Digital card</div></div>
+        <div class="coffee-icon-item"><span>✨</span><div>Exclusive perks</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Booking & Contact -->
   <section id="booking" class="section">
     <h2 class="section-title">Book your event</h2>
     <div class="booking-grid">
@@ -357,10 +468,7 @@
           <input type="email" id="email" placeholder="Email">
           <input type="date" id="eventDate">
           <select id="eventType">
-            <option>Corporate event</option>
-            <option>Wedding</option>
-            <option>Private party</option>
-            <option>Market / festival</option>
+            <option>Corporate event</option><option>Wedding</option><option>Private party</option><option>Market / festival</option>
           </select>
           <textarea id="message" rows="3" placeholder="Tell us about your event..."></textarea>
           <button id="sendBookingBtn" class="btn-gold" style="width:100%;">Send enquiry via WhatsApp</button>
@@ -392,20 +500,15 @@
 </a>
 
 <script>
-  // Mobile menu toggle
   const hamburger = document.getElementById('hamburger');
   const navLinksMenu = document.getElementById('navLinks');
   hamburger.addEventListener('click', () => navLinksMenu.classList.toggle('open'));
   document.querySelectorAll('.nav-links a').forEach(link => link.addEventListener('click', () => navLinksMenu.classList.remove('open')));
 
-  // WhatsApp booking form
   const sendBtn = document.getElementById('sendBookingBtn');
   sendBtn.addEventListener('click', () => {
     const name = document.getElementById('name').value.trim();
-    if (!name) {
-      alert('Please enter your name');
-      return;
-    }
+    if (!name) { alert('Please enter your name'); return; }
     const email = document.getElementById('email').value;
     const date = document.getElementById('eventDate').value;
     const type = document.getElementById('eventType').value;
