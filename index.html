@@ -4,7 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>BEAN CHARGE · Mobile Coffee Bar</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;600;700&family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet">
+  <!-- Google Fonts: clean serif + sans-serif (Roman/Arial feel) -->
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:opsz,wght@14..32,300;400;500;600&display=swap" rel="stylesheet">
   <style>
     * {
       margin: 0;
@@ -14,90 +15,37 @@
 
     body {
       font-family: 'Inter', sans-serif;
-      background: #0A0A0A;
-      color: #F5F0EB;
-      overflow-x: hidden;
+      background: #FEF9F0;
+      color: #2C2418;
+      line-height: 1.5;
     }
 
-    /* Hero 3D Canvas */
-    #hero-canvas {
-      position: relative;
-      width: 100%;
-      height: 100vh;
-      background: radial-gradient(circle at 30% 10%, #2A1A0C, #0A0A0A);
-      overflow: hidden;
-    }
-    canvas {
-      display: block;
-      width: 100%;
-      height: 100%;
-    }
-    .hero-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      color: white;
-      pointer-events: none;
-      z-index: 10;
-      background: radial-gradient(ellipse at center, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.6) 100%);
-    }
-    .hero-overlay h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(2.8rem, 8vw, 5rem);
-      font-weight: 700;
-      letter-spacing: -0.02em;
-    }
-    .hero-overlay h1 span {
-      color: #C8860A;
-    }
-    .hero-overlay p {
-      font-size: 1rem;
-      max-width: 480px;
-      margin: 1rem auto;
-      opacity: 0.85;
-    }
-    .scroll-hint {
-      position: absolute;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 0.7rem;
-      background: rgba(0,0,0,0.5);
-      padding: 0.3rem 0.8rem;
-      border-radius: 30px;
-      pointer-events: none;
-    }
-
-    /* Navigation (sticky) */
+    /* Header & Navigation (no logo, just slick text) */
     .sticky-nav {
       position: sticky;
       top: 0;
       z-index: 100;
-      background: rgba(10, 10, 10, 0.9);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(200, 134, 10, 0.3);
+      background: rgba(254, 249, 240, 0.96);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid #E8DDD0;
     }
     .nav-container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 1rem 2rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 1rem 2rem;
-      max-width: 1200px;
-      margin: 0 auto;
     }
-    .logo {
-      font-family: 'Playfair Display', serif;
+    .brand-text {
+      font-family: 'Cormorant Garamond', serif;
       font-size: 1.6rem;
       font-weight: 700;
+      letter-spacing: -0.3px;
+      color: #2C2418;
+      text-decoration: none;
     }
-    .logo span {
+    .brand-text span {
       color: #C8860A;
     }
     .nav-links {
@@ -105,10 +53,11 @@
       gap: 2rem;
     }
     .nav-links a {
-      color: #F5F0EB;
-      text-decoration: none;
+      font-family: 'Inter', sans-serif;
       font-weight: 500;
       font-size: 0.9rem;
+      color: #2C2418;
+      text-decoration: none;
       transition: color 0.2s;
     }
     .nav-links a:hover {
@@ -123,27 +72,73 @@
     .hamburger span {
       width: 26px;
       height: 2px;
-      background: #F5F0EB;
+      background: #2C2418;
     }
 
-    /* Container for content */
+    /* Hero – full‑screen with background image (Seattle’s Best style) */
+    .hero {
+      height: 90vh;
+      background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.2)), url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=1600&q=80');
+      background-size: cover;
+      background-position: center 40%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: white;
+    }
+    .hero-content {
+      max-width: 700px;
+      padding: 2rem;
+    }
+    .hero-content h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3rem, 8vw, 5rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.5rem;
+    }
+    .hero-content p {
+      font-size: 1.1rem;
+      margin-bottom: 1.8rem;
+      opacity: 0.9;
+    }
+    .btn-gold {
+      background: #C8860A;
+      color: white;
+      padding: 0.8rem 2rem;
+      border-radius: 40px;
+      text-decoration: none;
+      font-weight: 600;
+      display: inline-block;
+      transition: 0.2s;
+      border: none;
+      cursor: pointer;
+    }
+    .btn-gold:hover {
+      background: #A56E08;
+      transform: translateY(-2px);
+    }
+
+    /* Container */
     .container {
-      max-width: 1000px;
+      max-width: 1100px;
       margin: 0 auto;
       padding: 0 2rem;
     }
 
-    /* Sections */
+    /* Menu section – all R15 */
     .section {
       padding: 5rem 0;
-      border-bottom: 1px solid rgba(200, 134, 10, 0.2);
+      border-bottom: 1px solid #E8DDD0;
     }
     .section:last-of-type {
       border-bottom: none;
     }
     .section-title {
-      font-family: 'Playfair Display', serif;
+      font-family: 'Cormorant Garamond', serif;
       font-size: 2rem;
+      font-weight: 600;
       margin-bottom: 2rem;
       position: relative;
       display: inline-block;
@@ -158,25 +153,22 @@
       background: #C8860A;
     }
 
-    /* Menu grid – all R15 */
     .menu-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 1.5rem;
+      gap: 2rem;
     }
     .menu-card {
-      background: #1A1A1A;
+      background: white;
       border-radius: 20px;
       padding: 1.5rem;
-      border: 1px solid #2C2C2C;
-      transition: all 0.2s;
-    }
-    .menu-card:hover {
-      border-color: #C8860A;
-      transform: translateY(-3px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+      border: 1px solid #F0E5D8;
     }
     .menu-card h3 {
-      font-size: 1.3rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-weight: 600;
       margin-bottom: 1rem;
       color: #C8860A;
     }
@@ -184,57 +176,37 @@
       display: flex;
       justify-content: space-between;
       padding: 0.5rem 0;
-      border-bottom: 1px solid #2C2C2C;
+      border-bottom: 1px solid #F0E5D8;
     }
     .price {
       font-weight: 600;
       color: #C8860A;
     }
 
-    /* Booking form */
+    /* Booking & Contact – two columns */
     .booking-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 2rem;
+      gap: 3rem;
     }
     .form-group input, .form-group select, .form-group textarea {
       width: 100%;
       padding: 0.8rem;
       margin: 0.5rem 0 1rem 0;
-      background: #1A1A1A;
-      border: 1px solid #333;
-      color: #F5F0EB;
+      background: white;
+      border: 1px solid #E0D4C4;
       border-radius: 12px;
       font-family: 'Inter', sans-serif;
     }
-    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
-      border-color: #C8860A;
-      outline: none;
-    }
-    .btn-gold {
-      background: #C8860A;
-      color: #0A0A0A;
-      padding: 0.8rem 1.8rem;
-      border-radius: 40px;
-      font-weight: 700;
-      border: none;
-      cursor: pointer;
-      transition: 0.2s;
-      width: 100%;
-    }
-    .btn-gold:hover {
-      background: #A56E08;
-      transform: translateY(-2px);
-    }
     .contact-card {
-      background: #1A1A1A;
+      background: white;
       padding: 1rem 1.2rem;
       border-radius: 16px;
       display: flex;
       align-items: center;
       gap: 1rem;
       margin-bottom: 1rem;
-      border: 1px solid #2C2C2C;
+      border: 1px solid #F0E5D8;
     }
     .contact-card a {
       color: #C8860A;
@@ -247,19 +219,25 @@
     }
     iframe {
       width: 100%;
-      height: 180px;
+      height: 200px;
       border: none;
-      filter: grayscale(0.5);
     }
 
     /* Footer */
     footer {
+      background: #2C2418;
+      color: #FDF9F2;
       text-align: center;
       padding: 2rem;
-      background: #0A0A0A;
-      border-top: 1px solid #2C2C2C;
       font-size: 0.8rem;
-      color: #888;
+    }
+    .footer-links {
+      margin-top: 0.5rem;
+    }
+    .footer-links a {
+      color: #C8860A;
+      text-decoration: none;
+      margin: 0 0.3rem;
     }
 
     /* WhatsApp float */
@@ -275,10 +253,9 @@
       align-items: center;
       justify-content: center;
       z-index: 99;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     }
 
-    /* Responsive */
     @media (max-width: 780px) {
       .nav-links {
         position: fixed;
@@ -286,7 +263,7 @@
         right: -100%;
         width: 70%;
         height: 100vh;
-        background: #0A0A0A;
+        background: #FEF9F0;
         flex-direction: column;
         padding: 2rem;
         transition: 0.3s;
@@ -308,41 +285,65 @@
       .container {
         padding: 0 1.5rem;
       }
+      .hero {
+        height: 80vh;
+      }
     }
   </style>
 </head>
 <body>
 
-<!-- Hero with 3D Canvas -->
-<div id="hero-canvas">
-  <div class="hero-overlay">
-    <h1>BEAN <span>CHARGE</span></h1>
-    <p>Mobile coffee bar · Specialty grade · Soweto</p>
-  </div>
-  <div class="scroll-hint">↓ scroll for menu</div>
-</div>
-
-<!-- Navigation -->
+<!-- Sticky Navigation (no logo, pure text) -->
 <div class="sticky-nav">
   <div class="nav-container">
-    <div class="logo">BEAN <span>CHARGE</span></div>
+    <a href="#" class="brand-text">BEAN <span>CHARGE</span></a>
     <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
     <div class="nav-links" id="navLinks">
       <a href="#menu">Menu</a>
       <a href="#booking">Book</a>
+      <a href="#contact">Contact</a>
     </div>
   </div>
 </div>
 
+<!-- Hero Section (full‑screen, image background, Seattle's Best style) -->
+<section class="hero">
+  <div class="hero-content">
+    <h1>BEAN CHARGE</h1>
+    <p>Mobile coffee bar · Specialty grade · Soweto</p>
+    <a href="#booking" class="btn-gold">Book your event →</a>
+  </div>
+</section>
+
 <div class="container">
-  <!-- Menu Section – all R15 (250ml) -->
+  <!-- Menu Section – all items R15 (250ml) -->
   <section id="menu" class="section">
     <h2 class="section-title">Our menu</h2>
     <div class="menu-grid">
-      <div class="menu-card"><h3>Espresso classics</h3><div class="menu-item"><span>Americano</span><span class="price">R15</span></div><div class="menu-item"><span>Espresso</span><span class="price">R15</span></div><div class="menu-item"><span>Double Espresso</span><span class="price">R15</span></div></div>
-      <div class="menu-card"><h3>Milk specialties</h3><div class="menu-item"><span>Cappuccino</span><span class="price">R15</span></div><div class="menu-item"><span>Latte</span><span class="price">R15</span></div><div class="menu-item"><span>Flat White</span><span class="price">R15</span></div></div>
-      <div class="menu-card"><h3>Flavoured</h3><div class="menu-item"><span>Mocha</span><span class="price">R15</span></div><div class="menu-item"><span>Vanilla Coffee</span><span class="price">R15</span></div><div class="menu-item"><span>Vanilla & Choco</span><span class="price">R15</span></div></div>
-      <div class="menu-card"><h3>Tea & more</h3><div class="menu-item"><span>Hot Chocolate</span><span class="price">R15</span></div><div class="menu-item"><span>Chai Tea</span><span class="price">R15</span></div><div class="menu-item"><span>Tea with milk</span><span class="price">R15</span></div></div>
+      <div class="menu-card">
+        <h3>Espresso classics</h3>
+        <div class="menu-item"><span>Americano</span><span class="price">R15</span></div>
+        <div class="menu-item"><span>Espresso</span><span class="price">R15</span></div>
+        <div class="menu-item"><span>Double Espresso</span><span class="price">R15</span></div>
+      </div>
+      <div class="menu-card">
+        <h3>Milk specialties</h3>
+        <div class="menu-item"><span>Cappuccino</span><span class="price">R15</span></div>
+        <div class="menu-item"><span>Latte</span><span class="price">R15</span></div>
+        <div class="menu-item"><span>Flat White</span><span class="price">R15</span></div>
+      </div>
+      <div class="menu-card">
+        <h3>Flavoured</h3>
+        <div class="menu-item"><span>Mocha</span><span class="price">R15</span></div>
+        <div class="menu-item"><span>Vanilla Coffee</span><span class="price">R15</span></div>
+        <div class="menu-item"><span>Vanilla & Choco</span><span class="price">R15</span></div>
+      </div>
+      <div class="menu-card">
+        <h3>Tea & more</h3>
+        <div class="menu-item"><span>Hot Chocolate</span><span class="price">R15</span></div>
+        <div class="menu-item"><span>Chai Tea</span><span class="price">R15</span></div>
+        <div class="menu-item"><span>Tea with milk</span><span class="price">R15</span></div>
+      </div>
     </div>
   </section>
 
@@ -361,11 +362,11 @@
             <option>Private party</option>
             <option>Market / festival</option>
           </select>
-          <textarea id="message" rows="3" placeholder="Event details..."></textarea>
-          <button id="sendBookingBtn" class="btn-gold">Send enquiry via WhatsApp</button>
+          <textarea id="message" rows="3" placeholder="Tell us about your event..."></textarea>
+          <button id="sendBookingBtn" class="btn-gold" style="width:100%;">Send enquiry via WhatsApp</button>
         </div>
       </div>
-      <div>
+      <div id="contact">
         <div class="contact-card">📞 <a href="tel:+27693412372">069 341 2372</a></div>
         <div class="contact-card">✉️ <a href="mailto:karabotsontsi@gmail.com">karabotsontsi@gmail.com</a></div>
         <div class="contact-card">📍 Soweto, Gauteng · Mobile service</div>
@@ -379,10 +380,10 @@
 
 <footer>
   <p>© 2025 BEAN CHARGE COFFEE · Soweto, South Africa</p>
-  <div class="footer-links" style="margin-top: 0.5rem;">
-    <a href="tel:+27693412372" style="color:#C8860A; text-decoration:none;">Call</a> |
-    <a href="mailto:karabotsontsi@gmail.com" style="color:#C8860A; text-decoration:none;">Email</a> |
-    <a href="https://wa.me/27693412372" style="color:#C8860A; text-decoration:none;">WhatsApp</a>
+  <div class="footer-links">
+    <a href="tel:+27693412372">Call</a> |
+    <a href="mailto:karabotsontsi@gmail.com">Email</a> |
+    <a href="https://wa.me/27693412372">WhatsApp</a>
   </div>
 </footer>
 
@@ -390,158 +391,26 @@
   <svg width="28" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
 </a>
 
-<!-- Three.js enhanced 3D scene (clean, no extra clutter) -->
-<script src="https://cdn.jsdelivr.net/npm/three@0.161.0/build/three.min.js"></script>
-<script>
-  (function() {
-    const container = document.getElementById('hero-canvas');
-    const width = container.clientWidth;
-    const height = container.clientHeight;
-
-    const scene = new THREE.Scene();
-    scene.background = null; // transparent, CSS gradient shows through
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setSize(width, height);
-    renderer.setClearColor(0x000000, 0);
-    container.appendChild(renderer.domElement);
-    renderer.domElement.style.position = 'absolute';
-    renderer.domElement.style.top = '0';
-    renderer.domElement.style.left = '0';
-    renderer.domElement.style.width = '100%';
-    renderer.domElement.style.height = '100%';
-
-    const camera = new THREE.PerspectiveCamera(55, width / height, 0.1, 1000);
-    camera.position.set(0, 1.4, 5.5);
-    camera.lookAt(0, 0.8, 0);
-
-    // Lights
-    const ambient = new THREE.AmbientLight(0x554433, 0.5);
-    scene.add(ambient);
-    const mainLight = new THREE.PointLight(0xffcc99, 1.2);
-    mainLight.position.set(3, 3, 2);
-    scene.add(mainLight);
-    const fillLight = new THREE.PointLight(0xaa8866, 0.4);
-    fillLight.position.set(-2, 1, 2);
-    scene.add(fillLight);
-    const rimLight = new THREE.PointLight(0xffaa66, 0.6);
-    rimLight.position.set(1, 2, -2.5);
-    scene.add(rimLight);
-
-    // Cup
-    const cupGeo = new THREE.CylinderGeometry(1.1, 0.85, 2.0, 64);
-    const cupMat = new THREE.MeshStandardMaterial({ color: 0xECE5D8, roughness: 0.3, metalness: 0.05 });
-    const cup = new THREE.Mesh(cupGeo, cupMat);
-    cup.castShadow = true;
-    scene.add(cup);
-
-    // Coffee liquid
-    const coffeeGeo = new THREE.CylinderGeometry(0.98, 0.98, 0.1, 64);
-    const coffeeMat = new THREE.MeshStandardMaterial({ color: 0x4B2F1D, roughness: 0.2, metalness: 0.05 });
-    const coffeeLiquid = new THREE.Mesh(coffeeGeo, coffeeMat);
-    coffeeLiquid.position.y = 0.96;
-    scene.add(coffeeLiquid);
-
-    // Handle
-    const handleGeo = new THREE.TorusGeometry(0.6, 0.1, 32, 60);
-    const handleMat = new THREE.MeshStandardMaterial({ color: 0xDCCBB8 });
-    const handle = new THREE.Mesh(handleGeo, handleMat);
-    handle.position.set(1.15, 0.15, 0);
-    handle.rotation.z = Math.PI / 2;
-    handle.rotation.y = 0.2;
-    scene.add(handle);
-
-    // Floating coffee beans (simple spheres)
-    const beanMat = new THREE.MeshStandardMaterial({ color: 0x6F4E37, roughness: 0.4 });
-    const beans = [];
-    for (let i = 0; i < 120; i++) {
-      const bean = new THREE.Mesh(new THREE.SphereGeometry(0.07, 12, 12), beanMat);
-      bean.position.x = (Math.random() - 0.5) * 6;
-      bean.position.y = (Math.random() - 0.5) * 3 + 0.5;
-      bean.position.z = (Math.random() - 0.5) * 5;
-      bean.scale.set(1, 0.7 + Math.random()*0.3, 1);
-      scene.add(bean);
-      beans.push(bean);
-    }
-
-    // Steam particles
-    const steamMat = new THREE.MeshStandardMaterial({ color: 0xDDBB99, emissive: 0x442200, emissiveIntensity: 0.1, transparent: true, opacity: 0.25 });
-    const steam = [];
-    for (let i = 0; i < 150; i++) {
-      const s = new THREE.Mesh(new THREE.SphereGeometry(0.04, 6, 6), steamMat);
-      s.position.x = (Math.random() - 0.5) * 2.2;
-      s.position.y = Math.random() * 1.6;
-      s.position.z = (Math.random() - 0.5) * 2;
-      scene.add(s);
-      steam.push(s);
-    }
-
-    // Mouse/touch interaction
-    let targetRotY = 0, targetRotX = 0;
-    let currentRotY = 0, currentRotX = 0;
-    function onPointerMove(e) {
-      const clientX = e.clientX || (e.touches ? e.touches[0].clientX : 0);
-      const clientY = e.clientY || (e.touches ? e.touches[0].clientY : 0);
-      const normX = (clientX / window.innerWidth) * 2 - 1;
-      const normY = (clientY / window.innerHeight) * 2 - 1;
-      targetRotY = normX * 0.7;
-      targetRotX = normY * 0.35;
-    }
-    window.addEventListener('mousemove', onPointerMove);
-    window.addEventListener('touchmove', onPointerMove);
-    window.addEventListener('mouseleave', () => { targetRotY = 0; targetRotX = 0; });
-
-    let time = 0;
-    function animate() {
-      requestAnimationFrame(animate);
-      time += 0.016;
-      // Smooth rotation
-      currentRotY += (targetRotY - currentRotY) * 0.08;
-      currentRotX += (targetRotX - currentRotX) * 0.08;
-      cup.rotation.y = currentRotY;
-      cup.rotation.x = currentRotX * 0.5;
-      coffeeLiquid.rotation.y = cup.rotation.y;
-      handle.rotation.y = cup.rotation.y;
-      // Bean floating
-      beans.forEach((b, i) => {
-        b.position.y += Math.sin(time * 1.2 + i) * 0.0015;
-      });
-      // Steam drift
-      steam.forEach(s => {
-        s.position.y += 0.003;
-        if (s.position.y > 1.5) s.position.y = 0.2;
-        s.position.x += (Math.random() - 0.5) * 0.008;
-        s.position.z += (Math.random() - 0.5) * 0.008;
-      });
-      renderer.render(scene, camera);
-    }
-    animate();
-
-    window.addEventListener('resize', () => {
-      const w = container.clientWidth;
-      const h = container.clientHeight;
-      camera.aspect = w / h;
-      camera.updateProjectionMatrix();
-      renderer.setSize(w, h);
-    });
-  })();
-</script>
-
 <script>
   // Mobile menu toggle
   const hamburger = document.getElementById('hamburger');
-  const navLinks = document.getElementById('navLinks');
-  hamburger.addEventListener('click', () => navLinks.classList.toggle('open'));
-  document.querySelectorAll('.nav-links a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+  const navLinksMenu = document.getElementById('navLinks');
+  hamburger.addEventListener('click', () => navLinksMenu.classList.toggle('open'));
+  document.querySelectorAll('.nav-links a').forEach(link => link.addEventListener('click', () => navLinksMenu.classList.remove('open')));
 
-  // WhatsApp booking
+  // WhatsApp booking form
   const sendBtn = document.getElementById('sendBookingBtn');
   sendBtn.addEventListener('click', () => {
-    const name = document.getElementById('name').value;
+    const name = document.getElementById('name').value.trim();
+    if (!name) {
+      alert('Please enter your name');
+      return;
+    }
     const email = document.getElementById('email').value;
     const date = document.getElementById('eventDate').value;
     const type = document.getElementById('eventType').value;
-    const msg = document.getElementById('message').value;
-    const text = `Hello Bean Charge! I'd like to book an event.%0A%0AName: ${name}%0AEmail: ${email}%0ADate: ${date}%0AType: ${type}%0AMessage: ${msg}`;
+    const message = document.getElementById('message').value;
+    const text = `Hello Bean Charge! I'd like to book an event.%0A%0AName: ${name}%0AEmail: ${email}%0ADate: ${date}%0AType: ${type}%0AMessage: ${message}`;
     window.open(`https://wa.me/27693412372?text=${encodeURIComponent(text)}`, '_blank');
   });
 </script>
