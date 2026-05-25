@@ -2,238 +2,328 @@
 <html lang="en-ZA">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>BEAN CHARGE · 3D Coffee Experience</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>BEAN CHARGE · Mobile Coffee Bar</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:opsz,wght@14..32,300;400;500;600&display=swap" rel="stylesheet">
   <style>
-    body {
+    * {
       margin: 0;
-      overflow-x: hidden;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
       font-family: 'Inter', sans-serif;
-      background: #0A0A0A;
-      color: #F5F0EB;
+      background: #FEF9F0;  /* warm cream/white */
+      color: #2C2418;
+      line-height: 1.5;
     }
-    /* Canvas takes full screen, fixed behind content */
-    #canvas-container {
-      position: fixed;
+    /* Navigation */
+    .sticky-nav {
+      position: sticky;
       top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
+      z-index: 100;
+      background: rgba(254, 249, 240, 0.96);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid #E8DDD0;
     }
-    /* Content overlays */
-    .content {
-      position: relative;
-      z-index: 10;
-      pointer-events: auto;
-    }
-    /* Navigation (glass) */
-    .nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      padding: 1.5rem 2rem;
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem 2rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      z-index: 20;
-      background: rgba(10,10,10,0.6);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(200,134,10,0.3);
-      font-family: 'Inter', sans-serif;
     }
-    .logo-text {
+    .brand-text {
+      font-family: 'Cormorant Garamond', serif;
       font-size: 1.8rem;
       font-weight: 700;
-      background: linear-gradient(135deg, #F5F0EB 0%, #C8860A 80%);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.3px;
+      color: #2C2418;
+      text-decoration: none;
+    }
+    .brand-text span {
+      color: #C8860A;
     }
     .nav-links {
       display: flex;
       gap: 2rem;
     }
     .nav-links a {
-      color: #F5F0EB;
-      text-decoration: none;
       font-weight: 500;
       font-size: 0.9rem;
+      color: #2C2418;
+      text-decoration: none;
       transition: color 0.2s;
     }
     .nav-links a:hover {
       color: #C8860A;
     }
-    /* Sections – full viewport with glass cards */
-    .section {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 6rem 2rem;
-      scroll-margin-top: 80px;
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
     }
-    .glass-card {
-      background: rgba(20,20,20,0.7);
-      backdrop-filter: blur(16px);
-      border-radius: 32px;
-      padding: 2.5rem;
-      max-width: 800px;
-      width: 100%;
-      border: 1px solid rgba(200,134,10,0.3);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    .hamburger span {
+      width: 26px;
+      height: 2px;
+      background: #2C2418;
     }
-    .glass-card h2 {
+    /* Hero */
+    .hero {
+      text-align: center;
+      padding: 4rem 2rem 2rem;
+    }
+    .hero h1 {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 2.5rem;
-      margin-bottom: 1.5rem;
-      color: #C8860A;
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      font-weight: 700;
+      color: #2C2418;
     }
+    .hero p {
+      font-size: 1rem;
+      color: #5A4A3A;
+      max-width: 500px;
+      margin: 0.5rem auto 0;
+    }
+    /* Container */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+    .section {
+      padding: 4rem 0;
+      border-bottom: 1px solid #E8DDD0;
+    }
+    .section:last-of-type {
+      border-bottom: none;
+    }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      font-weight: 600;
+      margin-bottom: 2rem;
+      position: relative;
+      display: inline-block;
+    }
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 50px;
+      height: 3px;
+      background: #C8860A;
+    }
+    /* Menu Grid – no prices */
     .menu-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 1rem;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 2rem;
+    }
+    .menu-category {
+      background: white;
+      border-radius: 20px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+      border: 1px solid #F0E5D8;
     }
     .menu-category h3 {
-      font-size: 1.2rem;
-      margin: 1rem 0 0.5rem;
-      color: #F5F0EB;
-      border-left: 3px solid #C8860A;
-      padding-left: 0.75rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: #C8860A;
     }
     .menu-item {
-      padding: 0.3rem 0;
-      color: #ccc;
-      font-size: 0.9rem;
+      padding: 0.4rem 0;
+      color: #2C2418;
+      border-bottom: 1px solid #F0E5D8;
+    }
+    /* Booking form */
+    .booking-card {
+      background: white;
+      border-radius: 24px;
+      padding: 2rem;
+      border: 1px solid #F0E5D8;
+      max-width: 600px;
+      margin: 0 auto;
     }
     .form-group input, .form-group select, .form-group textarea {
       width: 100%;
       padding: 0.8rem;
-      margin: 0.5rem 0;
-      background: #1A1A1A;
-      border: 1px solid #333;
-      color: #F5F0EB;
-      border-radius: 12px;
+      margin: 0.5rem 0 1rem 0;
+      background: white;
+      border: 1px solid #E0D4C4;
+      border-radius: 16px;
+      font-family: 'Inter', sans-serif;
     }
     .btn-gold {
       background: #C8860A;
-      color: #0A0A0A;
+      color: white;
       padding: 0.8rem 1.5rem;
       border-radius: 40px;
-      font-weight: 700;
+      font-weight: 600;
       border: none;
       cursor: pointer;
       width: 100%;
-      margin-top: 1rem;
+      transition: background 0.2s;
     }
-    .contact-info {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
+    .btn-gold:hover {
+      background: #A56E08;
     }
-    .contact-row {
+    /* Contact */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+    .contact-card {
+      background: white;
+      padding: 1.2rem;
+      border-radius: 20px;
+      border: 1px solid #F0E5D8;
       display: flex;
       align-items: center;
       gap: 1rem;
-      padding: 0.8rem;
-      background: #1A1A1A;
-      border-radius: 16px;
+    }
+    .contact-card a {
+      color: #C8860A;
+      text-decoration: none;
     }
     .map {
-      margin-top: 1rem;
-      border-radius: 16px;
+      border-radius: 20px;
       overflow: hidden;
+      height: 200px;
     }
     iframe {
       width: 100%;
-      height: 200px;
+      height: 100%;
       border: none;
     }
-    @media (max-width: 760px) {
-      .nav { padding: 1rem; }
-      .logo-text { font-size: 1.2rem; }
-      .nav-links { gap: 1rem; }
-      .glass-card { padding: 1.5rem; }
-      .section { padding: 4rem 1rem; }
+    footer {
+      background: #2C2418;
+      color: #FDF9F2;
+      text-align: center;
+      padding: 2rem;
+      margin-top: 2rem;
+      font-size: 0.8rem;
+    }
+    .footer-links a {
+      color: #C8860A;
+      text-decoration: none;
+      margin: 0 0.5rem;
+    }
+    @media (max-width: 780px) {
+      .nav-links {
+        position: fixed;
+        top: 70px;
+        right: -100%;
+        width: 70%;
+        height: 100vh;
+        background: #FEF9F0;
+        flex-direction: column;
+        padding: 2rem;
+        transition: 0.3s;
+        gap: 1.5rem;
+        box-shadow: -2px 0 12px rgba(0,0,0,0.05);
+      }
+      .nav-links.open {
+        right: 0;
+      }
+      .hamburger {
+        display: flex;
+      }
+      .contact-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+      .container {
+        padding: 0 1.5rem;
+      }
     }
   </style>
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
 
-<div id="canvas-container"></div>
-
-<div class="nav">
-  <div class="logo-text">BEAN CHARGE</div>
-  <div class="nav-links">
-    <a href="#menu">Menu</a>
-    <a href="#book">Book</a>
-    <a href="#contact">Contact</a>
+<div class="sticky-nav">
+  <div class="nav-container">
+    <a href="#" class="brand-text">BEAN <span>CHARGE</span></a>
+    <div class="hamburger" id="hamburger">
+      <span></span><span></span><span></span>
+    </div>
+    <div class="nav-links" id="navLinks">
+      <a href="#menu">Menu</a>
+      <a href="#book">Book</a>
+      <a href="#contact">Contact</a>
+    </div>
   </div>
 </div>
 
-<div class="content">
-  <!-- Menu Section (no prices, expanded drinks) -->
+<div class="hero">
+  <h1>BEAN CHARGE</h1>
+  <p>Mobile coffee bar · Specialty grade · Soweto</p>
+</div>
+
+<div class="container">
+  <!-- Menu Section – expanded, no prices -->
   <section id="menu" class="section">
-    <div class="glass-card">
-      <h2>Our craft</h2>
-      <div class="menu-grid">
-        <div class="menu-category">
-          <h3>Espresso classics</h3>
-          <div class="menu-item">Americano</div>
-          <div class="menu-item">Espresso (single)</div>
-          <div class="menu-item">Double Espresso</div>
-          <div class="menu-item">Ristretto</div>
-          <div class="menu-item">Lungo</div>
-        </div>
-        <div class="menu-category">
-          <h3>Milk specialties</h3>
-          <div class="menu-item">Cappuccino</div>
-          <div class="menu-item">Latte</div>
-          <div class="menu-item">Flat White</div>
-          <div class="menu-item">Macchiato</div>
-          <div class="menu-item">Cortado</div>
-          <div class="menu-item">Mocha</div>
-        </div>
-        <div class="menu-category">
-          <h3>Flavoured</h3>
-          <div class="menu-item">Vanilla Coffee</div>
-          <div class="menu-item">Vanilla & Chocolate</div>
-          <div class="menu-item">Caramel Coffee</div>
-          <div class="menu-item">Hazelnut Latte</div>
-          <div class="menu-item">Salted Caramel Mocha</div>
-          <div class="menu-item">Cinnamon Spice</div>
-        </div>
-        <div class="menu-category">
-          <h3>Tea & more</h3>
-          <div class="menu-item">Hot Chocolate</div>
-          <div class="menu-item">Chai Tea Latte</div>
-          <div class="menu-item">Matcha Latte</div>
-          <div class="menu-item">Classic Black Tea</div>
-          <div class="menu-item">Rooibos Tea</div>
-          <div class="menu-item">Fresh Mint Tea</div>
-        </div>
-        <div class="menu-category">
-          <h3>Iced & cold</h3>
-          <div class="menu-item">Iced Americano</div>
-          <div class="menu-item">Iced Latte</div>
-          <div class="menu-item">Cold Brew</div>
-          <div class="menu-item">Iced Mocha</div>
-          <div class="menu-item">Iced Chai</div>
-        </div>
+    <h2 class="section-title">Our craft</h2>
+    <div class="menu-grid">
+      <div class="menu-category">
+        <h3>Espresso classics</h3>
+        <div class="menu-item">Americano</div>
+        <div class="menu-item">Espresso (single)</div>
+        <div class="menu-item">Double Espresso</div>
+        <div class="menu-item">Ristretto</div>
+        <div class="menu-item">Lungo</div>
+      </div>
+      <div class="menu-category">
+        <h3>Milk specialties</h3>
+        <div class="menu-item">Cappuccino</div>
+        <div class="menu-item">Latte</div>
+        <div class="menu-item">Flat White</div>
+        <div class="menu-item">Macchiato</div>
+        <div class="menu-item">Cortado</div>
+        <div class="menu-item">Mocha</div>
+      </div>
+      <div class="menu-category">
+        <h3>Flavoured</h3>
+        <div class="menu-item">Vanilla Coffee</div>
+        <div class="menu-item">Vanilla & Chocolate</div>
+        <div class="menu-item">Caramel Coffee</div>
+        <div class="menu-item">Hazelnut Latte</div>
+        <div class="menu-item">Salted Caramel Mocha</div>
+        <div class="menu-item">Cinnamon Spice</div>
+      </div>
+      <div class="menu-category">
+        <h3>Tea & more</h3>
+        <div class="menu-item">Hot Chocolate</div>
+        <div class="menu-item">Chai Tea Latte</div>
+        <div class="menu-item">Matcha Latte</div>
+        <div class="menu-item">Classic Black Tea</div>
+        <div class="menu-item">Rooibos Tea</div>
+        <div class="menu-item">Fresh Mint Tea</div>
+      </div>
+      <div class="menu-category">
+        <h3>Iced & cold</h3>
+        <div class="menu-item">Iced Americano</div>
+        <div class="menu-item">Iced Latte</div>
+        <div class="menu-item">Cold Brew</div>
+        <div class="menu-item">Iced Mocha</div>
+        <div class="menu-item">Iced Chai</div>
       </div>
     </div>
   </section>
 
-  <!-- Book Section (WhatsApp form) -->
+  <!-- Book Section -->
   <section id="book" class="section">
-    <div class="glass-card">
-      <h2>Book your event</h2>
+    <h2 class="section-title">Book your event</h2>
+    <div class="booking-card">
       <div class="form-group">
-        <input type="text" id="name" placeholder="Full name">
+        <input type="text" id="name" placeholder="Full name" required>
         <input type="email" id="email" placeholder="Email">
         <input type="date" id="eventDate">
         <select id="eventType">
@@ -250,166 +340,36 @@
 
   <!-- Contact Section -->
   <section id="contact" class="section">
-    <div class="glass-card">
-      <h2>Contact</h2>
-      <div class="contact-info">
-        <div class="contact-row">📞 <a href="tel:+27693412372" style="color:#C8860A;">069 341 2372</a></div>
-        <div class="contact-row">✉️ <a href="mailto:karabotsontsi@gmail.com" style="color:#C8860A;">karabotsontsi@gmail.com</a></div>
-        <div class="contact-row">📍 Soweto, Gauteng · Mobile service</div>
-        <div class="map">
-          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d114955.745275518!2d27.8315572!3d-26.2480879!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1e95a7c8f4b3f8b5%3A0x5c5a5a5a5a5a5a5a!2sSoweto%2C%20South%20Africa!5e0!3m2!1sen!2sza!4v1650000000000" allowfullscreen loading="lazy"></iframe>
-        </div>
+    <h2 class="section-title">Contact</h2>
+    <div class="contact-grid">
+      <div>
+        <div class="contact-card">📞 <a href="tel:+27693412372">069 341 2372</a></div>
+        <div class="contact-card">✉️ <a href="mailto:karabotsontsi@gmail.com">karabotsontsi@gmail.com</a></div>
+        <div class="contact-card">📍 Soweto, Gauteng · Mobile service</div>
+      </div>
+      <div class="map">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d114955.745275518!2d27.8315572!3d-26.2480879!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1e95a7c8f4b3f8b5%3A0x5c5a5a5a5a5a5a5a!2sSoweto%2C%20South%20Africa!5e0!3m2!1sen!2sza!4v1650000000000" allowfullscreen loading="lazy"></iframe>
       </div>
     </div>
   </section>
 </div>
 
-<!-- Three.js Library -->
-<script type="importmap">
-  {
-    "imports": {
-      "three": "https://unpkg.com/three@0.128.0/build/three.module.js"
-    }
-  }
-</script>
-
-<script type="module">
-  import * as THREE from 'three';
-
-  // --- Setup Scene, Camera, Renderer (transparent background) ---
-  const container = document.getElementById('canvas-container');
-  const scene = new THREE.Scene();
-  scene.background = null; // transparent, let CSS gradient show through
-  scene.fog = new THREE.FogExp2(0x0A0A0A, 0.008);
-
-  const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-  camera.position.set(0, 1.5, 5.5);
-  camera.lookAt(0, 0.8, 0);
-
-  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setClearColor(0x000000, 0);
-  container.appendChild(renderer.domElement);
-
-  // --- Lights ---
-  const ambient = new THREE.AmbientLight(0x332211, 0.6);
-  scene.add(ambient);
-  const mainLight = new THREE.PointLight(0xffcc88, 1.2);
-  mainLight.position.set(3, 4, 2);
-  scene.add(mainLight);
-  const fillLight = new THREE.PointLight(0x886644, 0.5);
-  fillLight.position.set(-2, 2, 3);
-  scene.add(fillLight);
-  const rimLight = new THREE.PointLight(0xffaa66, 0.7);
-  rimLight.position.set(1, 2, -2.5);
-  scene.add(rimLight);
-  const backLight = new THREE.PointLight(0xcc8844, 0.4);
-  backLight.position.set(0, 1.5, -3);
-  scene.add(backLight);
-
-  // --- 3D Coffee Cup (hero model) ---
-  const cupGroup = new THREE.Group();
-  // Cup body
-  const bodyGeo = new THREE.CylinderGeometry(0.9, 0.7, 1.5, 64);
-  const bodyMat = new THREE.MeshStandardMaterial({ color: 0xE8DDD0, roughness: 0.25, metalness: 0.05 });
-  const body = new THREE.Mesh(bodyGeo, bodyMat);
-  body.castShadow = true;
-  cupGroup.add(body);
-  // Coffee liquid (top)
-  const liquidGeo = new THREE.CylinderGeometry(0.82, 0.82, 0.08, 64);
-  const liquidMat = new THREE.MeshStandardMaterial({ color: 0x4B2F1D, roughness: 0.2, metalness: 0.05, emissive: 0x2A1508, emissiveIntensity: 0.15 });
-  const liquid = new THREE.Mesh(liquidGeo, liquidMat);
-  liquid.position.y = 0.72;
-  cupGroup.add(liquid);
-  // Handle
-  const handleGeo = new THREE.TorusGeometry(0.45, 0.09, 32, 60);
-  const handleMat = new THREE.MeshStandardMaterial({ color: 0xE8DDD0 });
-  const handle = new THREE.Mesh(handleGeo, handleMat);
-  handle.position.set(0.92, 0.15, 0);
-  handle.rotation.z = Math.PI / 2;
-  handle.rotation.y = 0.3;
-  cupGroup.add(handle);
-  cupGroup.position.y = -0.2;
-  scene.add(cupGroup);
-
-  // --- Floating Particles (coffee beans and steam) ---
-  const beanMat = new THREE.MeshStandardMaterial({ color: 0x6F4E37, roughness: 0.4 });
-  const beans = [];
-  for (let i = 0; i < 180; i++) {
-    const bean = new THREE.Mesh(new THREE.SphereGeometry(0.06, 16, 16), beanMat);
-    bean.position.x = (Math.random() - 0.5) * 5;
-    bean.position.y = Math.random() * 3;
-    bean.position.z = (Math.random() - 0.5) * 5;
-    bean.scale.set(1, 0.7 + Math.random() * 0.4, 1);
-    scene.add(bean);
-    beans.push(bean);
-  }
-
-  const steamMat = new THREE.MeshStandardMaterial({ color: 0xDDBB99, emissive: 0x442200, emissiveIntensity: 0.1, transparent: true, opacity: 0.25 });
-  const steam = [];
-  for (let i = 0; i < 200; i++) {
-    const s = new THREE.Mesh(new THREE.SphereGeometry(0.045, 8, 8), steamMat);
-    s.position.x = (Math.random() - 0.5) * 2;
-    s.position.y = Math.random() * 2;
-    s.position.z = (Math.random() - 0.5) * 2;
-    scene.add(s);
-    steam.push(s);
-  }
-
-  // --- Mouse Interaction (rotate cup) ---
-  let targetRotY = 0;
-  let targetRotX = 0;
-  let currentRotY = 0;
-  let currentRotX = 0;
-  window.addEventListener('mousemove', (e) => {
-    const nx = (e.clientX / window.innerWidth) * 2 - 1;
-    const ny = (e.clientY / window.innerHeight) * 2 - 1;
-    targetRotY = nx * 0.8;
-    targetRotX = ny * 0.4;
-  });
-  window.addEventListener('touchmove', (e) => {
-    if (e.touches.length) {
-      const nx = (e.touches[0].clientX / window.innerWidth) * 2 - 1;
-      const ny = (e.touches[0].clientY / window.innerHeight) * 2 - 1;
-      targetRotY = nx * 0.8;
-      targetRotX = ny * 0.4;
-    }
-  });
-
-  // --- Animation loop ---
-  let time = 0;
-  function animate() {
-    requestAnimationFrame(animate);
-    time += 0.016;
-    // Smooth cup rotation
-    currentRotY += (targetRotY - currentRotY) * 0.08;
-    currentRotX += (targetRotX - currentRotX) * 0.08;
-    cupGroup.rotation.y = currentRotY;
-    cupGroup.rotation.x = currentRotX * 0.5;
-    // Animate beans (float)
-    beans.forEach((b, idx) => {
-      b.position.y += Math.sin(time * 1.2 + idx) * 0.0015;
-    });
-    // Steam drift
-    steam.forEach(s => {
-      s.position.y += 0.003;
-      if (s.position.y > 1.8) s.position.y = 0.1;
-      s.position.x += (Math.random() - 0.5) * 0.008;
-      s.position.z += (Math.random() - 0.5) * 0.008;
-    });
-    renderer.render(scene, camera);
-  }
-  animate();
-
-  // --- Resize handler ---
-  window.addEventListener('resize', () => {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-  });
-</script>
+<footer>
+  <p>© 2025 BEAN CHARGE COFFEE · Soweto, South Africa</p>
+  <div class="footer-links">
+    <a href="tel:+27693412372">Call</a> |
+    <a href="mailto:karabotsontsi@gmail.com">Email</a> |
+    <a href="https://wa.me/27693412372">WhatsApp</a>
+  </div>
+</footer>
 
 <script>
+  // Mobile menu
+  const hamburger = document.getElementById('hamburger');
+  const navLinksMenu = document.getElementById('navLinks');
+  hamburger.addEventListener('click', () => navLinksMenu.classList.toggle('open'));
+  document.querySelectorAll('.nav-links a').forEach(link => link.addEventListener('click', () => navLinksMenu.classList.remove('open')));
+
   // WhatsApp booking
   const sendBtn = document.getElementById('sendBookingBtn');
   sendBtn.addEventListener('click', () => {
@@ -423,6 +383,5 @@
     window.open(`https://wa.me/27693412372?text=${encodeURIComponent(text)}`, '_blank');
   });
 </script>
-
 </body>
 </html>
